@@ -1,5 +1,5 @@
-// import Board from "./board";
-const Board = require("./board")
+import Board from "./board";
+// const Board = require("./board")
 
 document.addEventListener("DOMContentLoaded", () => {
     let board = new Board();

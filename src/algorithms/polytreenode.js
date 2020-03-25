@@ -12,4 +12,4 @@ class PolyTreeNode {
 
 }
 
-export default PolyTreeNode;
+module.exports = PolyTreeNode;

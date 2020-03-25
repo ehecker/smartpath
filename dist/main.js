@@ -90,17 +90,20 @@
 /*!**********************!*\
   !*** ./src/board.js ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Board; });
+/* harmony import */ var _tile__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tile */ "./src/tile.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// import Tile from "./tile";
-var Tile = __webpack_require__(/*! ./tile */ "./src/tile.js");
+
 
 var Board = /*#__PURE__*/function () {
   function Board() {
@@ -113,29 +116,25 @@ var Board = /*#__PURE__*/function () {
   _createClass(Board, [{
     key: "fillGrid",
     value: function fillGrid() {
-      var subArray = [];
-      subArray.fill(null, 0, 27);
-      this.grid.fill(subArray, 0, 59); // Board is 28 x 60, 1680 total tiles
+      // Board is 28 x 60, 1680 total tiles
+      for (var i = 0; i < 28; i++) {
+        var row = [];
 
-      var tileX = 0;
-      var tileY = 0;
+        for (var j = 0; j < 60; j++) {
+          var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]([i, j]);
+          row.push(newTile);
+        }
 
-      for (var i = 0; i < 1680; i++) {
-        if (tileX + 1 === 29) tileX = -1;
-        if (tileY + 1 === 61) tileY = -1;
-        tileX++;
-        tileY++;
-        var newTile = new Tile([tileX, tileY]);
-        this.grid[tileX][tileY].push(newTile);
-      }
+        this.grid.push(row);
+      } // debugger
+
     }
   }]);
 
   return Board;
-}(); // export default Board;
+}();
 
 
-module.exports = Board;
 
 /***/ }),
 
@@ -143,14 +142,16 @@ module.exports = Board;
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-// import Board from "./board";
-var Board = __webpack_require__(/*! ./board */ "./src/board.js");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board */ "./src/board.js");
+ // const Board = require("./board")
 
 document.addEventListener("DOMContentLoaded", function () {
-  var board = new Board();
+  var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
   board.fillGrid();
   console.log("Board initialized and populated");
 });
@@ -161,25 +162,25 @@ document.addEventListener("DOMContentLoaded", function () {
 /*!*********************!*\
   !*** ./src/tile.js ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Tile; });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Tile = function Tile(position) {
-  var _this = this;
-
   _classCallCheck(this, Tile);
 
   this.position = position;
-  this.tile = document.createElement("div").classList.add("tile");
-  document.addEventListener("DOMContentLoaded", function () {
-    var grid = document.getElementById("grid");
-    grid.appendChild(_this.tile);
-  });
+  this.tile = document.createElement("div");
+  this.tile.classList.add("tile");
+  var grid = document.getElementById("grid");
+  grid.appendChild(this.tile);
 };
 
-module.exports = Tile;
+
 
 /***/ })
 

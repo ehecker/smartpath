@@ -1,17 +1,13 @@
-class Tile {
+export default class Tile {
     
     constructor(position) {
         this.position = position
-        this.tile = document.createElement("div").classList.add("tile");
-        document.addEventListener("DOMContentLoaded", () => {
-            let grid = document.getElementById("grid");
-            grid.appendChild(this.tile)
-        })
+        this.tile = document.createElement("div");
+        this.tile.classList.add("tile");
+
+        let grid = document.getElementById("grid");
+        grid.appendChild(this.tile);
     }
 
     
-
-    
 }
-
-module.exports = Tile;
