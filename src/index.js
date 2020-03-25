@@ -1,7 +1,8 @@
-import Board from "./src/board";
+// import Board from "./board";
+const Board = require("./board")
 
 document.addEventListener("DOMContentLoaded", () => {
     let board = new Board();
-    board.fillGrid()
+    board.fillGrid();
     console.log("Board initialized and populated")
 })

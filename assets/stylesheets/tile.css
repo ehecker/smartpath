@@ -1,6 +1,12 @@
 .tile {
     background-color: black;
-    border: 1px solid white;
     height: 24px;
     width: 24px;
+
+    border-bottom: 1px;
+    border-bottom-color: white;
+    border-bottom-style: solid;
+    border-right: 1px;
+    border-right-color: white;
+    border-right-style: solid;
 }

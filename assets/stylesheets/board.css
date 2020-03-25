@@ -4,7 +4,13 @@ main {
 }
 
 #grid {
-    margin: 10px 10px 0 10px;
+    border-top: 1px;
+    border-top-color: white;
+    border-top-style: solid;
+    border-left: 1px;
+    border-left-color: white;
+    border-left-style: solid;
+    margin: 10px;
     /* background-color: red; */
     height: 700px;
     width: 1500px;

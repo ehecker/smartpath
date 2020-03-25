@@ -1,6 +1,13 @@
-import Tile from "./tile";
+// import Tile from "./tile";
+const Tile = require("./tile");
 
 class Board {
+
+    constructor() {
+
+        this.grid = [];
+        console.log("Board created")
+    }
 
     fillGrid() {
 
@@ -24,11 +31,7 @@ class Board {
         }
     }
 
-    constructor() {
-
-        this.grid = [];
-    }
-
 }
 
-export default Board;
+// export default Board;
+module.exports = Board;
