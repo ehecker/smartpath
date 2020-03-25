@@ -1,5 +1,13 @@
 /* STRUCTURE ========================================= */
 
+#grid {
+    background-color: black;
+}
+
+body {
+    background-color: black;
+}
+
 nav {
     height: 150px;
     display: flex;
@@ -10,6 +18,7 @@ nav {
 }
 
 .nav-top {
+    display: flex;
     height: 60%;
     width: 100%;
 }
@@ -23,16 +32,39 @@ nav {
     margin-bottom: 20px;
 }
 
-#grid {
-    background-color: black;
-}
-
-body {
-    background-color: black;
-}
-
 /* NAV-TOP =========================================== */
 
+.nav-top-left {
+    height: 100%;
+    width: 33%;
+}
+
+.nav-top-mid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 34%;
+}
+
+.main-title {
+    font-size: 50px;
+    color: orange;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.nav-top-right {
+    display: flex;
+    justify-content: flex-end;
+    height: 100%;
+    width: 33%;
+}
+
+.fa-github {
+    margin: 10px;
+    color: white;
+}
 
 /* NAV-BOTTOM ======================================== */
 

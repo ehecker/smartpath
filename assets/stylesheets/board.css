@@ -1,0 +1,11 @@
+main {
+    display: flex;
+    justify-content: center;
+}
+
+#grid {
+    margin: 10px 10px 0 10px;
+    /* background-color: red; */
+    height: 700px;
+    width: 1500px;
+}

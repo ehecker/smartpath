@@ -1,6 +1,15 @@
 class Tile {
-    constructor() {
-        this.position = [];
-        this.tile = document.createElement()
+    
+    constructor(position) {
+        this.position = position
+        this.tile = document.createElement("div").classList.add("tile");
+        document.addEventListener("DOMContentLoaded", () => {
+            let grid = document.getElementById("grid");
+            grid.appendChild(this.tile)
+        })
     }
+
+    
 }
+
+export default Tile;
