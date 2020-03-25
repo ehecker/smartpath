@@ -3,18 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="./assets/stylesheets/reset.css">
     <link rel="stylesheet" href="./assets/stylesheets/nav.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+    <script src= "./index.js"></script>
+
     <title>Scenic Routes</title>
 </head>
 
 <body>
     <nav>
         <div class="nav-top">
-            
+            <div>
+
+            </div>
         </div>
         <div class="nav-bottom">
+            <h3 class="algos-title">Algorithms:</h3>
+            <div class="algo-box">
+                <p>Dijkstra's Algorithm</p>
+                <input type="radio" name="algos" class="algo-buttons" checked>
+            </div>
+            <div class="algo-box">
+                <p>A* Algorithm</p>
+                <input type="radio" name="algos" class="algo-buttons">
+            </div>
+            <div class="algo-box">
+                <p>Breadth First Search</p>
+                <input type="radio" name="algos" class="algo-buttons">
+            </div>
+            <div class="algo-box">
+                <p>Depth First Search</p>
+                <input type="radio" name="algos" class="algo-buttons">
+            </div>
 
+            <button class="vis-button"><p>Visualize!</p></button>
         </div>
     </nav>
 
