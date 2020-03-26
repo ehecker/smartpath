@@ -116,18 +116,17 @@ var Board = /*#__PURE__*/function () {
   _createClass(Board, [{
     key: "fillGrid",
     value: function fillGrid() {
-      // Board is 28 x 60, 1680 total tiles
+      // Board is 28 x 56, 1568 total tiles
       for (var i = 0; i < 28; i++) {
         var row = [];
 
-        for (var j = 0; j < 60; j++) {
+        for (var j = 0; j < 56; j++) {
           var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]([i, j]);
           row.push(newTile);
         }
 
         this.grid.push(row);
-      } // debugger
-
+      }
     }
   }]);
 

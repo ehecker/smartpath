@@ -12,8 +12,8 @@ main {
     border-left-style: solid;
     margin: 10px;
     /* background-color: red; */
-    height: 700px;
-    width: 1500px;
+    max-height: 700px;
+    max-width: 1400px;
 
     display: flex;
     flex-wrap: wrap;
