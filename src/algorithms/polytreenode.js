@@ -7,15 +7,20 @@ export default class PolyTreeNode {
     }
 
     bfs(target) {
-        let queue = [];
-
-        queue.push(this);
+        let queue = [this];
 
         while (queue.length > 0) {
             let currentNode = queue.shift();
             if (currentNode.value === target) return currentNode;
             queue.push(...currentNode.children);
         }
+    }
+
+    buildTree() {
+
+        let neighbors = [];
+        
+
     }
 
     addParent(node) {
@@ -32,12 +37,14 @@ export default class PolyTreeNode {
     }
 
     addChild(childNode) {
+        childNode.parent = this;
         this.children.push(childNode);
     }
 
     removeChild(childNode) {
         let index = this.children.indexOf(childNode);
         this.children.splice(index, 1); // Same as above here
+        childNode.parent
     }
 
 }

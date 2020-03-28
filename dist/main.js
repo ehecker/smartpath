@@ -86,6 +86,97 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/algorithms/polytreenode.js":
+/*!****************************************!*\
+  !*** ./src/algorithms/polytreenode.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PolyTreeNode; });
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var PolyTreeNode = /*#__PURE__*/function () {
+  function PolyTreeNode(value) {
+    _classCallCheck(this, PolyTreeNode);
+
+    this.value = value;
+    this.parent = null;
+    this.children = [];
+  }
+
+  _createClass(PolyTreeNode, [{
+    key: "bfs",
+    value: function bfs(target) {
+      var queue = [this];
+
+      while (queue.length > 0) {
+        var currentNode = queue.shift();
+        if (currentNode.value === target) return currentNode;
+        queue.push.apply(queue, _toConsumableArray(currentNode.children));
+      }
+    }
+  }, {
+    key: "buildTree",
+    value: function buildTree() {
+      var neighbors = [];
+    }
+  }, {
+    key: "addParent",
+    value: function addParent(node) {
+      if (this.parent !== null) {
+        var index = this.parent.children.indexOf(this); // Does indexOf work for finding objects? Need to research.
+
+        this.parent.children.splice(index, 1);
+      }
+
+      this.parent = node;
+
+      if (this.parent) {
+        this.parent.children.push(this);
+      }
+    }
+  }, {
+    key: "addChild",
+    value: function addChild(childNode) {
+      childNode.parent = this;
+      this.children.push(childNode);
+    }
+  }, {
+    key: "removeChild",
+    value: function removeChild(childNode) {
+      var index = this.children.indexOf(childNode);
+      this.children.splice(index, 1); // Same as above here
+
+      childNode.parent;
+    }
+  }]);
+
+  return PolyTreeNode;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/board.js":
 /*!**********************!*\
   !*** ./src/board.js ***!
@@ -147,12 +238,26 @@ var Board = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board */ "./src/board.js");
+/* harmony import */ var _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./algorithms/polytreenode */ "./src/algorithms/polytreenode.js");
+
  // const Board = require("./board")
 
 document.addEventListener("DOMContentLoaded", function () {
   var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
   board.fillGrid();
   console.log("Board initialized and populated");
+  var n1 = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("node 1");
+  var n2 = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("node 2");
+  var n3 = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("node 3");
+  console.log("Nodes loaded");
+  n1.addParent(n2);
+  console.log(n1);
+  console.log(n2);
+  console.log("Added Parent");
+  n2.removeChild(n1);
+  console.log(n1);
+  console.log(n2);
+  console.log("Removed Parent");
 });
 
 /***/ }),
