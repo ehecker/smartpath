@@ -10,3 +10,7 @@
     border-right-color: #666;
     border-right-style: solid;
 }
+
+.visited {
+    background-color: orange;
+}

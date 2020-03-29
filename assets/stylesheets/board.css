@@ -5,15 +5,15 @@ main {
 
 #grid {
     border-top: 1px;
-    border-top-color: #666;
     border-top-style: solid;
+    border-top-color: #666;
     border-left: 1px;
-    border-left-color: #666;
     border-left-style: solid;
+    border-left-color: #666;
+    
+    height: 600px;
+    width: 1200px;
     margin: 10px;
-    /* background-color: red; */
-    max-height: 700px;
-    max-width: 1400px;
 
     display: flex;
     flex-wrap: wrap;

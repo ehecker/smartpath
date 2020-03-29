@@ -1,6 +1,5 @@
 import Board from "./board";
 import PolyTreeNode from "./algorithms/polytreenode";
-// const Board = require("./board")
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -8,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
     board.fillGrid();
     console.log("Board initialized and populated")
 
-    let n1 = new PolyTreeNode("node 1");
-    let n2 = new PolyTreeNode("node 2");
-    let n3 = new PolyTreeNode("node 3");
+    let n1 = new PolyTreeNode("node 1", [4, 9]);
+    let n2 = new PolyTreeNode("node 2", [6, 17]);
+    let n3 = new PolyTreeNode("node 3", [12, 4]);
 
     console.log("Nodes loaded")
 
@@ -18,11 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(n1);
     console.log(n2);
 
-    console.log("Added Parent")
+    console.log("Added Parent");
 
-    n2.removeChild(n1);
-    console.log(n1);
-    console.log(n2);
+    n1.addParent(n3);
 
-    console.log("Removed Parent")
+    // n2.removeChild(n1);
+    // console.log(n1);
+    // console.log(n2);
+
+    // console.log("Removed Parent")
 })
