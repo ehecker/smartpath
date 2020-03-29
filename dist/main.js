@@ -131,10 +131,30 @@ var PolyTreeNode = /*#__PURE__*/function () {
     key: "bfs",
     value: function bfs(target) {
       var queue = [this];
+      var finished = false; // setTimeout(() => {
+      //     while (queue.length > 0 && finished === false) {
+      //         setTimeout(() => {
+      //             let currentNode = queue.shift();
+      //             if (currentNode.value !== "root") {
+      //                 currentNode.tileObj.classList.add("visited");
+      //             }
+      //             if (currentNode.value === target) {
+      //                 currentNode.tileObj.classList.add("target-found");
+      //                 console.log(currentNode);
+      //                 // return currentNode;
+      //                 finished = true;
+      //             }
+      //             queue.push(...currentNode.children);
+      //         }, 1000)
+      //     }
+      // }, 1000)
 
-      while (queue.length > 0) {
+      while (queue.length > 0 && finished === false) {
         var currentNode = queue.shift();
-        currentNode.tileObj.classList.add("visited");
+
+        if (currentNode.value !== "root") {
+          currentNode.tileObj.classList.add("visited");
+        }
 
         if (currentNode.value === target) {
           currentNode.tileObj.classList.add("target-found");
@@ -152,27 +172,22 @@ var PolyTreeNode = /*#__PURE__*/function () {
 
       var increments = [[1, 0], [-1, 0], [0, 1], [0, -1]]; // buildTree function will use the node on which it is called as the root node of the tree.
 
-      var neighbors = [this]; // debugger
+      var neighbors = [this];
 
       var _loop = function _loop() {
         var currentNode = neighbors.shift();
-        var loopCount = 1;
         increments.forEach(function (inc) {
           var newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]]; // If the position is valid:
 
           if (newPos[0] >= 0 && newPos[0] < 24 && newPos[1] >= 0 && newPos[1] < 48) {
-            var neighbor = _this.grid[newPos[0]][newPos[1]]; // If the neighbor exists and is not the parent or child of the current node:
-            // if (neighbor.node && neighbor.node !== currentNode.parent && !currentNode.children.includes(neighbor.node)) {
+            var neighbor = _this.grid[newPos[0]][newPos[1]]; // If the neighbor exists and is not the parent or child of the current node: // edit this later
 
             if (neighbor.node && neighbor.node.parent === null && !currentNode.children.includes(neighbor.node)) {
-              neighbors.push(neighbor.node); // currentNode.addChild(neighbor.node);
-
+              neighbors.push(neighbor.node);
               neighbor.node.addParent(currentNode);
             }
           }
         });
-        loopCount++;
-        console.log(loopCount);
       };
 
       while (neighbors.length > 0) {
@@ -187,23 +202,23 @@ var PolyTreeNode = /*#__PURE__*/function () {
         this.parent.removeChild(this); // Remove itself from old parent's children
       }
 
-      this.parent = parentNode;
-
-      if (this.parent) {
-        // Check in case node passed in is null
+      if (parentNode !== null) {
+        this.parent = parentNode;
         this.parent.children.push(this);
-      }
+      } // this.parent = parentNode;
+      // if (this.parent) { // Check in case node passed in is null
+      //     this.parent.children.push(this);
+      // }
+
     } // addChild(childNode) {
     //     childNode.addParent(this);
     // }
+    // removeChild(childNode) {
+    //     let index = this.children.indexOf(childNode);
+    //     this.children.splice(index, 1);
+    //     childNode.parent = null;
+    // }
 
-  }, {
-    key: "removeChild",
-    value: function removeChild(childNode) {
-      var index = this.children.indexOf(childNode);
-      this.children.splice(index, 1);
-      childNode.parent = null;
-    }
   }]);
 
   return PolyTreeNode;
@@ -256,6 +271,12 @@ var Board = /*#__PURE__*/function () {
         this.grid.push(row);
       }
     }
+  }, {
+    key: "setRoot",
+    value: function setRoot() {}
+  }, {
+    key: "setTarget",
+    value: function setTarget() {}
   }]);
 
   return Board;
@@ -294,6 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
   targetNode.tile.classList.add("target-node"); // Create tree and run BFS
 
   rootNode.node.buildTree();
+  console.log("Node tree built");
   rootNode.node.bfs("target"); // let n1 = new PolyTreeNode("node 1", [4, 9]);
   // let n2 = new PolyTreeNode("node 2", [6, 17]);
   // let n3 = new PolyTreeNode("node 3", [12, 4]);

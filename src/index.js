@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Create tree and run BFS
     rootNode.node.buildTree();
+    console.log("Node tree built")
+
     rootNode.node.bfs("target");
 
 

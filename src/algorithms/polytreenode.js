@@ -13,10 +13,35 @@ export default class PolyTreeNode {
 
     bfs(target) {
         let queue = [this];
+        let finished = false;
 
-        while (queue.length > 0) {
+        // setTimeout(() => {
+        //     while (queue.length > 0 && finished === false) {
+        //         setTimeout(() => {
+        //             let currentNode = queue.shift();
+        //             if (currentNode.value !== "root") {
+        //                 currentNode.tileObj.classList.add("visited");
+        //             }
+    
+        //             if (currentNode.value === target) {
+        //                 currentNode.tileObj.classList.add("target-found");
+        //                 console.log(currentNode);
+        //                 // return currentNode;
+        //                 finished = true;
+        //             }
+                    
+        //             queue.push(...currentNode.children);
+        //         }, 1000)
+                
+        //     }
+        // }, 1000)
+
+        while (queue.length > 0 && finished === false) {
             let currentNode = queue.shift();
-            currentNode.tileObj.classList.add("visited");
+
+            if (currentNode.value !== "root") {
+                currentNode.tileObj.classList.add("visited");
+            }
 
             if (currentNode.value === target) {
                 currentNode.tileObj.classList.add("target-found");
@@ -25,7 +50,9 @@ export default class PolyTreeNode {
             }
             
             queue.push(...currentNode.children);
+            
         }
+        
     }
 
     buildTree() {
@@ -39,11 +66,8 @@ export default class PolyTreeNode {
         // buildTree function will use the node on which it is called as the root node of the tree.
         let neighbors = [this];
 
-        // debugger
-
         while (neighbors.length > 0) {
             let currentNode = neighbors.shift();
-            let loopCount = 1;
             
             increments.forEach(inc => {
                 let newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]]
@@ -51,21 +75,16 @@ export default class PolyTreeNode {
                 // If the position is valid:
                 if (newPos[0] >= 0 && newPos[0] < 24 && newPos[1] >= 0 && newPos[1] < 48) {
                     let neighbor = this.grid[newPos[0]][newPos[1]];
-    
-                    // If the neighbor exists and is not the parent or child of the current node:
-                    // if (neighbor.node && neighbor.node !== currentNode.parent && !currentNode.children.includes(neighbor.node)) {
-                    if (neighbor.node && neighbor.node.parent === null && !currentNode.children.includes(neighbor.node)) {
 
+                    // If the neighbor exists and is not the parent or child of the current node: // edit this later
+                    if (neighbor.node && neighbor.node.parent === null && !currentNode.children.includes(neighbor.node)) {
                         neighbors.push(neighbor.node);
-                        // currentNode.addChild(neighbor.node);
                         neighbor.node.addParent(currentNode);
                     }
                 }
 
             })
 
-            loopCount++;
-            console.log(loopCount);
         }
 
     }
@@ -76,21 +95,26 @@ export default class PolyTreeNode {
             this.parent.removeChild(this) // Remove itself from old parent's children
         }
 
-        this.parent = parentNode;
-
-        if (this.parent) { // Check in case node passed in is null
+        if (parentNode !== null) {
+            this.parent = parentNode;
             this.parent.children.push(this);
         }
+
+        // this.parent = parentNode;
+
+        // if (this.parent) { // Check in case node passed in is null
+        //     this.parent.children.push(this);
+        // }
     }
 
     // addChild(childNode) {
     //     childNode.addParent(this);
     // }
 
-    removeChild(childNode) {
-        let index = this.children.indexOf(childNode);
-        this.children.splice(index, 1);
-        childNode.parent = null;
-    }
+    // removeChild(childNode) {
+    //     let index = this.children.indexOf(childNode);
+    //     this.children.splice(index, 1);
+    //     childNode.parent = null;
+    // }
 
 }

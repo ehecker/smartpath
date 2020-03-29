@@ -25,4 +25,12 @@ export default class Board {
 
     }
 
+    setRoot() {
+
+    }
+
+    setTarget() {
+
+    }
+
 }
