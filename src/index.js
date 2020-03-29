@@ -7,23 +7,36 @@ document.addEventListener("DOMContentLoaded", () => {
     board.fillGrid();
     console.log("Board initialized and populated")
 
-    let n1 = new PolyTreeNode("node 1", [4, 9]);
-    let n2 = new PolyTreeNode("node 2", [6, 17]);
-    let n3 = new PolyTreeNode("node 3", [12, 4]);
 
-    console.log("Nodes loaded")
+    // Set root node
+    board.grid[11][9].node = new PolyTreeNode("root", [11, 9], board.grid);
+    let rootNode = board.grid[11][9];
+    // let rootNode = document.getElementById("11-9");
+    rootNode.tile.classList.add("root-node")
 
-    n1.addParent(n2);
-    console.log(n1);
-    console.log(n2);
+    // Set target node
+    board.grid[11][40].node = new PolyTreeNode("target", [11, 40], board.grid);
+    let targetNode = board.grid[11][40];
+    // let targetNode = document.getElementById("11-40");
+    targetNode.tile.classList.add("target-node")
 
-    console.log("Added Parent");
+    // Create tree and run BFS
+    rootNode.node.buildTree();
+    rootNode.node.bfs("target");
 
-    n1.addParent(n3);
 
-    // n2.removeChild(n1);
+    // let n1 = new PolyTreeNode("node 1", [4, 9]);
+    // let n2 = new PolyTreeNode("node 2", [6, 17]);
+    // let n3 = new PolyTreeNode("node 3", [12, 4]);
+
+    // console.log("Nodes loaded")
+
+    // n1.addParent(n2);
     // console.log(n1);
     // console.log(n2);
+    
+    // console.log("Added Parent");
 
-    // console.log("Removed Parent")
+
+
 })

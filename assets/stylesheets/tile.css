@@ -11,6 +11,18 @@
     border-right-style: solid;
 }
 
+.root-node {
+    background-color: white;
+}
+
+.target-node {
+    background-color: red;
+}
+
 .visited {
     background-color: orange;
+}
+
+.target-found {
+    background-color: blue;
 }

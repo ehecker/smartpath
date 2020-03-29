@@ -96,7 +96,6 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PolyTreeNode; });
-/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../board */ "./src/board.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -115,18 +114,17 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-
-
 var PolyTreeNode = /*#__PURE__*/function () {
-  function PolyTreeNode(value, position) {
+  function PolyTreeNode(value, position, grid) {
     _classCallCheck(this, PolyTreeNode);
 
-    this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1]));
+    this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1])); // this.tileObj = grid[position[0]][position[1]];
+
     this.value = value;
     this.position = position;
     this.parent = null;
     this.children = [];
-    this.grid = _board__WEBPACK_IMPORTED_MODULE_0__["default"].grid; //Is this the right way to do this??
+    this.grid = grid;
   }
 
   _createClass(PolyTreeNode, [{
@@ -136,8 +134,14 @@ var PolyTreeNode = /*#__PURE__*/function () {
 
       while (queue.length > 0) {
         var currentNode = queue.shift();
-        currentNode.tileObj.visit();
-        if (currentNode.value === target) return currentNode;
+        currentNode.tileObj.classList.add("visited");
+
+        if (currentNode.value === target) {
+          currentNode.tileObj.classList.add("target-found");
+          console.log(currentNode);
+          return currentNode;
+        }
+
         queue.push.apply(queue, _toConsumableArray(currentNode.children));
       }
     }
@@ -146,21 +150,29 @@ var PolyTreeNode = /*#__PURE__*/function () {
     value: function buildTree() {
       var _this = this;
 
-      var increments = [[1, 0], [-1, 0], [0, 1], [0, -1]]; // buildTree function will use the node it is called on as the root node of the tree.
+      var increments = [[1, 0], [-1, 0], [0, 1], [0, -1]]; // buildTree function will use the node on which it is called as the root node of the tree.
 
-      var neighbors = [this];
+      var neighbors = [this]; // debugger
 
       var _loop = function _loop() {
         var currentNode = neighbors.shift();
+        var loopCount = 1;
         increments.forEach(function (inc) {
-          var newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
-          var neighbor = _this.grid[newPos[0]][newPos[1]]; // If the neighbor exists and is not the parent or child of the current node:
+          var newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]]; // If the position is valid:
 
-          if (neighbor.node && neighbor.node !== currentNode.parent && !currentNode.children.includes(neighbor.node)) {
-            neighbors.push(neighbor.node);
-            currentNode.addChild(neighbor.node);
+          if (newPos[0] >= 0 && newPos[0] < 24 && newPos[1] >= 0 && newPos[1] < 48) {
+            var neighbor = _this.grid[newPos[0]][newPos[1]]; // If the neighbor exists and is not the parent or child of the current node:
+            // if (neighbor.node && neighbor.node !== currentNode.parent && !currentNode.children.includes(neighbor.node)) {
+
+            if (neighbor.node && neighbor.node.parent === null && !currentNode.children.includes(neighbor.node)) {
+              neighbors.push(neighbor.node); // currentNode.addChild(neighbor.node);
+
+              neighbor.node.addParent(currentNode);
+            }
           }
         });
+        loopCount++;
+        console.log(loopCount);
       };
 
       while (neighbors.length > 0) {
@@ -170,12 +182,9 @@ var PolyTreeNode = /*#__PURE__*/function () {
   }, {
     key: "addParent",
     value: function addParent(parentNode) {
-      debugger;
-
       if (this.parent !== null) {
         // Check to see if current node already has a parent
-        var index = this.parent.children.indexOf(this);
-        this.parent.children.splice(index, 1); // Remove itself from old parent's children
+        this.parent.removeChild(this); // Remove itself from old parent's children
       }
 
       this.parent = parentNode;
@@ -184,13 +193,10 @@ var PolyTreeNode = /*#__PURE__*/function () {
         // Check in case node passed in is null
         this.parent.children.push(this);
       }
-    }
-  }, {
-    key: "addChild",
-    value: function addChild(childNode) {
-      childNode.addParent(this);
-      this.children.push(childNode);
-    }
+    } // addChild(childNode) {
+    //     childNode.addParent(this);
+    // }
+
   }, {
     key: "removeChild",
     value: function removeChild(childNode) {
@@ -242,7 +248,8 @@ var Board = /*#__PURE__*/function () {
         var row = [];
 
         for (var j = 0; j < 48; j++) {
-          var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]([i, j]);
+          // debugger
+          var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]([i, j], this);
           row.push(newTile);
         }
 
@@ -274,19 +281,27 @@ __webpack_require__.r(__webpack_exports__);
 document.addEventListener("DOMContentLoaded", function () {
   var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
   board.fillGrid();
-  console.log("Board initialized and populated");
-  var n1 = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("node 1", [4, 9]);
-  var n2 = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("node 2", [6, 17]);
-  var n3 = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("node 3", [12, 4]);
-  console.log("Nodes loaded");
-  n1.addParent(n2);
-  console.log(n1);
-  console.log(n2);
-  console.log("Added Parent");
-  n1.addParent(n3); // n2.removeChild(n1);
+  console.log("Board initialized and populated"); // Set root node
+
+  board.grid[11][9].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("root", [11, 9], board.grid);
+  var rootNode = board.grid[11][9]; // let rootNode = document.getElementById("11-9");
+
+  rootNode.tile.classList.add("root-node"); // Set target node
+
+  board.grid[11][40].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [11, 40], board.grid);
+  var targetNode = board.grid[11][40]; // let targetNode = document.getElementById("11-40");
+
+  targetNode.tile.classList.add("target-node"); // Create tree and run BFS
+
+  rootNode.node.buildTree();
+  rootNode.node.bfs("target"); // let n1 = new PolyTreeNode("node 1", [4, 9]);
+  // let n2 = new PolyTreeNode("node 2", [6, 17]);
+  // let n3 = new PolyTreeNode("node 3", [12, 4]);
+  // console.log("Nodes loaded")
+  // n1.addParent(n2);
   // console.log(n1);
   // console.log(n2);
-  // console.log("Removed Parent")
+  // console.log("Added Parent");
 });
 
 /***/ }),
@@ -311,23 +326,30 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 var Tile = /*#__PURE__*/function () {
-  function Tile(position) {
+  function Tile(position, board) {
     _classCallCheck(this, Tile);
 
-    this.position = position; // i.e [4, 12];
+    this.position = position; // Array of nums, i.e [4, 12];
+    // this.board = board;
 
     this.tile = document.createElement("div");
     this.tile.classList.add("tile");
-    this.tile.id = "".concat(position[0], "-").concat(position[1]);
-    this.node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_0__["default"](null, position);
+    this.tile.id = "".concat(position[0], "-").concat(position[1]); // debugger
+
     var grid = document.getElementById("grid");
     grid.appendChild(this.tile);
+    this.node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_0__["default"](null, position, board.grid);
   }
 
   _createClass(Tile, [{
     key: "visit",
     value: function visit() {
       this.tile.classList.add("visited");
+    }
+  }, {
+    key: "markFound",
+    value: function markFound() {
+      this.tile.classList.add("target-found");
     }
   }]);
 

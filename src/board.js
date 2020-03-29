@@ -13,7 +13,10 @@ export default class Board {
             let row = [];
 
             for (let j = 0; j < 48; j++) {
-                let newTile = new Tile([i, j])
+
+                // debugger
+
+                let newTile = new Tile([i, j], this);
                 row.push(newTile);
             }
 
