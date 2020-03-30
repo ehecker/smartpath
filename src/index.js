@@ -24,8 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
     rootNode.node.buildTree();
     console.log("Node tree built")
 
-    rootNode.node.bfs("target");
+    rootNode.node.dfs("target");
 
+    console.log("Algorithm executed");
 
     // let n1 = new PolyTreeNode("node 1", [4, 9]);
     // let n2 = new PolyTreeNode("node 2", [6, 17]);

@@ -20,7 +20,18 @@
 }
 
 .visited {
-    background-color: orange;
+    /* background-color: orange; */
+    animation: 1s ease both markVisited;
+}
+
+@keyframes markVisited {
+    from {
+        background-color: black;
+    }
+
+    to {
+        background-color: orange;
+    }
 }
 
 .target-found {

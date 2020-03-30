@@ -2,8 +2,6 @@ export default class PolyTreeNode {
 
     constructor(value, position, grid) {
         this.tileObj = document.getElementById(`${position[0]}-${position[1]}`);
-        // this.tileObj = grid[position[0]][position[1]];
-
         this.value = value;
         this.position = position;
         this.parent = null;
@@ -13,33 +11,12 @@ export default class PolyTreeNode {
 
     bfs(target) {
         let queue = [this];
-        let finished = false;
 
-        // setTimeout(() => {
-        //     while (queue.length > 0 && finished === false) {
-        //         setTimeout(() => {
-        //             let currentNode = queue.shift();
-        //             if (currentNode.value !== "root") {
-        //                 currentNode.tileObj.classList.add("visited");
-        //             }
-    
-        //             if (currentNode.value === target) {
-        //                 currentNode.tileObj.classList.add("target-found");
-        //                 console.log(currentNode);
-        //                 // return currentNode;
-        //                 finished = true;
-        //             }
-                    
-        //             queue.push(...currentNode.children);
-        //         }, 1000)
-                
-        //     }
-        // }, 1000)
+        while (queue.length > 0) {
 
-        while (queue.length > 0 && finished === false) {
             let currentNode = queue.shift();
 
-            if (currentNode.value !== "root") {
+            if (currentNode.value !== "root" && currentNode.value !== "target") {
                 currentNode.tileObj.classList.add("visited");
             }
 
@@ -50,9 +27,27 @@ export default class PolyTreeNode {
             }
             
             queue.push(...currentNode.children);
-            
+
         }
         
+    }
+
+    dfs(target) {
+
+        if (this.value === target) {
+            this.tileObj.classList.add("target-found");
+            console.log(this);
+            return this;
+        }
+
+        if (this.value !== "root" && this.value !== "target") {
+            this.tileObj.classList.add("visited");
+        }
+
+        for (let i = 0; i < this.children.length; i++) {
+            return this.children[i].dfs(target)
+        }
+
     }
 
     buildTree() {
@@ -118,3 +113,21 @@ export default class PolyTreeNode {
     // }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

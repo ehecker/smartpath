@@ -118,8 +118,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
   function PolyTreeNode(value, position, grid) {
     _classCallCheck(this, PolyTreeNode);
 
-    this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1])); // this.tileObj = grid[position[0]][position[1]];
-
+    this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1]));
     this.value = value;
     this.position = position;
     this.parent = null;
@@ -131,28 +130,11 @@ var PolyTreeNode = /*#__PURE__*/function () {
     key: "bfs",
     value: function bfs(target) {
       var queue = [this];
-      var finished = false; // setTimeout(() => {
-      //     while (queue.length > 0 && finished === false) {
-      //         setTimeout(() => {
-      //             let currentNode = queue.shift();
-      //             if (currentNode.value !== "root") {
-      //                 currentNode.tileObj.classList.add("visited");
-      //             }
-      //             if (currentNode.value === target) {
-      //                 currentNode.tileObj.classList.add("target-found");
-      //                 console.log(currentNode);
-      //                 // return currentNode;
-      //                 finished = true;
-      //             }
-      //             queue.push(...currentNode.children);
-      //         }, 1000)
-      //     }
-      // }, 1000)
 
-      while (queue.length > 0 && finished === false) {
+      while (queue.length > 0) {
         var currentNode = queue.shift();
 
-        if (currentNode.value !== "root") {
+        if (currentNode.value !== "root" && currentNode.value !== "target") {
           currentNode.tileObj.classList.add("visited");
         }
 
@@ -163,6 +145,23 @@ var PolyTreeNode = /*#__PURE__*/function () {
         }
 
         queue.push.apply(queue, _toConsumableArray(currentNode.children));
+      }
+    }
+  }, {
+    key: "dfs",
+    value: function dfs(target) {
+      if (this.value === target) {
+        this.tileObj.classList.add("target-found");
+        console.log(this);
+        return this;
+      }
+
+      if (this.value !== "root" && this.value !== "target") {
+        this.tileObj.classList.add("visited");
+      }
+
+      for (var i = 0; i < this.children.length; i++) {
+        return this.children[i].dfs(target);
       }
     }
   }, {
@@ -316,7 +315,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   rootNode.node.buildTree();
   console.log("Node tree built");
-  rootNode.node.bfs("target"); // let n1 = new PolyTreeNode("node 1", [4, 9]);
+  rootNode.node.dfs("target");
+  console.log("Algorithm executed"); // let n1 = new PolyTreeNode("node 1", [4, 9]);
   // let n2 = new PolyTreeNode("node 2", [6, 17]);
   // let n3 = new PolyTreeNode("node 3", [12, 4]);
   // console.log("Nodes loaded")
