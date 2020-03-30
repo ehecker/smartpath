@@ -1,12 +1,14 @@
 export default class PolyTreeNode {
 
     constructor(value, position, grid) {
-        this.tileObj = document.getElementById(`${position[0]}-${position[1]}`);
         this.value = value;
         this.position = position;
+        this.grid = grid;
+        
+        this.tileObj = document.getElementById(`${position[0]}-${position[1]}`);
+
         this.parent = null;
         this.children = [];
-        this.grid = grid;
     }
 
     bfs(target) {

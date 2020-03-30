@@ -20,13 +20,25 @@ document.addEventListener("DOMContentLoaded", () => {
     targetNode.tile.classList.add("target-node")
     console.log("Target node set");
 
-    // Set Visualize button functionality
-    let algorithm = "bfs-btn"; // Default algorithm
-
+    // Add functionality to radio buttons
     function setAlgo(event) {
         algorithm = event.target.id;
     }
 
+    let algorithm = "bfs-btn"; // Default algorithm
+       
+    let dijkstrasButton = document.getElementById("dijkstras-btn");
+    let astarButton = document.getElementById("astar-btn");
+    let bfsButton = document.getElementById("bfs-btn");
+    let dfsButton = document.getElementById("dfs-btn");
+    
+    dijkstrasButton.addEventListener("click", setAlgo);
+    astarButton.addEventListener("click", setAlgo);
+    bfsButton.addEventListener("click", setAlgo);
+    dfsButton.addEventListener("click", setAlgo);
+
+
+    // Add functionality to Visualize button
     function runAlgorithm() {
         switch (algorithm) {
             case "bfs-btn":
@@ -44,17 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 break;
         }
     }
-    
-    let dijkstrasButton = document.getElementById("dijkstras-btn");
-    let astarButton = document.getElementById("astar-btn");
-    let bfsButton = document.getElementById("bfs-btn");
-    let dfsButton = document.getElementById("dfs-btn");
-    
-    dijkstrasButton.addEventListener("click", setAlgo);
-    astarButton.addEventListener("click", setAlgo);
-    bfsButton.addEventListener("click", setAlgo);
-    dfsButton.addEventListener("click", setAlgo);
-    
+
     let visButton = document.getElementById("vis-button");
     visButton.addEventListener("click", runAlgorithm);
 

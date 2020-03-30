@@ -118,12 +118,12 @@ var PolyTreeNode = /*#__PURE__*/function () {
   function PolyTreeNode(value, position, grid) {
     _classCallCheck(this, PolyTreeNode);
 
-    this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1]));
     this.value = value;
     this.position = position;
+    this.grid = grid;
+    this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1]));
     this.parent = null;
     this.children = [];
-    this.grid = grid;
   }
 
   _createClass(PolyTreeNode, [{
@@ -311,13 +311,22 @@ document.addEventListener("DOMContentLoaded", function () {
   board.grid[11][40].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [11, 40], board.grid);
   var targetNode = board.grid[11][40];
   targetNode.tile.classList.add("target-node");
-  console.log("Target node set"); // Set Visualize button functionality
-
-  var algorithm = "bfs-btn"; // Default algorithm
+  console.log("Target node set"); // Add functionality to radio buttons
 
   function setAlgo(event) {
     algorithm = event.target.id;
   }
+
+  var algorithm = "bfs-btn"; // Default algorithm
+
+  var dijkstrasButton = document.getElementById("dijkstras-btn");
+  var astarButton = document.getElementById("astar-btn");
+  var bfsButton = document.getElementById("bfs-btn");
+  var dfsButton = document.getElementById("dfs-btn");
+  dijkstrasButton.addEventListener("click", setAlgo);
+  astarButton.addEventListener("click", setAlgo);
+  bfsButton.addEventListener("click", setAlgo);
+  dfsButton.addEventListener("click", setAlgo); // Add functionality to Visualize button
 
   function runAlgorithm() {
     switch (algorithm) {
@@ -339,14 +348,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  var dijkstrasButton = document.getElementById("dijkstras-btn");
-  var astarButton = document.getElementById("astar-btn");
-  var bfsButton = document.getElementById("bfs-btn");
-  var dfsButton = document.getElementById("dfs-btn");
-  dijkstrasButton.addEventListener("click", setAlgo);
-  astarButton.addEventListener("click", setAlgo);
-  bfsButton.addEventListener("click", setAlgo);
-  dfsButton.addEventListener("click", setAlgo);
   var visButton = document.getElementById("vis-button");
   visButton.addEventListener("click", runAlgorithm);
 });
