@@ -257,12 +257,11 @@ var Board = /*#__PURE__*/function () {
   _createClass(Board, [{
     key: "fillGrid",
     value: function fillGrid() {
-      // Board is 24 x 48, 1152 total tiles
       for (var i = 0; i < 24; i++) {
+        // Board is 24 x 48, 1152 total tiles
         var row = [];
 
         for (var j = 0; j < 48; j++) {
-          // debugger
           var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]([i, j], this);
           row.push(newTile);
         }
@@ -299,31 +298,57 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Create and fill board
   var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
   board.fillGrid();
   console.log("Board initialized and populated"); // Set root node
 
   board.grid[11][9].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("root", [11, 9], board.grid);
-  var rootNode = board.grid[11][9]; // let rootNode = document.getElementById("11-9");
-
-  rootNode.tile.classList.add("root-node"); // Set target node
+  var rootNode = board.grid[11][9];
+  rootNode.tile.classList.add("root-node");
+  console.log("Root node set"); // Set target node
 
   board.grid[11][40].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [11, 40], board.grid);
-  var targetNode = board.grid[11][40]; // let targetNode = document.getElementById("11-40");
+  var targetNode = board.grid[11][40];
+  targetNode.tile.classList.add("target-node");
+  console.log("Target node set"); // Set Visualize button functionality
 
-  targetNode.tile.classList.add("target-node"); // Create tree and run BFS
+  var algorithm = "bfs-btn"; // Default algorithm
 
-  rootNode.node.buildTree();
-  console.log("Node tree built");
-  rootNode.node.dfs("target");
-  console.log("Algorithm executed"); // let n1 = new PolyTreeNode("node 1", [4, 9]);
-  // let n2 = new PolyTreeNode("node 2", [6, 17]);
-  // let n3 = new PolyTreeNode("node 3", [12, 4]);
-  // console.log("Nodes loaded")
-  // n1.addParent(n2);
-  // console.log(n1);
-  // console.log(n2);
-  // console.log("Added Parent");
+  function setAlgo(event) {
+    algorithm = event.target.id;
+  }
+
+  function runAlgorithm() {
+    switch (algorithm) {
+      case "bfs-btn":
+        rootNode.node.buildTree();
+        console.log("Node tree built");
+        rootNode.node.bfs("target");
+        console.log("Algorithm executed");
+        break;
+
+      case "dfs-btn":
+        rootNode.node.buildTree();
+        console.log("Node tree built");
+        rootNode.node.dfs("target");
+        console.log("Algorithm executed");
+
+      default:
+        break;
+    }
+  }
+
+  var dijkstrasButton = document.getElementById("dijkstras-btn");
+  var astarButton = document.getElementById("astar-btn");
+  var bfsButton = document.getElementById("bfs-btn");
+  var dfsButton = document.getElementById("dfs-btn");
+  dijkstrasButton.addEventListener("click", setAlgo);
+  astarButton.addEventListener("click", setAlgo);
+  bfsButton.addEventListener("click", setAlgo);
+  dfsButton.addEventListener("click", setAlgo);
+  var visButton = document.getElementById("vis-button");
+  visButton.addEventListener("click", runAlgorithm);
 });
 
 /***/ }),
@@ -351,13 +376,11 @@ var Tile = /*#__PURE__*/function () {
   function Tile(position, board) {
     _classCallCheck(this, Tile);
 
-    this.position = position; // Array of nums, i.e [4, 12];
-    // this.board = board;
+    this.position = position; // this.board = board;
 
     this.tile = document.createElement("div");
     this.tile.classList.add("tile");
-    this.tile.id = "".concat(position[0], "-").concat(position[1]); // debugger
-
+    this.tile.id = "".concat(position[0], "-").concat(position[1]);
     var grid = document.getElementById("grid");
     grid.appendChild(this.tile);
     this.node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_0__["default"](null, position, board.grid);

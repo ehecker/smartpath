@@ -27,7 +27,6 @@ export default class PolyTreeNode {
             }
             
             queue.push(...currentNode.children);
-
         }
         
     }

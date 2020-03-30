@@ -1,10 +1,11 @@
 /* STRUCTURE ========================================= */
 
-#grid {
+body {
     background-color: black;
+    font-family: 'Raleway', 'sans-serif';
 }
 
-body {
+#grid {
     background-color: black;
 }
 
@@ -14,7 +15,6 @@ nav {
     flex-direction: column;
     background-color: #222;
     color: white;
-    font-family: 'Raleway', 'sans-serif';
 }
 
 .nav-top {
@@ -54,6 +54,10 @@ nav {
     cursor: pointer;
 }
 
+.underline {
+    text-decoration: underline;
+}
+
 .nav-top-right {
     display: flex;
     justify-content: flex-end;
@@ -85,7 +89,7 @@ nav {
     border-radius: 0;
 }
 
-.vis-button {
+#vis-button {
     border-style: none;
     background-color: orange;
     border-radius: 5px;
@@ -99,11 +103,11 @@ nav {
     font-family: 'Raleway', 'sans-serif';
 }
 
-.vis-button p {
+#vis-button p {
     padding: 0 8px 0 8px;
 }
 
-.vis-button:hover {
+#vis-button:hover {
     opacity: 0.8;
     cursor: pointer;
 }

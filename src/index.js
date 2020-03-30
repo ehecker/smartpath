@@ -3,43 +3,59 @@ import PolyTreeNode from "./algorithms/polytreenode";
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    // Create and fill board
     let board = new Board();
     board.fillGrid();
     console.log("Board initialized and populated")
 
-
     // Set root node
     board.grid[11][9].node = new PolyTreeNode("root", [11, 9], board.grid);
     let rootNode = board.grid[11][9];
-    // let rootNode = document.getElementById("11-9");
     rootNode.tile.classList.add("root-node")
+    console.log("Root node set");
 
     // Set target node
     board.grid[11][40].node = new PolyTreeNode("target", [11, 40], board.grid);
     let targetNode = board.grid[11][40];
-    // let targetNode = document.getElementById("11-40");
     targetNode.tile.classList.add("target-node")
+    console.log("Target node set");
 
-    // Create tree and run BFS
-    rootNode.node.buildTree();
-    console.log("Node tree built")
+    // Set Visualize button functionality
+    let algorithm = "bfs-btn"; // Default algorithm
 
-    rootNode.node.dfs("target");
+    function setAlgo(event) {
+        algorithm = event.target.id;
+    }
 
-    console.log("Algorithm executed");
-
-    // let n1 = new PolyTreeNode("node 1", [4, 9]);
-    // let n2 = new PolyTreeNode("node 2", [6, 17]);
-    // let n3 = new PolyTreeNode("node 3", [12, 4]);
-
-    // console.log("Nodes loaded")
-
-    // n1.addParent(n2);
-    // console.log(n1);
-    // console.log(n2);
+    function runAlgorithm() {
+        switch (algorithm) {
+            case "bfs-btn":
+                rootNode.node.buildTree();
+                console.log("Node tree built")
+                rootNode.node.bfs("target");
+                console.log("Algorithm executed");
+                break;
+            case "dfs-btn":
+                rootNode.node.buildTree();
+                console.log("Node tree built")
+                rootNode.node.dfs("target");
+                console.log("Algorithm executed");
+            default:
+                break;
+        }
+    }
     
-    // console.log("Added Parent");
-
-
+    let dijkstrasButton = document.getElementById("dijkstras-btn");
+    let astarButton = document.getElementById("astar-btn");
+    let bfsButton = document.getElementById("bfs-btn");
+    let dfsButton = document.getElementById("dfs-btn");
+    
+    dijkstrasButton.addEventListener("click", setAlgo);
+    astarButton.addEventListener("click", setAlgo);
+    bfsButton.addEventListener("click", setAlgo);
+    dfsButton.addEventListener("click", setAlgo);
+    
+    let visButton = document.getElementById("vis-button");
+    visButton.addEventListener("click", runAlgorithm);
 
 })

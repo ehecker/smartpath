@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Basics -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scenic Routes</title>
 
-    <link rel="stylesheet" href="../assets/stylesheets/reset.css">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../assets/stylesheets/reset.css"> 
     <link rel="stylesheet" href="../assets/stylesheets/nav.css">
     <link rel="stylesheet" href="../assets//stylesheets/board.css">
     <link rel="stylesheet" href="../assets//stylesheets/tile.css">
 
+    <!-- Resources -->
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cfb8c8b315.js" crossorigin="anonymous"></script>
 
+    <!-- Webpack Bundle -->
     <script type="application/javascript" src="./main.js" ></script> 
-
-    <title>Scenic Routes</title>
 </head>
 
 <body>
@@ -24,7 +27,7 @@
 
             </div>
             <div class="nav-top-mid">
-                <h1 class="main-title">Smartpath</h1>
+                <h1 class="main-title underline">Smart</h1><h1 class="main-title">path</h1>
             </div>
             <div class="nav-top-right">
                 <a href="https://github.com/ehecker" target="_blank" ><i class="fab fa-github fa-2x"></i></a>
@@ -34,27 +37,28 @@
             <h3 class="algos-title">Algorithms:</h3>
             <div class="algo-box">
                 <p>Dijkstra's Algorithm</p>
-                <input type="radio" name="algos" class="algo-buttons" checked>
+                <input id="dijkstras-btn" type="radio" name="algos" class="algo-buttons">
             </div>
             <div class="algo-box">
                 <p>A* Algorithm</p>
-                <input type="radio" name="algos" class="algo-buttons">
+                <input id="astar-btn" type="radio" name="algos" class="algo-buttons">
             </div>
             <div class="algo-box">
                 <p>Breadth First Search</p>
-                <input type="radio" name="algos" class="algo-buttons">
+                <input id="bfs-btn" type="radio" name="algos" class="algo-buttons" checked>
             </div>
             <div class="algo-box">
                 <p>Depth First Search</p>
-                <input type="radio" name="algos" class="algo-buttons">
+                <input id="dfs-btn" type="radio" name="algos" class="algo-buttons">
             </div>
 
-            <button class="vis-button"><p>Visualize!</p></button>
+            <button id="vis-button"><p>Visualize!</p></button>
         </div>
     </nav>
 
     <main>
         <div id="grid">
+            <!-- Tiles are appended here in Tile class constructor -->
         </div>
     </main>
 </body>
