@@ -120,83 +120,93 @@ var PolyTreeNode = /*#__PURE__*/function () {
 
     this.value = value;
     this.position = position;
-    this.grid = grid;
+    this.grid = grid; // debugger
+
     this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1]));
     this.parent = null;
     this.children = [];
     this.visitedTiles = [];
     this.visited = new Set();
-    this.visited.add(this.position.join("-"));
-  }
+    this.visited.add(this.position.join("-")); // this.flipTile = this.flipTile.bind(this);
+
+    this.animateBFS = this.animateBFS.bind(this);
+  } // flipTile() {
+  //     this.grid[tilePos[0]][tilePos[1]].node.classList.add("visited");
+  // }
+
 
   _createClass(PolyTreeNode, [{
-    key: "flipTile",
-    value: function flipTile() {
-      this.grid[tilePos[0]][tilePos[1]].node.classList.add("visited");
-    }
-  }, {
     key: "animateBFS",
-    value: function animateBFS() {
-      var _this = this;
+    value: function animateBFS(visitedTiles, grid) {
+      var func = this.animateBFS;
 
-      // debugger
-      // const flipTile = tilePos => {
+      if (visitedTiles.length > 0) {
+        setTimeout(function () {
+          // debugger
+          var currentPos = visitedTiles.shift();
+          grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
+          func(visitedTiles, grid);
+        }, 100);
+      } // const flipTile = tilePos => {
       //     this.grid[tilePos[0]][tilePos[1]].tile.classList.add("visited")
       // }
       // for (let i = 0; i < this.visitedTiles.length - 1; i++) {
       //     setTimeout(flipTile(this.visitedTiles[i]), 1000)
       // }
-      this.visitedTiles.forEach(function (tile) {
-        setTimeout(_this.flipTile(tile), 1000);
-      }); // if (this.visitedTiles.length > 0) {
+      // this.visitedTiles.forEach(tile => {
+      //     setTimeout(this.flipTile(tile), 1000)
+      // })
+      // if (this.visitedTiles.length > 0) {
       //     let currentTile = this.visitedTiles.shift();
       //     setTimeout(currentTile.flipTile, 100);
       //     if (this.visitedTiles.length > 0) {
       //         this.animateBFS()
       //     }
       // }
-    } // bfs(target) {
-    //     let queue = [this];
-    //     while (queue.length > 0) {
-    //         let currentNode = queue.shift();
-    //         if (currentNode.value !== "root" && currentNode.value !== "target") {
-    //             this.visitedTiles.push(currentNode.position)
-    //         }
-    //         if (currentNode.value === target) {
-    //             this.visitedTiles.push(currentNode.position)
-    //             currentNode.tileObj.classList.add("target-found");
-    //             console.log("BFS Completed")
-    //             this.animateBFS();
-    //             return currentNode;
-    //         }
-    //         queue.push(...currentNode.children);
-    //     }
-    // }
 
+    }
   }, {
     key: "bfs",
     value: function bfs(target) {
       var queue = [this];
 
       while (queue.length > 0) {
-        // debugger
         var currentNode = queue.shift();
 
         if (currentNode.value !== "root" && currentNode.value !== "target") {
-          currentNode.tileObj.classList.add("visited");
+          this.visitedTiles.push(currentNode.position);
         }
 
         if (currentNode.value === target) {
-          // debugger
+          this.visitedTiles.push(currentNode.position);
           currentNode.tileObj.classList.add("target-found");
-          console.log(currentNode);
+          console.log("BFS Completed");
+          this.animateBFS(this.visitedTiles, this.grid);
           return currentNode;
         }
 
         queue.push.apply(queue, _toConsumableArray(currentNode.children));
-      } // Logic for handling unsolvable grid goes here
-
+      }
     } // bfs(target) {
+    //     let queue = [this];
+    //     while (queue.length > 0) {
+    //         // debugger
+    //         let currentNode = queue.shift();
+    //         if (currentNode.value !== "root" && currentNode.value !== "target") {
+    //             currentNode.tileObj.classList.add("visited");
+    //         }
+    //         if (currentNode.value === target) {
+    //             // debugger
+    //             currentNode.tileObj.classList.add("target-found");
+    //             console.log(currentNode);
+    //             this.animateBFS();
+    //             return currentNode;
+    //         }
+    //         queue.push(...currentNode.children);
+    //     }
+    //     // Logic for handling unsolvable grid goes here
+    // }
+    // bfs(target) {
     //     let queue = [this];
     //     while (queue.length > 0) {
     //         let startTime = Date.now();
@@ -263,7 +273,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
   }, {
     key: "buildTree",
     value: function buildTree() {
-      var _this2 = this;
+      var _this = this;
 
       var increments = [[-1, 0], // Up
       [0, 1], // Right
@@ -287,14 +297,14 @@ var PolyTreeNode = /*#__PURE__*/function () {
           var newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]]; // If the position is valid:
 
           if (newPos[0] >= 0 && newPos[0] < 25 && newPos[1] >= 0 && newPos[1] < 48) {
-            if (_this2.visited.has(newPos.join("-"))) {
+            if (_this.visited.has(newPos.join("-"))) {
               return;
             }
 
-            _this2.visited.add(newPos.join("-")); // console.log(newPos.join("-"))
+            _this.visited.add(newPos.join("-")); // console.log(newPos.join("-"))
 
 
-            var neighborTile = _this2.grid[newPos[0]][newPos[1]];
+            var neighborTile = _this.grid[newPos[0]][newPos[1]];
             neighbors.push(neighborTile.node);
             neighborTile.node.addParent(currentNode); // If the neighbor exists, has no parent, and is not already a child of the current node:
             // if (neighborTile.node.parent === null && !currentNode.children.includes(neighborTile.node)) {

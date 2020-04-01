@@ -5,6 +5,8 @@ export default class PolyTreeNode {
         this.position = position;
         this.grid = grid;
 
+
+        // debugger
         this.tileObj = document.getElementById(`${position[0]}-${position[1]}`);
 
         this.parent = null;
@@ -14,14 +16,28 @@ export default class PolyTreeNode {
 
         this.visited = new Set();
         this.visited.add(this.position.join("-"));
+
+        // this.flipTile = this.flipTile.bind(this);
+        this.animateBFS = this.animateBFS.bind(this);
     }
 
-    flipTile() {
-        this.grid[tilePos[0]][tilePos[1]].node.classList.add("visited");
-    }
+    // flipTile() {
+    //     this.grid[tilePos[0]][tilePos[1]].node.classList.add("visited");
+    // }
 
-    animateBFS() {
-        // debugger
+    animateBFS(visitedTiles, grid) {
+
+        let func = this.animateBFS;
+
+        if (visitedTiles.length > 0) {
+            setTimeout(function() {
+                // debugger
+                let currentPos = visitedTiles.shift()
+                grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
+                func(visitedTiles, grid);
+            }, 100)
+        }
+
         // const flipTile = tilePos => {
         //     this.grid[tilePos[0]][tilePos[1]].tile.classList.add("visited")
         // }
@@ -30,9 +46,9 @@ export default class PolyTreeNode {
         //     setTimeout(flipTile(this.visitedTiles[i]), 1000)
         // }
 
-        this.visitedTiles.forEach(tile => {
-            setTimeout(this.flipTile(tile), 1000)
-        })
+        // this.visitedTiles.forEach(tile => {
+        //     setTimeout(this.flipTile(tile), 1000)
+        // })
 
         // if (this.visitedTiles.length > 0) {
         //     let currentTile = this.visitedTiles.shift();
@@ -46,21 +62,45 @@ export default class PolyTreeNode {
 
     }
 
+    bfs(target) {
+        let queue = [this];
+
+        while (queue.length > 0) {
+
+            let currentNode = queue.shift();
+
+            if (currentNode.value !== "root" && currentNode.value !== "target") {
+                this.visitedTiles.push(currentNode.position)
+            }
+
+            if (currentNode.value === target) {
+                this.visitedTiles.push(currentNode.position)
+                currentNode.tileObj.classList.add("target-found");
+                console.log("BFS Completed")
+                this.animateBFS(this.visitedTiles, this.grid);
+                return currentNode;
+            }
+            
+            queue.push(...currentNode.children);
+        }
+        
+    }
+
     // bfs(target) {
     //     let queue = [this];
 
     //     while (queue.length > 0) {
-
+    //         // debugger
     //         let currentNode = queue.shift();
 
     //         if (currentNode.value !== "root" && currentNode.value !== "target") {
-    //             this.visitedTiles.push(currentNode.position)
+    //             currentNode.tileObj.classList.add("visited");
     //         }
 
     //         if (currentNode.value === target) {
-    //             this.visitedTiles.push(currentNode.position)
+    //             // debugger
     //             currentNode.tileObj.classList.add("target-found");
-    //             console.log("BFS Completed")
+    //             console.log(currentNode);
     //             this.animateBFS();
     //             return currentNode;
     //         }
@@ -68,31 +108,8 @@ export default class PolyTreeNode {
     //         queue.push(...currentNode.children);
     //     }
         
+    //     // Logic for handling unsolvable grid goes here
     // }
-
-    bfs(target) {
-        let queue = [this];
-
-        while (queue.length > 0) {
-            // debugger
-            let currentNode = queue.shift();
-
-            if (currentNode.value !== "root" && currentNode.value !== "target") {
-                currentNode.tileObj.classList.add("visited");
-            }
-
-            if (currentNode.value === target) {
-                // debugger
-                currentNode.tileObj.classList.add("target-found");
-                console.log(currentNode);
-                return currentNode;
-            }
-            
-            queue.push(...currentNode.children);
-        }
-        
-        // Logic for handling unsolvable grid goes here
-    }
 
     // bfs(target) {
     //     let queue = [this];
