@@ -168,24 +168,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
         queue.push.apply(queue, _toConsumableArray(currentNode.children));
       } // Logic for handling unsolvable grid goes here
 
-    } // dfs(target) {
-    //     if (this.value === target) {
-    //         this.tileObj.classList.add("target-found");
-    //         console.log(this);
-    //         return this.value;
-    //     }
-    //     if (this.value !== "root" && this.value !== "target") {
-    //         this.tileObj.classList.add("visited");
-    //         // debugger
-    //     }
-    //     for (let i = 0; i < this.children.length; i++) {
-    //         let childDfs = this.children[i].dfs(target)
-    //         if (childDfs === target) {
-    //             return childDfs;
-    //         }
-    //     }
-    // }
-
+    }
   }, {
     key: "dfs",
     value: function dfs(target) {
@@ -372,8 +355,8 @@ document.addEventListener("DOMContentLoaded", function () {
   rootNode.tile.classList.add("root-node");
   console.log("Root node set"); // Set target node
 
-  board.grid[6][18].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [6, 18], board.grid);
-  var targetNode = board.grid[6][18];
+  board.grid[12][40].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [12, 40], board.grid);
+  var targetNode = board.grid[12][40];
   targetNode.tile.classList.add("target-node");
   console.log("Target node set"); // Add functionality to radio buttons
 

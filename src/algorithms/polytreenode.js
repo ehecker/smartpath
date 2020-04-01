@@ -59,28 +59,6 @@ export default class PolyTreeNode {
         // Logic for handling unsolvable grid goes here
     }
 
-    // dfs(target) {
-
-    //     if (this.value === target) {
-    //         this.tileObj.classList.add("target-found");
-    //         console.log(this);
-    //         return this.value;
-    //     }
-
-    //     if (this.value !== "root" && this.value !== "target") {
-    //         this.tileObj.classList.add("visited");
-    //         // debugger
-    //     }
-
-    //     for (let i = 0; i < this.children.length; i++) {
-    //         let childDfs = this.children[i].dfs(target)
-    //         if (childDfs === target) {
-    //             return childDfs;
-    //         }
-    //     }
-
-    // }
-
     dfs(target) {
         let stack = [this];
 
