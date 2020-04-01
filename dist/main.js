@@ -124,14 +124,62 @@ var PolyTreeNode = /*#__PURE__*/function () {
     this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1]));
     this.parent = null;
     this.children = [];
+    this.visitedTiles = [];
+    this.visited = new Set();
+    this.visited.add(this.position.join("-"));
   }
 
   _createClass(PolyTreeNode, [{
+    key: "flipTile",
+    value: function flipTile() {
+      this.grid[tilePos[0]][tilePos[1]].node.classList.add("visited");
+    }
+  }, {
+    key: "animateBFS",
+    value: function animateBFS() {
+      var _this = this;
+
+      // debugger
+      // const flipTile = tilePos => {
+      //     this.grid[tilePos[0]][tilePos[1]].tile.classList.add("visited")
+      // }
+      // for (let i = 0; i < this.visitedTiles.length - 1; i++) {
+      //     setTimeout(flipTile(this.visitedTiles[i]), 1000)
+      // }
+      this.visitedTiles.forEach(function (tile) {
+        setTimeout(_this.flipTile(tile), 1000);
+      }); // if (this.visitedTiles.length > 0) {
+      //     let currentTile = this.visitedTiles.shift();
+      //     setTimeout(currentTile.flipTile, 100);
+      //     if (this.visitedTiles.length > 0) {
+      //         this.animateBFS()
+      //     }
+      // }
+    } // bfs(target) {
+    //     let queue = [this];
+    //     while (queue.length > 0) {
+    //         let currentNode = queue.shift();
+    //         if (currentNode.value !== "root" && currentNode.value !== "target") {
+    //             this.visitedTiles.push(currentNode.position)
+    //         }
+    //         if (currentNode.value === target) {
+    //             this.visitedTiles.push(currentNode.position)
+    //             currentNode.tileObj.classList.add("target-found");
+    //             console.log("BFS Completed")
+    //             this.animateBFS();
+    //             return currentNode;
+    //         }
+    //         queue.push(...currentNode.children);
+    //     }
+    // }
+
+  }, {
     key: "bfs",
     value: function bfs(target) {
       var queue = [this];
 
       while (queue.length > 0) {
+        // debugger
         var currentNode = queue.shift();
 
         if (currentNode.value !== "root" && currentNode.value !== "target") {
@@ -139,52 +187,120 @@ var PolyTreeNode = /*#__PURE__*/function () {
         }
 
         if (currentNode.value === target) {
+          // debugger
           currentNode.tileObj.classList.add("target-found");
           console.log(currentNode);
           return currentNode;
         }
 
         queue.push.apply(queue, _toConsumableArray(currentNode.children));
-      }
-    }
+      } // Logic for handling unsolvable grid goes here
+
+    } // bfs(target) {
+    //     let queue = [this];
+    //     while (queue.length > 0) {
+    //         let startTime = Date.now();
+    //         const wait = () => {
+    //             debugger
+    //             if (Date.now() > startTime + 100) {
+    //                 let currentNode = queue.shift();
+    //                 if (currentNode.value !== "root" && currentNode.value !== "target") {
+    //                     currentNode.tileObj.classList.add("visited");
+    //                 }
+    //                 if (currentNode.value === target) {
+    //                     currentNode.tileObj.classList.add("target-found");
+    //                     console.log(currentNode);
+    //                     return currentNode;
+    //                 }
+    //                 queue.push(...currentNode.children);
+    //             } else {
+    //                 setTimeout(wait, 50)
+    //             }
+    //         }
+    //         wait();    
+    //     }
+    // }
+    // dfs(target) {
+    //     if (this.value === target) {
+    //         this.tileObj.classList.add("target-found");
+    //         console.log(this);
+    //         return this.value;
+    //     }
+    //     if (this.value !== "root" && this.value !== "target") {
+    //         this.tileObj.classList.add("visited");
+    //         // debugger
+    //     }
+    //     for (let i = 0; i < this.children.length; i++) {
+    //         let childDfs = this.children[i].dfs(target)
+    //         if (childDfs === target) {
+    //             return childDfs;
+    //         }
+    //     }
+    // }
+
   }, {
     key: "dfs",
     value: function dfs(target) {
-      if (this.value === target) {
-        this.tileObj.classList.add("target-found");
-        console.log(this);
-        return this;
-      }
+      var stack = [this];
 
-      if (this.value !== "root" && this.value !== "target") {
-        this.tileObj.classList.add("visited");
-      }
+      while (stack.length > 0) {
+        for (var i = 0; i < stack.length; i++) {
+          var currentNode = stack.shift();
 
-      for (var i = 0; i < this.children.length; i++) {
-        return this.children[i].dfs(target);
+          if (currentNode.value === target) {
+            currentNode.tileObj.classList.add("target-found");
+            console.log(currentNode);
+            return currentNode;
+          } else if (currentNode.value !== "root") {
+            // debugger
+            currentNode.tileObj.classList.add("visited");
+          }
+
+          stack.unshift.apply(stack, _toConsumableArray(currentNode.children));
+        }
       }
     }
   }, {
     key: "buildTree",
     value: function buildTree() {
-      var _this = this;
+      var _this2 = this;
 
-      var increments = [[1, 0], [-1, 0], [0, 1], [0, -1]]; // buildTree function will use the node on which it is called as the root node of the tree.
+      var increments = [[-1, 0], // Up
+      [0, 1], // Right
+      [1, 0], // Down
+      [0, -1] // Left
+      // [1, 0], // Down
+      // [0, -1], // Left
+      // [-1, 0], // Up
+      // [0, 1] // Right
+      // [0, 1]
+      // [1, 0],
+      // [-1, 0],
+      // [0, -1]
+      ]; // buildTree function will use the node on which it is called as the root node of the tree
 
-      var neighbors = [this];
+      var neighbors = [this]; // This is a queue
 
       var _loop = function _loop() {
         var currentNode = neighbors.shift();
         increments.forEach(function (inc) {
           var newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]]; // If the position is valid:
 
-          if (newPos[0] >= 0 && newPos[0] < 24 && newPos[1] >= 0 && newPos[1] < 48) {
-            var neighbor = _this.grid[newPos[0]][newPos[1]]; // If the neighbor exists and is not the parent or child of the current node: // edit this later
-
-            if (neighbor.node && neighbor.node.parent === null && !currentNode.children.includes(neighbor.node)) {
-              neighbors.push(neighbor.node);
-              neighbor.node.addParent(currentNode);
+          if (newPos[0] >= 0 && newPos[0] < 25 && newPos[1] >= 0 && newPos[1] < 48) {
+            if (_this2.visited.has(newPos.join("-"))) {
+              return;
             }
+
+            _this2.visited.add(newPos.join("-")); // console.log(newPos.join("-"))
+
+
+            var neighborTile = _this2.grid[newPos[0]][newPos[1]];
+            neighbors.push(neighborTile.node);
+            neighborTile.node.addParent(currentNode); // If the neighbor exists, has no parent, and is not already a child of the current node:
+            // if (neighborTile.node.parent === null && !currentNode.children.includes(neighborTile.node)) {
+            //     neighbors.push(neighborTile.node);
+            //     neighborTile.node.addParent(currentNode);
+            // }
           }
         });
       };
@@ -203,12 +319,8 @@ var PolyTreeNode = /*#__PURE__*/function () {
 
       if (parentNode !== null) {
         this.parent = parentNode;
-        this.parent.children.push(this);
-      } // this.parent = parentNode;
-      // if (this.parent) { // Check in case node passed in is null
-      //     this.parent.children.push(this);
-      // }
-
+        parentNode.children.push(this);
+      }
     } // addChild(childNode) {
     //     childNode.addParent(this);
     // }
@@ -221,7 +333,18 @@ var PolyTreeNode = /*#__PURE__*/function () {
   }]);
 
   return PolyTreeNode;
-}();
+}(); // let cb = () => {console.log('yey!')};
+// let cbArr = [cb, cb, cb, cb];
+// const timedExecution = () => {
+//   setTimeout(() => {
+//     if (cbArr.length > 0) {
+//       let func = cbArr.pop();
+//       func();
+//       timedExecution();
+//     }
+//   }, 1000)
+// };
+
 
 
 
@@ -251,14 +374,13 @@ var Board = /*#__PURE__*/function () {
     _classCallCheck(this, Board);
 
     this.grid = [];
-    console.log("Board created");
   }
 
   _createClass(Board, [{
     key: "fillGrid",
     value: function fillGrid() {
-      for (var i = 0; i < 24; i++) {
-        // Board is 24 x 48, 1152 total tiles
+      for (var i = 0; i < 25; i++) {
+        // Board is 25 x 48, 1200 total tiles
         var row = [];
 
         for (var j = 0; j < 48; j++) {
@@ -270,11 +392,14 @@ var Board = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "validPos",
+    value: function validPos(pos) {}
+  }, {
     key: "setRoot",
-    value: function setRoot() {}
+    value: function setRoot(pos) {}
   }, {
     key: "setTarget",
-    value: function setTarget() {}
+    value: function setTarget(pos) {}
   }]);
 
   return Board;
@@ -303,13 +428,13 @@ document.addEventListener("DOMContentLoaded", function () {
   board.fillGrid();
   console.log("Board initialized and populated"); // Set root node
 
-  board.grid[11][9].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("root", [11, 9], board.grid);
-  var rootNode = board.grid[11][9];
+  board.grid[12][9].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("root", [12, 9], board.grid);
+  var rootNode = board.grid[12][9];
   rootNode.tile.classList.add("root-node");
   console.log("Root node set"); // Set target node
 
-  board.grid[11][40].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [11, 40], board.grid);
-  var targetNode = board.grid[11][40];
+  board.grid[12][40].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [12, 40], board.grid);
+  var targetNode = board.grid[12][40];
   targetNode.tile.classList.add("target-node");
   console.log("Target node set"); // Add functionality to radio buttons
 
@@ -334,14 +459,14 @@ document.addEventListener("DOMContentLoaded", function () {
         rootNode.node.buildTree();
         console.log("Node tree built");
         rootNode.node.bfs("target");
-        console.log("Algorithm executed");
+        console.log("BFS executed");
         break;
 
       case "dfs-btn":
         rootNode.node.buildTree();
         console.log("Node tree built");
         rootNode.node.dfs("target");
-        console.log("Algorithm executed");
+        console.log("DFS executed");
 
       default:
         break;

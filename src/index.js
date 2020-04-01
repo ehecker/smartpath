@@ -9,14 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Board initialized and populated")
 
     // Set root node
-    board.grid[11][9].node = new PolyTreeNode("root", [11, 9], board.grid);
-    let rootNode = board.grid[11][9];
+    board.grid[12][9].node = new PolyTreeNode("root", [12, 9], board.grid);
+    let rootNode = board.grid[12][9];
     rootNode.tile.classList.add("root-node")
     console.log("Root node set");
 
     // Set target node
-    board.grid[11][40].node = new PolyTreeNode("target", [11, 40], board.grid);
-    let targetNode = board.grid[11][40];
+    board.grid[12][40].node = new PolyTreeNode("target", [12, 40], board.grid);
+    let targetNode = board.grid[12][40];
     targetNode.tile.classList.add("target-node")
     console.log("Target node set");
 
@@ -27,10 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let algorithm = "bfs-btn"; // Default algorithm
        
-    let dijkstrasButton = document.getElementById("dijkstras-btn");
-    let astarButton = document.getElementById("astar-btn");
-    let bfsButton = document.getElementById("bfs-btn");
-    let dfsButton = document.getElementById("dfs-btn");
+    const dijkstrasButton = document.getElementById("dijkstras-btn");
+    const astarButton = document.getElementById("astar-btn");
+    const bfsButton = document.getElementById("bfs-btn");
+    const dfsButton = document.getElementById("dfs-btn");
     
     dijkstrasButton.addEventListener("click", setAlgo);
     astarButton.addEventListener("click", setAlgo);
@@ -45,13 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 rootNode.node.buildTree();
                 console.log("Node tree built")
                 rootNode.node.bfs("target");
-                console.log("Algorithm executed");
+                console.log("BFS executed");
                 break;
             case "dfs-btn":
                 rootNode.node.buildTree();
                 console.log("Node tree built")
                 rootNode.node.dfs("target");
-                console.log("Algorithm executed");
+                console.log("DFS executed");
             default:
                 break;
         }

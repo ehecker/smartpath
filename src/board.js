@@ -4,12 +4,10 @@ export default class Board {
 
     constructor() {
         this.grid = [];
-        console.log("Board created")
     }
 
-    fillGrid() { 
-        
-        for (let i = 0; i < 24; i++) { // Board is 24 x 48, 1152 total tiles
+    fillGrid() {       
+        for (let i = 0; i < 25; i++) { // Board is 25 x 48, 1200 total tiles
             let row = [];
 
             for (let j = 0; j < 48; j++) {
@@ -19,14 +17,17 @@ export default class Board {
 
             this.grid.push(row);
         }
+    };
 
+    validPos(pos) {
+        
     }
 
-    setRoot() {
+    setRoot(pos) {
     
     }
 
-    setTarget() {
+    setTarget(pos) {
 
     }
 
