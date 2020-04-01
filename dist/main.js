@@ -133,15 +133,17 @@ var PolyTreeNode = /*#__PURE__*/function () {
   _createClass(PolyTreeNode, [{
     key: "visualize",
     value: function visualize(visitedTiles, grid) {
-      var viz = this.visualize; // Save function to a variable so that it can be accessed within setTimeout's callback
+      var viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
+      // debugger
 
       if (visitedTiles.length > 1) {
         setTimeout(function () {
           var currentPos = visitedTiles.shift();
           grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
-          viz(visitedTiles, grid); // Calls itself recursively to ensure other code has finished running
+          viz(visitedTiles, grid); // Calls itself recursively to ensure other code has finished before starting next step
         }, 5);
       } else if (visitedTiles.length === 1) {
+        debugger;
         var targetPos = visitedTiles[0];
         grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found");
       }
@@ -159,8 +161,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
         }
 
         if (currentNode.value === target) {
-          this.visitedTiles.push(currentNode.position); // currentNode.tileObj.classList.add("target-found");
-
+          this.visitedTiles.push(currentNode.position);
           this.visualize(this.visitedTiles, this.grid);
           return currentNode;
         }
@@ -251,15 +252,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
         this.parent = parentNode;
         parentNode.children.push(this);
       }
-    } // addChild(childNode) {
-    //     childNode.addParent(this);
-    // }
-    // removeChild(childNode) {
-    //     let index = this.children.indexOf(childNode);
-    //     this.children.splice(index, 1);
-    //     childNode.parent = null;
-    // }
-
+    }
   }]);
 
   return PolyTreeNode;
@@ -280,6 +273,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Board; });
 /* harmony import */ var _tile__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tile */ "./src/tile.js");
+/* harmony import */ var _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./algorithms/polytreenode */ "./src/algorithms/polytreenode.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -288,16 +282,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
 var Board = /*#__PURE__*/function () {
   function Board() {
     _classCallCheck(this, Board);
 
     this.grid = [];
+    this.fillGrid = this.fillGrid.bind(this);
   }
 
   _createClass(Board, [{
     key: "fillGrid",
     value: function fillGrid() {
+      // Create tiles
       for (var i = 0; i < 25; i++) {
         // Board is 25 x 48, 1200 total tiles
         var row = [];
@@ -308,7 +305,18 @@ var Board = /*#__PURE__*/function () {
         }
 
         this.grid.push(row);
-      }
+      } // Set root node
+
+
+      this.grid[12][9].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("root", [12, 9], this.grid);
+      var rootNode = this.grid[12][9];
+      rootNode.tile.classList.add("root-node");
+      console.log("Root node set"); // Set target node
+
+      this.grid[12][40].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [12, 40], this.grid);
+      var targetNode = this.grid[12][40];
+      targetNode.tile.classList.add("target-node");
+      console.log("Target node set");
     }
   }, {
     key: "validPos",
@@ -318,10 +326,12 @@ var Board = /*#__PURE__*/function () {
     value: function setRoot(pos) {}
   }, {
     key: "setTarget",
-    value: function setTarget(pos) {}
-  }, {
-    key: "reset",
-    value: function reset() {}
+    value: function setTarget(pos) {} // reset() {
+    //     debugger
+    //     this.grid = [];
+    //     this.fillGrid();
+    // }
+
   }]);
 
   return Board;
@@ -341,24 +351,13 @@ var Board = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board */ "./src/board.js");
-/* harmony import */ var _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./algorithms/polytreenode */ "./src/algorithms/polytreenode.js");
-
+ // This is the Smartpath application's entry file
 
 document.addEventListener("DOMContentLoaded", function () {
   // Create and fill board
   var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
   board.fillGrid();
-  console.log("Board initialized and populated"); // Set root node
-
-  board.grid[12][9].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("root", [12, 9], board.grid);
-  var rootNode = board.grid[12][9];
-  rootNode.tile.classList.add("root-node");
-  console.log("Root node set"); // Set target node
-
-  board.grid[12][40].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [12, 40], board.grid);
-  var targetNode = board.grid[12][40];
-  targetNode.tile.classList.add("target-node");
-  console.log("Target node set"); // Add functionality to radio buttons
+  console.log("Board initialized and populated"); // Add functionality to radio buttons
 
   function setAlgo(event) {
     algorithm = event.target.id;
@@ -375,20 +374,23 @@ document.addEventListener("DOMContentLoaded", function () {
   bfsButton.addEventListener("click", setAlgo);
   dfsButton.addEventListener("click", setAlgo); // Add functionality to Visualize button
 
+  var rootNode = board.grid[12][9].node;
+
   function runAlgorithm() {
     switch (algorithm) {
       case "bfs-btn":
-        rootNode.node.buildTree();
+        rootNode.buildTree();
         console.log("Node tree built");
-        rootNode.node.bfs("target");
+        rootNode.bfs("target");
         console.log("BFS executed");
         break;
 
       case "dfs-btn":
-        rootNode.node.buildTree();
+        rootNode.buildTree();
         console.log("Node tree built");
-        rootNode.node.dfs("target");
+        rootNode.dfs("target");
         console.log("DFS executed");
+        break;
 
       default:
         break;
@@ -396,7 +398,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   var visButton = document.getElementById("vis-button");
-  visButton.addEventListener("click", runAlgorithm);
+  visButton.addEventListener("click", runAlgorithm); // Add functionality to Clear button
+
+  function reset() {
+    var grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    board.grid = [];
+    console.log("Board cleared");
+    board.fillGrid();
+  }
+
+  var clearButton = document.getElementById("clear-button");
+  clearButton.addEventListener("click", reset);
 });
 
 /***/ }),
@@ -424,7 +437,8 @@ var Tile = /*#__PURE__*/function () {
   function Tile(position, board) {
     _classCallCheck(this, Tile);
 
-    this.position = position; // this.board = board;
+    this.position = position;
+    this.board = board; // Do I actually need this?
 
     this.tile = document.createElement("div");
     this.tile.classList.add("tile");

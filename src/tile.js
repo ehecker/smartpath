@@ -4,7 +4,7 @@ export default class Tile {
     
     constructor(position, board) {
         this.position = position;
-        // this.board = board;
+        this.board = board; // Do I actually need this?
 
         this.tile = document.createElement("div");
         this.tile.classList.add("tile");

@@ -65,9 +65,18 @@ nav {
     width: 33%;
 }
 
+a {
+    height: 31px;
+    /* width: 32px; */
+}
+
 .fa-github {
     margin: 10px;
     color: white;
+}
+
+.fa-github:hover {
+    opacity: 0.8;
 }
 
 /* NAV-BOTTOM ======================================== */

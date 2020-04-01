@@ -19,17 +19,18 @@ export default class PolyTreeNode {
     }
 
     visualize(visitedTiles, grid) {
-        let viz = this.visualize; // Save function to a variable so that it can be accessed within setTimeout's callback
-
+        let viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
+        // debugger
         if (visitedTiles.length > 1) {
             setTimeout(function() {
                 let currentPos = visitedTiles.shift()
                 grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
 
-                viz(visitedTiles, grid); // Calls itself recursively to ensure other code has finished running
+                viz(visitedTiles, grid); // Calls itself recursively to ensure other code has finished before starting next step
             }, 5)
 
         } else if (visitedTiles.length === 1) {
+            debugger
             let targetPos = visitedTiles[0];
             grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found")
         }
@@ -48,7 +49,6 @@ export default class PolyTreeNode {
 
             if (currentNode.value === target) {
                 this.visitedTiles.push(currentNode.position)
-                // currentNode.tileObj.classList.add("target-found");
                 this.visualize(this.visitedTiles, this.grid);
                 return currentNode;
             }
@@ -148,15 +148,5 @@ export default class PolyTreeNode {
             parentNode.children.push(this);
         }
     }
-
-    // addChild(childNode) {
-    //     childNode.addParent(this);
-    // }
-
-    // removeChild(childNode) {
-    //     let index = this.children.indexOf(childNode);
-    //     this.children.splice(index, 1);
-    //     childNode.parent = null;
-    // }
 
 }
