@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Root node set");
 
     // Set target node
-    board.grid[12][40].node = new PolyTreeNode("target", [12, 40], board.grid);
-    let targetNode = board.grid[12][40];
+    board.grid[6][18].node = new PolyTreeNode("target", [6, 18], board.grid);
+    let targetNode = board.grid[6][18];
     targetNode.tile.classList.add("target-node")
     console.log("Target node set");
 

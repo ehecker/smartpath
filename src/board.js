@@ -31,4 +31,8 @@ export default class Board {
 
     }
 
+    reset() {
+        
+    }
+
 }

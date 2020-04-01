@@ -1,3 +1,4 @@
+/* BASICS ======================================================= */
 .tile {
     background-color: black;
     height: 24px;
@@ -16,11 +17,12 @@
 }
 
 .target-node {
-    background-color: red;
+    background-color: green;
 }
 
+/* ANIMATIONS =================================================== */
+
 .visited {
-    /* background-color: orange; */
     animation: 1s ease both markVisited;
 }
 
@@ -35,5 +37,15 @@
 }
 
 .target-found {
-    background-color: blue;
+    animation: .5s ease both markFound;
+}
+
+@keyframes markFound {
+    from {
+        background-color: green;
+    }
+
+    to {
+        background-color: blue;
+    }
 }

@@ -5,8 +5,6 @@ export default class PolyTreeNode {
         this.position = position;
         this.grid = grid;
 
-
-        // debugger
         this.tileObj = document.getElementById(`${position[0]}-${position[1]}`);
 
         this.parent = null;
@@ -17,49 +15,24 @@ export default class PolyTreeNode {
         this.visited = new Set();
         this.visited.add(this.position.join("-"));
 
-        // this.flipTile = this.flipTile.bind(this);
-        this.animateBFS = this.animateBFS.bind(this);
+        this.visualize = this.visualize.bind(this);
     }
 
-    // flipTile() {
-    //     this.grid[tilePos[0]][tilePos[1]].node.classList.add("visited");
-    // }
+    visualize(visitedTiles, grid) {
+        let viz = this.visualize; // Save function to a variable so that it can be accessed within setTimeout's callback
 
-    animateBFS(visitedTiles, grid) {
-
-        let func = this.animateBFS;
-
-        if (visitedTiles.length > 0) {
+        if (visitedTiles.length > 1) {
             setTimeout(function() {
-                // debugger
                 let currentPos = visitedTiles.shift()
                 grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
-                func(visitedTiles, grid);
-            }, 100)
+
+                viz(visitedTiles, grid); // Calls itself recursively to ensure other code has finished running
+            }, 5)
+
+        } else if (visitedTiles.length === 1) {
+            let targetPos = visitedTiles[0];
+            grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found")
         }
-
-        // const flipTile = tilePos => {
-        //     this.grid[tilePos[0]][tilePos[1]].tile.classList.add("visited")
-        // }
-
-        // for (let i = 0; i < this.visitedTiles.length - 1; i++) {
-        //     setTimeout(flipTile(this.visitedTiles[i]), 1000)
-        // }
-
-        // this.visitedTiles.forEach(tile => {
-        //     setTimeout(this.flipTile(tile), 1000)
-        // })
-
-        // if (this.visitedTiles.length > 0) {
-        //     let currentTile = this.visitedTiles.shift();
-
-        //     setTimeout(currentTile.flipTile, 100);
-            
-        //     if (this.visitedTiles.length > 0) {
-        //         this.animateBFS()
-        //     }
-        // }
-
     }
 
     bfs(target) {
@@ -75,75 +48,16 @@ export default class PolyTreeNode {
 
             if (currentNode.value === target) {
                 this.visitedTiles.push(currentNode.position)
-                currentNode.tileObj.classList.add("target-found");
-                console.log("BFS Completed")
-                this.animateBFS(this.visitedTiles, this.grid);
+                // currentNode.tileObj.classList.add("target-found");
+                this.visualize(this.visitedTiles, this.grid);
                 return currentNode;
             }
             
             queue.push(...currentNode.children);
         }
-        
+
+        // Logic for handling unsolvable grid goes here
     }
-
-    // bfs(target) {
-    //     let queue = [this];
-
-    //     while (queue.length > 0) {
-    //         // debugger
-    //         let currentNode = queue.shift();
-
-    //         if (currentNode.value !== "root" && currentNode.value !== "target") {
-    //             currentNode.tileObj.classList.add("visited");
-    //         }
-
-    //         if (currentNode.value === target) {
-    //             // debugger
-    //             currentNode.tileObj.classList.add("target-found");
-    //             console.log(currentNode);
-    //             this.animateBFS();
-    //             return currentNode;
-    //         }
-            
-    //         queue.push(...currentNode.children);
-    //     }
-        
-    //     // Logic for handling unsolvable grid goes here
-    // }
-
-    // bfs(target) {
-    //     let queue = [this];
-
-    //     while (queue.length > 0) {
-    //         let startTime = Date.now();
-
-    //         const wait = () => {
-    //             debugger
-    //             if (Date.now() > startTime + 100) {
-    //                 let currentNode = queue.shift();
-
-    //                 if (currentNode.value !== "root" && currentNode.value !== "target") {
-    //                     currentNode.tileObj.classList.add("visited");
-    //                 }
-        
-    //                 if (currentNode.value === target) {
-    //                     currentNode.tileObj.classList.add("target-found");
-    //                     console.log(currentNode);
-    //                     return currentNode;
-    //                 }
-                    
-    //                 queue.push(...currentNode.children);
-    //             } else {
-    //                 setTimeout(wait, 50)
-    //             }
-    //         }
-
-    //         wait();    
-    //     }
-        
-    // }
-
-        
 
     // dfs(target) {
 
@@ -172,16 +86,15 @@ export default class PolyTreeNode {
 
         while (stack.length > 0) {
             for (let i = 0; i < stack.length; i++) {
-
                 let currentNode = stack.shift();
 
                 if (currentNode.value === target) {
-                    currentNode.tileObj.classList.add("target-found");
-                    console.log(currentNode);
+                    this.visitedTiles.push(currentNode.position)
+                    this.visualize(this.visitedTiles, this.grid);
                     return currentNode;
+
                 } else if (currentNode.value !== "root") {
-                    // debugger
-                    currentNode.tileObj.classList.add("visited");
+                    this.visitedTiles.push(currentNode.position)
                 }
 
                 stack.unshift(...currentNode.children)
@@ -204,7 +117,7 @@ export default class PolyTreeNode {
             // [-1, 0], // Up
             // [0, 1] // Right
 
-            // [0, 1]
+            // [0, 1] // Why does this one break everything?
             // [1, 0],
             // [-1, 0],
             // [0, -1]
@@ -269,27 +182,3 @@ export default class PolyTreeNode {
     // }
 
 }
-
-
-
-
-// let cb = () => {console.log('yey!')};
-// let cbArr = [cb, cb, cb, cb];
-
-// const timedExecution = () => {
-//   setTimeout(() => {
-//     if (cbArr.length > 0) {
-//       let func = cbArr.pop();
-//       func();
-//       timedExecution();
-//     }
-//   }, 1000)
-// };
-
-
-
-
-
-
-
-    
