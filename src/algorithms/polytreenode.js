@@ -48,7 +48,7 @@ export default class PolyTreeNode {
                 grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
 
                 viz(pathPositions, grid)
-            }, 50)
+            }, 25)
         }
         console.log("Shortest path animated")
     }
@@ -77,7 +77,7 @@ export default class PolyTreeNode {
         // Logic for handling unsolvable grid goes here
     }
 
-    dfs(target) {
+    dfs(target) { // Appears to still be broken
         let stack = [this];
 
         while (stack.length > 0) {
@@ -86,7 +86,7 @@ export default class PolyTreeNode {
 
                 if (currentNode.value === target) {
                     this.visitedTiles.push(currentNode.position)
-                    // this.findShortestPath();
+                    this.findShortestPath();
                     this.visualize(this.visitedTiles, this.grid);
                     return currentNode;
 
@@ -163,7 +163,7 @@ export default class PolyTreeNode {
 
         this.shortestPath.unshift(currentNode.position);
 
-        while (currentNode.value !== "root") {
+        while (currentNode.value !== "root" && currentNode.parent.value !== "root") {
             
             this.shortestPath.unshift(currentNode.parent.position)
             currentNode = currentNode.parent;

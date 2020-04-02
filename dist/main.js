@@ -161,7 +161,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
           var currentPos = pathPositions.shift();
           grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
           viz(pathPositions, grid);
-        }, 50);
+        }, 25);
       }
 
       console.log("Shortest path animated");
@@ -193,6 +193,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
   }, {
     key: "dfs",
     value: function dfs(target) {
+      // Appears to still be broken
       var stack = [this];
 
       while (stack.length > 0) {
@@ -200,8 +201,8 @@ var PolyTreeNode = /*#__PURE__*/function () {
           var currentNode = stack.shift();
 
           if (currentNode.value === target) {
-            this.visitedTiles.push(currentNode.position); // this.findShortestPath();
-
+            this.visitedTiles.push(currentNode.position);
+            this.findShortestPath();
             this.visualize(this.visitedTiles, this.grid);
             return currentNode;
           } else if (currentNode.value !== "root") {
@@ -269,7 +270,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
 
       this.shortestPath.unshift(currentNode.position);
 
-      while (currentNode.value !== "root") {
+      while (currentNode.value !== "root" && currentNode.parent.value !== "root") {
         this.shortestPath.unshift(currentNode.parent.position);
         currentNode = currentNode.parent;
       }
@@ -348,7 +349,7 @@ var Board = /*#__PURE__*/function () {
         }
 
         this.grid.push(row);
-      } // Set root node
+      } // Set root node // Change these to ifs within for loop? Then use continue for each
 
 
       this.grid[12][9].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("root", [12, 9], this.grid);
@@ -356,8 +357,8 @@ var Board = /*#__PURE__*/function () {
       rootNode.tile.classList.add("root-node");
       console.log("Root node set"); // Set target node
 
-      this.grid[12][40].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [12, 40], this.grid);
-      var targetNode = this.grid[12][40];
+      this.grid[17][29].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [17, 29], this.grid);
+      var targetNode = this.grid[17][29];
       targetNode.tile.classList.add("target-node");
       console.log("Target node set");
     }

@@ -22,15 +22,15 @@ export default class Board {
             this.grid.push(row);
         }
 
-        // Set root node
+        // Set root node // Change these to ifs within for loop? Then use continue for each
         this.grid[12][9].node = new PolyTreeNode("root", [12, 9], this.grid);
         let rootNode = this.grid[12][9];
         rootNode.tile.classList.add("root-node")
         console.log("Root node set");
 
         // Set target node
-        this.grid[12][40].node = new PolyTreeNode("target", [12, 40], this.grid);
-        let targetNode = this.grid[12][40];
+        this.grid[17][29].node = new PolyTreeNode("target", [17, 29], this.grid);
+        let targetNode = this.grid[17][29];
         targetNode.tile.classList.add("target-node")
         console.log("Target node set");
     }
