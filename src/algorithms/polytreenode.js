@@ -10,17 +10,19 @@ export default class PolyTreeNode {
         this.parent = null;
         this.children = [];
 
-        this.visitedTiles = [];
+        this.visitedTiles = []; // Used for computing and animating algorithms
+        this.shortestPath = [];
 
-        this.visited = new Set();
+        this.visited = new Set(); // Used for building node tree
         this.visited.add(this.position.join("-"));
 
         this.visualize = this.visualize.bind(this);
+        this.visualizeShortestPath = this.visualizeShortestPath.bind(this);
     }
 
     visualize(visitedTiles, grid) {
         let viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
-        // debugger
+
         if (visitedTiles.length > 1) {
             setTimeout(function() {
                 let currentPos = visitedTiles.shift()
@@ -30,10 +32,25 @@ export default class PolyTreeNode {
             }, 5)
 
         } else if (visitedTiles.length === 1) {
-            debugger
             let targetPos = visitedTiles[0];
             grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found")
+            this.visualizeShortestPath(this.shortestPath, this.grid);
         }
+
+    }
+
+    visualizeShortestPath(pathPositions, grid) {
+        let viz = this.visualizeShortestPath;
+
+        if (pathPositions.length > 1) {
+            setTimeout(function() {
+                let currentPos = pathPositions.shift();
+                grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
+
+                viz(pathPositions, grid)
+            }, 50)
+        }
+        console.log("Shortest path animated")
     }
 
     bfs(target) {
@@ -49,7 +66,8 @@ export default class PolyTreeNode {
 
             if (currentNode.value === target) {
                 this.visitedTiles.push(currentNode.position)
-                this.visualize(this.visitedTiles, this.grid);
+                this.findShortestPath();
+                this.visualize(this.visitedTiles, this.grid); // Visualize algorithm execution
                 return currentNode;
             }
             
@@ -68,6 +86,7 @@ export default class PolyTreeNode {
 
                 if (currentNode.value === target) {
                     this.visitedTiles.push(currentNode.position)
+                    // this.findShortestPath();
                     this.visualize(this.visitedTiles, this.grid);
                     return currentNode;
 
@@ -138,6 +157,20 @@ export default class PolyTreeNode {
 
     }
 
+    findShortestPath() {
+        let targetNodePos = this.visitedTiles[this.visitedTiles.length - 1]; 
+        let currentNode = this.grid[targetNodePos[0]][targetNodePos[1]].node; // Very ugly way to get target node
+
+        this.shortestPath.unshift(currentNode.position);
+
+        while (currentNode.value !== "root") {
+            
+            this.shortestPath.unshift(currentNode.parent.position)
+            currentNode = currentNode.parent;
+        }
+
+    }
+
     addParent(parentNode) {
         if (this.parent !== null) { // Check to see if current node already has a parent
             this.parent.removeChild(this) // Remove itself from old parent's children
@@ -147,6 +180,19 @@ export default class PolyTreeNode {
             this.parent = parentNode;
             parentNode.children.push(this);
         }
+    }
+
+    placeWall() {
+
+        if (this.value !== "root" && this.value !== "target") {
+            this.value = "wall";
+
+        }
+
+    }
+
+    removeWall() {
+
     }
 
 }

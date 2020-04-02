@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function reset() {
         let grid = document.getElementById("grid");
         grid.innerHTML = "";
-
+        debugger
         board.grid = [];
         console.log("Board cleared")
         board.fillGrid();

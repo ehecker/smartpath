@@ -23,7 +23,8 @@
 /* ANIMATIONS =================================================== */
 
 .visited {
-    animation: 1s ease both markVisited;
+    /* animation: 1s ease both markVisited; */
+    background-color: orange;
 }
 
 @keyframes markVisited {
@@ -37,7 +38,8 @@
 }
 
 .target-found {
-    animation: .5s ease both markFound;
+    /* animation: .5s ease both markFound; */
+    background-color: blue;
 }
 
 @keyframes markFound {
@@ -48,4 +50,8 @@
     to {
         background-color: blue;
     }
+}
+
+.shortest-path-node {
+    background-color: purple;
 }

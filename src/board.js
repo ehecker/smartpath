@@ -6,11 +6,11 @@ export default class Board {
     constructor() {
         this.grid = [];
 
-        this.fillGrid = this.fillGrid.bind(this);
+        // this.fillGrid = this.fillGrid.bind(this);
     }
 
     fillGrid() {   
-        // Create tiles
+        // Create tiles, populate this.grid
         for (let i = 0; i < 25; i++) { // Board is 25 x 48, 1200 total tiles
             let row = [];
 

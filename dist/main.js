@@ -124,17 +124,20 @@ var PolyTreeNode = /*#__PURE__*/function () {
     this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1]));
     this.parent = null;
     this.children = [];
-    this.visitedTiles = [];
-    this.visited = new Set();
+    this.visitedTiles = []; // Used for computing and animating algorithms
+
+    this.shortestPath = [];
+    this.visited = new Set(); // Used for building node tree
+
     this.visited.add(this.position.join("-"));
     this.visualize = this.visualize.bind(this);
+    this.visualizeShortestPath = this.visualizeShortestPath.bind(this);
   }
 
   _createClass(PolyTreeNode, [{
     key: "visualize",
     value: function visualize(visitedTiles, grid) {
       var viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
-      // debugger
 
       if (visitedTiles.length > 1) {
         setTimeout(function () {
@@ -143,10 +146,25 @@ var PolyTreeNode = /*#__PURE__*/function () {
           viz(visitedTiles, grid); // Calls itself recursively to ensure other code has finished before starting next step
         }, 5);
       } else if (visitedTiles.length === 1) {
-        debugger;
         var targetPos = visitedTiles[0];
         grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found");
+        this.visualizeShortestPath(this.shortestPath, this.grid);
       }
+    }
+  }, {
+    key: "visualizeShortestPath",
+    value: function visualizeShortestPath(pathPositions, grid) {
+      var viz = this.visualizeShortestPath;
+
+      if (pathPositions.length > 1) {
+        setTimeout(function () {
+          var currentPos = pathPositions.shift();
+          grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
+          viz(pathPositions, grid);
+        }, 50);
+      }
+
+      console.log("Shortest path animated");
     }
   }, {
     key: "bfs",
@@ -162,7 +180,9 @@ var PolyTreeNode = /*#__PURE__*/function () {
 
         if (currentNode.value === target) {
           this.visitedTiles.push(currentNode.position);
-          this.visualize(this.visitedTiles, this.grid);
+          this.findShortestPath();
+          this.visualize(this.visitedTiles, this.grid); // Visualize algorithm execution
+
           return currentNode;
         }
 
@@ -180,7 +200,8 @@ var PolyTreeNode = /*#__PURE__*/function () {
           var currentNode = stack.shift();
 
           if (currentNode.value === target) {
-            this.visitedTiles.push(currentNode.position);
+            this.visitedTiles.push(currentNode.position); // this.findShortestPath();
+
             this.visualize(this.visitedTiles, this.grid);
             return currentNode;
           } else if (currentNode.value !== "root") {
@@ -241,6 +262,19 @@ var PolyTreeNode = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "findShortestPath",
+    value: function findShortestPath() {
+      var targetNodePos = this.visitedTiles[this.visitedTiles.length - 1];
+      var currentNode = this.grid[targetNodePos[0]][targetNodePos[1]].node; // Very ugly way to get target node
+
+      this.shortestPath.unshift(currentNode.position);
+
+      while (currentNode.value !== "root") {
+        this.shortestPath.unshift(currentNode.parent.position);
+        currentNode = currentNode.parent;
+      }
+    }
+  }, {
     key: "addParent",
     value: function addParent(parentNode) {
       if (this.parent !== null) {
@@ -253,6 +287,16 @@ var PolyTreeNode = /*#__PURE__*/function () {
         parentNode.children.push(this);
       }
     }
+  }, {
+    key: "placeWall",
+    value: function placeWall() {
+      if (this.value !== "root" && this.value !== "target") {
+        this.value = "wall";
+      }
+    }
+  }, {
+    key: "removeWall",
+    value: function removeWall() {}
   }]);
 
   return PolyTreeNode;
@@ -287,14 +331,13 @@ var Board = /*#__PURE__*/function () {
   function Board() {
     _classCallCheck(this, Board);
 
-    this.grid = [];
-    this.fillGrid = this.fillGrid.bind(this);
+    this.grid = []; // this.fillGrid = this.fillGrid.bind(this);
   }
 
   _createClass(Board, [{
     key: "fillGrid",
     value: function fillGrid() {
-      // Create tiles
+      // Create tiles, populate this.grid
       for (var i = 0; i < 25; i++) {
         // Board is 25 x 48, 1200 total tiles
         var row = [];
@@ -403,6 +446,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function reset() {
     var grid = document.getElementById("grid");
     grid.innerHTML = "";
+    debugger;
     board.grid = [];
     console.log("Board cleared");
     board.fillGrid();
