@@ -418,9 +418,9 @@ document.addEventListener("DOMContentLoaded", function () {
   bfsButton.addEventListener("click", setAlgo);
   dfsButton.addEventListener("click", setAlgo); // Add functionality to Visualize button
 
-  var rootNode = board.grid[12][9].node;
-
   function runAlgorithm() {
+    var rootNode = board.grid[12][9].node;
+
     switch (algorithm) {
       case "bfs-btn":
         rootNode.buildTree();
@@ -447,14 +447,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function reset() {
     var grid = document.getElementById("grid");
     grid.innerHTML = "";
-    debugger;
     board.grid = [];
     console.log("Board cleared");
     board.fillGrid();
   }
 
-  var clearButton = document.getElementById("clear-button");
-  clearButton.addEventListener("click", reset);
+  var resetButton = document.getElementById("reset-button");
+  resetButton.addEventListener("click", reset);
 });
 
 /***/ }),

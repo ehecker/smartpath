@@ -27,9 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // Add functionality to Visualize button
-    let rootNode = board.grid[12][9].node;
-
     function runAlgorithm() {
+        let rootNode = board.grid[12][9].node;
+
         switch (algorithm) {
             case "bfs-btn":
                 rootNode.buildTree();
@@ -58,12 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function reset() {
         let grid = document.getElementById("grid");
         grid.innerHTML = "";
-        debugger
+        
         board.grid = [];
         console.log("Board cleared")
         board.fillGrid();
     }
 
-    let clearButton = document.getElementById("clear-button");
-    clearButton.addEventListener("click", reset)
+    let resetButton = document.getElementById("reset-button");
+    resetButton.addEventListener("click", reset)
 })
