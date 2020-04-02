@@ -28,10 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add functionality to Visualize button
     function runAlgorithm() {
-        let rootNode = board.grid[12][9].node;
-
+        // let rootNode = board.grid[12][9].node;
+        let rootNode;
         switch (algorithm) {
             case "bfs-btn":
+                reset()
+                rootNode = board.grid[12][9].node;
                 rootNode.buildTree();
                 console.log("Node tree built")
 
@@ -39,6 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("BFS executed");
                 break;
             case "dfs-btn":
+                reset()
+                rootNode = board.grid[12][9].node;
                 rootNode.buildTree();
                 console.log("Node tree built")
 

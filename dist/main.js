@@ -329,7 +329,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 var Board = /*#__PURE__*/function () {
-  function Board() {
+  function Board(rootPos, targetPos) {
     _classCallCheck(this, Board);
 
     this.grid = []; // this.fillGrid = this.fillGrid.bind(this);
@@ -419,10 +419,13 @@ document.addEventListener("DOMContentLoaded", function () {
   dfsButton.addEventListener("click", setAlgo); // Add functionality to Visualize button
 
   function runAlgorithm() {
-    var rootNode = board.grid[12][9].node;
+    // let rootNode = board.grid[12][9].node;
+    var rootNode;
 
     switch (algorithm) {
       case "bfs-btn":
+        reset();
+        rootNode = board.grid[12][9].node;
         rootNode.buildTree();
         console.log("Node tree built");
         rootNode.bfs("target");
@@ -430,6 +433,8 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
 
       case "dfs-btn":
+        reset();
+        rootNode = board.grid[12][9].node;
         rootNode.buildTree();
         console.log("Node tree built");
         rootNode.dfs("target");

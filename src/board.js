@@ -3,9 +3,9 @@ import PolyTreeNode from "./algorithms/polytreenode";
 
 export default class Board { 
 
-    constructor() {
+    constructor(rootPos, targetPos) {
         this.grid = [];
-
+        
         // this.fillGrid = this.fillGrid.bind(this);
     }
 
