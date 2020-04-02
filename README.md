@@ -1,3 +1,4 @@
 # smartpath
 
-Smartpath is a pathfind algorith visualizer.
+Smartpath is a pathfinding algorithm visualizer.
+
