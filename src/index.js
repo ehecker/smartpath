@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
     visButton.addEventListener("click", runAlgorithm);
 
     // Add functionality to Clear button
-
     function reset() {
         let grid = document.getElementById("grid");
         grid.innerHTML = "";
