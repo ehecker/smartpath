@@ -14,6 +14,24 @@ export default class Tile {
         grid.appendChild(this.tile);
 
         this.node = new PolyTreeNode(null, position, board.grid);
+        // this.addMovability();
+    }
+
+    // addGridListener() {
+    //     this.grid.addeventListener()
+    // }
+
+    // addMovability() {
+    //     if (this.node.value === "root" || this.node.value === "target") {
+    //         this.tile.addEventListener("mousedown", () => {
+
+    //         });
+
+    //     }
+    // }
+
+    addPlaceWallListener() {
+        
     }
 
     visit() {

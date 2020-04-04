@@ -5,7 +5,8 @@ export default class Board {
 
     constructor(rootPos, targetPos) {
         this.grid = [];
-        
+        this.rootPos = rootPos;
+        this.targetPos = targetPos; 
         // this.fillGrid = this.fillGrid.bind(this);
     }
 

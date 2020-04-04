@@ -132,6 +132,12 @@ var PolyTreeNode = /*#__PURE__*/function () {
     this.visited.add(this.position.join("-"));
     this.visualize = this.visualize.bind(this);
     this.visualizeShortestPath = this.visualizeShortestPath.bind(this);
+    this.placeWall = this.placeWall.bind(this);
+    this.removeWall = this.removeWall.bind(this);
+
+    if (this.value !== "root" && this.value !== "target") {
+      this.tileObj.addEventListener("click", this.placeWall);
+    }
   }
 
   _createClass(PolyTreeNode, [{
@@ -181,8 +187,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
         if (currentNode.value === target) {
           this.visitedTiles.push(currentNode.position);
           this.findShortestPath();
-          this.visualize(this.visitedTiles, this.grid); // Visualize algorithm execution
-
+          this.visualize(this.visitedTiles, this.grid);
           return currentNode;
         }
 
@@ -292,12 +297,23 @@ var PolyTreeNode = /*#__PURE__*/function () {
     key: "placeWall",
     value: function placeWall() {
       if (this.value !== "root" && this.value !== "target") {
+        // debugger
         this.value = "wall";
+        this.tileObj.classList.add("wall");
+        this.tileObj.removeEventListener("click", this.placeWall);
+        this.tileObj.addEventListener("click", this.removeWall);
       }
     }
   }, {
     key: "removeWall",
-    value: function removeWall() {}
+    value: function removeWall() {
+      if (this.value === "wall") {
+        this.value = null;
+        this.tileObj.classList.remove("wall");
+        this.tileObj.removeEventListener("click", this.removeWall);
+        this.tileObj.addEventListener("click", this.placeWall);
+      }
+    }
   }]);
 
   return PolyTreeNode;
@@ -332,7 +348,9 @@ var Board = /*#__PURE__*/function () {
   function Board(rootPos, targetPos) {
     _classCallCheck(this, Board);
 
-    this.grid = []; // this.fillGrid = this.fillGrid.bind(this);
+    this.grid = [];
+    this.rootPos = rootPos;
+    this.targetPos = targetPos; // this.fillGrid = this.fillGrid.bind(this);
   }
 
   _createClass(Board, [{
@@ -419,13 +437,13 @@ document.addEventListener("DOMContentLoaded", function () {
   dfsButton.addEventListener("click", setAlgo); // Add functionality to Visualize button
 
   function runAlgorithm() {
-    // let rootNode = board.grid[12][9].node;
-    var rootNode;
+    // let rootNode;
+    var rootNode = board.grid[12][9].node;
 
     switch (algorithm) {
       case "bfs-btn":
-        reset();
-        rootNode = board.grid[12][9].node;
+        // rootnode = board.grid[12][9].node; // Temporarily remove reset functionality to account for walls
+        // reset();
         rootNode.buildTree();
         console.log("Node tree built");
         rootNode.bfs("target");
@@ -433,8 +451,8 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
 
       case "dfs-btn":
-        reset();
-        rootNode = board.grid[12][9].node;
+        // rootnode = board.grid[12][9].node;
+        // reset();
         rootNode.buildTree();
         console.log("Node tree built");
         rootNode.dfs("target");
@@ -494,10 +512,22 @@ var Tile = /*#__PURE__*/function () {
     this.tile.id = "".concat(position[0], "-").concat(position[1]);
     var grid = document.getElementById("grid");
     grid.appendChild(this.tile);
-    this.node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_0__["default"](null, position, board.grid);
-  }
+    this.node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_0__["default"](null, position, board.grid); // this.addMovability();
+  } // addGridListener() {
+  //     this.grid.addeventListener()
+  // }
+  // addMovability() {
+  //     if (this.node.value === "root" || this.node.value === "target") {
+  //         this.tile.addEventListener("mousedown", () => {
+  //         });
+  //     }
+  // }
+
 
   _createClass(Tile, [{
+    key: "addPlaceWallListener",
+    value: function addPlaceWallListener() {}
+  }, {
     key: "visit",
     value: function visit() {
       this.tile.classList.add("visited");

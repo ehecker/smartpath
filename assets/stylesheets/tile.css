@@ -14,10 +14,12 @@
 
 .root-node {
     background-color: white;
+    cursor: pointer;
 }
 
 .target-node {
     background-color: green;
+    cursor: pointer;
 }
 
 /* ANIMATIONS =================================================== */
@@ -54,4 +56,8 @@
 
 .shortest-path-node {
     background-color: purple;
+}
+
+.wall {
+    background-color: red;
 }

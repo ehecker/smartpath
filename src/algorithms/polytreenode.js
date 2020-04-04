@@ -18,6 +18,13 @@ export default class PolyTreeNode {
 
         this.visualize = this.visualize.bind(this);
         this.visualizeShortestPath = this.visualizeShortestPath.bind(this);
+
+        this.placeWall = this.placeWall.bind(this);
+        this.removeWall = this.removeWall.bind(this);
+
+        if (this.value !== "root" && this.value !== "target") {
+            this.tileObj.addEventListener("click", this.placeWall)
+        }
     }
 
     visualize(visitedTiles, grid) {
@@ -67,7 +74,7 @@ export default class PolyTreeNode {
             if (currentNode.value === target) {
                 this.visitedTiles.push(currentNode.position)
                 this.findShortestPath();
-                this.visualize(this.visitedTiles, this.grid); // Visualize algorithm execution
+                this.visualize(this.visitedTiles, this.grid);
                 return currentNode;
             }
             
@@ -183,16 +190,22 @@ export default class PolyTreeNode {
     }
 
     placeWall() {
-
         if (this.value !== "root" && this.value !== "target") {
+            // debugger
             this.value = "wall";
-
+            this.tileObj.classList.add("wall")
+            this.tileObj.removeEventListener("click", this.placeWall)
+            this.tileObj.addEventListener("click", this.removeWall)
         }
-
     }
 
     removeWall() {
-
+        if (this.value === "wall") {
+            this.value = null;
+            this.tileObj.classList.remove("wall")
+            this.tileObj.removeEventListener("click", this.removeWall)
+            this.tileObj.addEventListener("click", this.placeWall);
+        }
     }
 
 }
