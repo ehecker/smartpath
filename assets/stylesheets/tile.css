@@ -22,7 +22,7 @@
     cursor: pointer;
 }
 
-/* ANIMATIONS =================================================== */
+/* TILE TYPES =================================================== */
 
 .visited {
     /* animation: 1s ease both markVisited; */
@@ -54,10 +54,24 @@
     }
 }
 
+.dragging {
+    opacity: 0.5;
+    height: 20px;
+    width: 20px;
+}
+
 .shortest-path-node {
     background-color: purple;
 }
 
 .wall {
     background-color: red;
+}
+
+.parent {
+    background-color: teal;
+}
+
+.child {
+    background-color: white;
 }

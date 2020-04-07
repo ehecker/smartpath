@@ -2,7 +2,7 @@ import PolyTreeNode from "./algorithms/polytreenode";
 
 export default class Tile {
     
-    constructor(position, board) {
+    constructor(nodeValue, position, board) {
         this.position = position;
         this.board = board; // Do I actually need this?
 
@@ -13,32 +13,34 @@ export default class Tile {
         let grid = document.getElementById("grid");
         grid.appendChild(this.tile);
 
-        this.node = new PolyTreeNode(null, position, board.grid);
-        // this.addMovability();
+        this.node = new PolyTreeNode(nodeValue, position, board); // This MUST come after this.tile's id is set
+        // debugger
+        this.makeDraggable();
+        // this.tile.addEventListener("dragover", )
     }
 
-    // addGridListener() {
-    //     this.grid.addeventListener()
+    makeDraggable() {
+        // console.log("makeDraggable fired")
+        if (this.node.value === "root" || this.node.value === "target") {
+            // debugger
+            // console.log("Entered conditional")
+            this.tile.addEventListener("drag", (event) => {
+                console.log("Drag started")
+                event.target.classList.add("dragging")
+            });
+
+        }
+    }
+
+    makeDroppable() {
+
+    }
+
+    // visit() {
+    //     this.tile.classList.add("visited");
     // }
-
-    // addMovability() {
-    //     if (this.node.value === "root" || this.node.value === "target") {
-    //         this.tile.addEventListener("mousedown", () => {
-
-    //         });
-
-    //     }
-    // }
-
-    addPlaceWallListener() {
-        
-    }
-
-    visit() {
-        this.tile.classList.add("visited");
-    }
     
-    markFound() {
-        this.tile.classList.add("target-found")
-    }
+    // markFound() {
+    //     this.tile.classList.add("target-found")
+    // }
 }
