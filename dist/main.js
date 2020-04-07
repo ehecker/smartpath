@@ -434,7 +434,11 @@ var Board = /*#__PURE__*/function () {
     key: "setRoot",
     value: function setRoot(pos) {
       // Remove old root
-      // Set new root
+      var oldX = this.rootNode.position[0];
+      var oldY = this.rootNode.position[1];
+      var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"](null, this.rootNode.position, this);
+      this.grid[oldX][oldY] = newTile; // Set new root
+
       var x = pos[0];
       var y = pos[1];
       var newRoot = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("root", [pos[0], pos[1]], this);
@@ -445,7 +449,11 @@ var Board = /*#__PURE__*/function () {
     key: "setTarget",
     value: function setTarget(pos) {
       // Remove old target
-      // Set new target
+      var oldX = this.targetNode.position[0];
+      var oldY = this.targetNode.position[1];
+      var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"](null, this.targetNode.position, this);
+      this.grid[oldX][oldY] = newTile; // Set new target
+
       var x = pos[0];
       var y = pos[1];
       var newTarget = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("target", [pos[0], pos[1]], this);

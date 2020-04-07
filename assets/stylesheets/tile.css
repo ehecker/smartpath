@@ -58,7 +58,12 @@
     opacity: 0.5;
     height: 20px;
     width: 20px;
+    
 }
+
+/* .dragging * {
+    pointer-events: none;
+} */
 
 .shortest-path-node {
     background-color: purple;

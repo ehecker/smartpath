@@ -44,11 +44,14 @@ export default class Board {
 
     setRoot(pos) {
         // Remove old root
-
+        const oldX = this.rootNode.position[0];
+        const oldY = this.rootNode.position[1];
+        let newTile = new Tile(null, this.rootNode.position, this)
+        this.grid[oldX][oldY] = newTile;
 
         // Set new root
-        let x = pos[0];
-        let y = pos[1];
+        const x = pos[0];
+        const y = pos[1];
         let newRoot = new Tile ("root", [pos[0], pos[1]], this);
         this.grid[x][y] = newRoot;
         this.rootNode = newRoot;
@@ -56,11 +59,14 @@ export default class Board {
 
     setTarget(pos) {
         // Remove old target
-
+        const oldX = this.targetNode.position[0];
+        const oldY = this.targetNode.position[1];
+        let newTile = new Tile(null, this.targetNode.position, this)
+        this.grid[oldX][oldY] = newTile;
 
         // Set new target
-        let x = pos[0];
-        let y = pos[1];
+        const x = pos[0];
+        const y = pos[1];
         let newTarget = new Tile ("target", [pos[0], pos[1]], this);
         this.grid[x][y] = newTarget;
         this.targetNode = newTarget;
