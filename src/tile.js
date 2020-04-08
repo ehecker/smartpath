@@ -4,7 +4,7 @@ export default class Tile {
     
     constructor(nodeValue, position, board) {
         this.position = position;
-        this.board = board; // Do I actually need this?
+        this.board = board;
 
         this.tile = document.createElement("div");
         this.tile.classList.add("tile");
@@ -14,33 +14,44 @@ export default class Tile {
         grid.appendChild(this.tile);
 
         this.node = new PolyTreeNode(nodeValue, position, board); // This MUST come after this.tile's id is set
-        // debugger
+
         this.makeDraggable();
-        // this.tile.addEventListener("dragover", )
     }
 
     makeDraggable() {
-        // console.log("makeDraggable fired")
+        let board = this.board;
+
         if (this.node.value === "root" || this.node.value === "target") {
-            // debugger
-            // console.log("Entered conditional")
-            this.tile.addEventListener("drag", (event) => {
-                console.log("Drag started")
-                event.target.classList.add("dragging")
+
+            this.tile.addEventListener("dragstart", (event) => {
+                console.log("Dragstart fired")
+                // event.target.classList.add("dragging")
+            });
+
+        } else {
+            this.tile.addEventListener("dragenter", (event) => {
+                console.log("Drag enter fired")
+                event.preventDefault()
+            })
+
+            this.tile.addEventListener("dragover", (event) => {
+                console.log("Drag over fired")
+                event.preventDefault()
+            })
+
+            this.tile.addEventListener("drop", (event) => {
+                console.log("Drop fired")
+                event.preventDefault();
+
+                let tileId= event.target.id.split("-")
+                let newRootPos = [+tileId[0], +tileId[1]]
+
+                board.setRoot(newRootPos)
+
+                // Check target value to determine which board function to call
             });
 
         }
     }
 
-    makeDroppable() {
-
-    }
-
-    // visit() {
-    //     this.tile.classList.add("visited");
-    // }
-    
-    // markFound() {
-    //     this.tile.classList.add("target-found")
-    // }
 }

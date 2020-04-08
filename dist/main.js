@@ -134,11 +134,11 @@ var PolyTreeNode = /*#__PURE__*/function () {
     this.visualize = this.visualize.bind(this);
     this.visualizeShortestPath = this.visualizeShortestPath.bind(this);
     this.placeWall = this.placeWall.bind(this);
-    this.removeWall = this.removeWall.bind(this);
-    this.showChildren = this.showChildren.bind(this);
-    this.hideChildren = this.hideChildren.bind(this);
-    this.tileObj.addEventListener("mouseenter", this.showChildren);
-    this.tileObj.addEventListener("mouseleave", this.hideChildren); // if (this.value === "root") {
+    this.removeWall = this.removeWall.bind(this); // this.showChildren = this.showChildren.bind(this);
+    // this.hideChildren = this.hideChildren.bind(this);
+    // this.tileObj.addEventListener("mouseenter", this.showChildren)
+    // this.tileObj.addEventListener("mouseleave", this.hideChildren)
+    // if (this.value === "root") {
     //     this.buildTree();
     // }
 
@@ -313,6 +313,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
       var currentNode = this.grid[targetNodePos[0]][targetNodePos[1]].node; // Very ugly way to get target node
 
       this.shortestPath.unshift(currentNode.position);
+      debugger;
 
       while (currentNode.value !== "root" && currentNode.parent.value !== "root") {
         this.shortestPath.unshift(currentNode.parent.position);
@@ -395,6 +396,8 @@ var Board = /*#__PURE__*/function () {
     this.targetNode; // this.fillGrid = this.fillGrid.bind(this);
 
     this.validPos = this.validPos.bind(this);
+    this.setRoot = this.setRoot.bind(this);
+    this.setTarget = this.setTarget.bind(this);
   }
 
   _createClass(Board, [{
@@ -407,43 +410,45 @@ var Board = /*#__PURE__*/function () {
 
         for (var j = 0; j < 48; j++) {
           if (i === 12 && j === 9) {
-            var rootNode = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("root", [i, j], this);
+            var rootNode = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("root", [i, j], this, true);
             rootNode.tile.classList.add("root-node");
+            rootNode.tile.setAttribute("draggable", "true");
             this.rootNode = rootNode;
             row.push(rootNode);
           } else if (i === 17 && j === 29) {
-            var targetNode = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("target", [i, j], this);
+            var targetNode = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("target", [i, j], this, true);
             targetNode.tile.classList.add("target-node");
+            targetNode.tile.setAttribute("draggable", "true");
             this.targetNode = targetNode;
             row.push(targetNode);
           } else {
-            var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"](null, [i, j], this);
+            var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"](null, [i, j], this, true);
             row.push(newTile);
           }
         }
 
         this.grid.push(row);
-      }
-    }
-  }, {
-    key: "validPos",
-    value: function validPos(pos) {
-      return pos[0] >= 0 && pos[0] < 25 && pos[1] >= 0 && pos[1] < 48;
+      } // debugger
+
     }
   }, {
     key: "setRoot",
     value: function setRoot(pos) {
-      // Remove old root
       var oldX = this.rootNode.position[0];
       var oldY = this.rootNode.position[1];
-      var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"](null, this.rootNode.position, this);
-      this.grid[oldX][oldY] = newTile; // Set new root
-
       var x = pos[0];
       var y = pos[1];
-      var newRoot = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("root", [pos[0], pos[1]], this);
-      this.grid[x][y] = newRoot;
-      this.rootNode = newRoot;
+      var oldRootTile = this.grid[oldX][oldY];
+      var oldNullTile = this.grid[x][y];
+      oldRootTile.node.value = null;
+      oldNullTile.node.value = "root";
+      oldRootTile.tile.classlist = "";
+      oldRootTile.tile.classList.remove("root-node");
+      oldRootTile.tile.classList.add("tile");
+      oldNullTile.tile.classList = "";
+      oldNullTile.tile.classList.add("tile");
+      oldNullTile.tile.classList.add("root-node");
+      this.rootNode = oldNullTile.node;
     }
   }, {
     key: "setTarget",
@@ -457,8 +462,15 @@ var Board = /*#__PURE__*/function () {
       var x = pos[0];
       var y = pos[1];
       var newTarget = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("target", [pos[0], pos[1]], this);
+      newTarget.tile.classList.add("target-node");
+      newTarget.tile.setAttribute("draggable", "true");
       this.grid[x][y] = newTarget;
       this.targetNode = newTarget;
+    }
+  }, {
+    key: "validPos",
+    value: function validPos(pos) {
+      return pos[0] >= 0 && pos[0] < 25 && pos[1] >= 0 && pos[1] < 48;
     }
   }]);
 
@@ -485,6 +497,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create and fill board
   var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
   board.fillGrid();
+  board.rootNode = board.grid[12][9].node;
   console.log("Board initialized and populated"); // Add functionality to radio buttons
 
   function setAlgo(event) {
@@ -504,7 +517,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function runAlgorithm() {
     // let rootNode;
-    var rootNode = board.grid[12][9].node;
+    // let rootNode = board.grid[12][9].node;
+    var rootNode = board.rootNode;
 
     switch (algorithm) {
       case "bfs-btn":
@@ -539,6 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
     board.grid = [];
     console.log("Board cleared");
     board.fillGrid();
+    board.rootNode = board.grid[12][9].node;
   }
 
   var resetButton = document.getElementById("reset-button");
@@ -571,41 +586,44 @@ var Tile = /*#__PURE__*/function () {
     _classCallCheck(this, Tile);
 
     this.position = position;
-    this.board = board; // Do I actually need this?
-
+    this.board = board;
     this.tile = document.createElement("div");
     this.tile.classList.add("tile");
     this.tile.id = "".concat(position[0], "-").concat(position[1]);
     var grid = document.getElementById("grid");
     grid.appendChild(this.tile);
     this.node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_0__["default"](nodeValue, position, board); // This MUST come after this.tile's id is set
-    // debugger
 
-    this.makeDraggable(); // this.tile.addEventListener("dragover", )
+    this.makeDraggable();
   }
 
   _createClass(Tile, [{
     key: "makeDraggable",
     value: function makeDraggable() {
-      // console.log("makeDraggable fired")
+      var board = this.board;
+
       if (this.node.value === "root" || this.node.value === "target") {
-        // debugger
-        // console.log("Entered conditional")
-        this.tile.addEventListener("drag", function (event) {
-          console.log("Drag started");
-          event.target.classList.add("dragging");
+        this.tile.addEventListener("dragstart", function (event) {
+          console.log("Dragstart fired"); // event.target.classList.add("dragging")
+        });
+      } else {
+        this.tile.addEventListener("dragenter", function (event) {
+          console.log("Drag enter fired");
+          event.preventDefault();
+        });
+        this.tile.addEventListener("dragover", function (event) {
+          console.log("Drag over fired");
+          event.preventDefault();
+        });
+        this.tile.addEventListener("drop", function (event) {
+          console.log("Drop fired");
+          event.preventDefault();
+          var tileId = event.target.id.split("-");
+          var newRootPos = [+tileId[0], +tileId[1]];
+          board.setRoot(newRootPos); // Check target value to determine which board function to call
         });
       }
     }
-  }, {
-    key: "makeDroppable",
-    value: function makeDroppable() {} // visit() {
-    //     this.tile.classList.add("visited");
-    // }
-    // markFound() {
-    //     this.tile.classList.add("target-found")
-    // }
-
   }]);
 
   return Tile;

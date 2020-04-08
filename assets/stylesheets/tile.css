@@ -54,12 +54,9 @@
     }
 }
 
-.dragging {
-    opacity: 0.5;
-    height: 20px;
-    width: 20px;
-    
-}
+/* .dragging {
+    opacity: 0.9;
+} */
 
 /* .dragging * {
     pointer-events: none;

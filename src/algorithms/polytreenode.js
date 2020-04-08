@@ -23,11 +23,11 @@ export default class PolyTreeNode {
         this.placeWall = this.placeWall.bind(this);
         this.removeWall = this.removeWall.bind(this);
 
-        this.showChildren = this.showChildren.bind(this);
-        this.hideChildren = this.hideChildren.bind(this);
+        // this.showChildren = this.showChildren.bind(this);
+        // this.hideChildren = this.hideChildren.bind(this);
 
-        this.tileObj.addEventListener("mouseenter", this.showChildren)
-        this.tileObj.addEventListener("mouseleave", this.hideChildren)
+        // this.tileObj.addEventListener("mouseenter", this.showChildren)
+        // this.tileObj.addEventListener("mouseleave", this.hideChildren)
 
         // if (this.value === "root") {
         //     this.buildTree();
@@ -215,9 +215,8 @@ export default class PolyTreeNode {
         let currentNode = this.grid[targetNodePos[0]][targetNodePos[1]].node; // Very ugly way to get target node
 
         this.shortestPath.unshift(currentNode.position);
-
+        debugger
         while (currentNode.value !== "root" && currentNode.parent.value !== "root") {
-            
             this.shortestPath.unshift(currentNode.parent.position)
             currentNode = currentNode.parent;
         }
