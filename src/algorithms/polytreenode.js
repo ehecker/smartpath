@@ -89,15 +89,9 @@ export default class PolyTreeNode {
         let queue = [this];
 
         while (queue.length > 0) {
-
             let currentNode = queue.shift();
-
-            if (currentNode.value === "wall") {
-                // debugger
-                continue
-            }
-
-            if (currentNode.value !== "root" && currentNode.value !== "target") {
+            
+            if (currentNode.value !== "root" && currentNode.value !== "target" && currentNode.value !== "wall") {
                 this.visitedTiles.push(currentNode.position)
             }
 

@@ -203,12 +203,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
       while (queue.length > 0) {
         var currentNode = queue.shift();
 
-        if (currentNode.value === "wall") {
-          // debugger
-          continue;
-        }
-
-        if (currentNode.value !== "root" && currentNode.value !== "target") {
+        if (currentNode.value !== "root" && currentNode.value !== "target" && currentNode.value !== "wall") {
           this.visitedTiles.push(currentNode.position);
         }
 
