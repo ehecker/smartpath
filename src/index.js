@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Create and fill board
     let board = new Board();
     board.fillGrid();
-    board.rootNode = board.grid[12][9].node
     console.log("Board initialized and populated")
 
     // Add functionality to radio buttons
@@ -29,8 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add functionality to Visualize button
     function runAlgorithm() {
-        // let rootNode;
-        // let rootNode = board.grid[12][9].node;
         let rootNode = board.rootNode;
 
         switch (algorithm) {
@@ -66,9 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
         grid.innerHTML = "";
         
         board.grid = [];
+        // board.lastNodeType = "";
         console.log("Board cleared")
         board.fillGrid();
-        board.rootNode = board.grid[12][9].node;
     }
 
     let resetButton = document.getElementById("reset-button");

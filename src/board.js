@@ -1,20 +1,19 @@
 import Tile from "./tile";
-import PolyTreeNode from "./algorithms/polytreenode";
 
 export default class Board { 
     constructor() {
         this.grid = [];
         this.rootNode;
         this.targetNode;
-        // this.fillGrid = this.fillGrid.bind(this);
 
-        this.validPos = this.validPos.bind(this)
-        this.setRoot = this.setRoot.bind(this)
+        this.lastNodeType;
+
+        this.validPos = this.validPos.bind(this);
+        this.setRoot = this.setRoot.bind(this);
         this.setTarget = this.setTarget.bind(this);
     }
 
-    fillGrid() {   
-        // Create tiles, populate this.grid
+    fillGrid() { // Create tile objects, populate this.grid
         for (let i = 0; i < 25; i++) { // Board is 25 x 48, 1200 total tiles
             let row = [];
 
@@ -23,14 +22,16 @@ export default class Board {
                     let rootNode = new Tile("root", [i, j], this, true)
                     rootNode.tile.classList.add("root-node")
                     rootNode.tile.setAttribute("draggable", "true")
-                    this.rootNode = rootNode;
+                    this.rootNode = rootNode.node;
                     row.push(rootNode)
-                } else if (i === 17 && j === 29) {
+
+                } else if (i === 12 && j === 37) {
                     let targetNode = new Tile("target", [i, j], this, true)
                     targetNode.tile.classList.add("target-node")
                     targetNode.tile.setAttribute("draggable", "true")
-                    this.targetNode = targetNode;
+                    this.targetNode = targetNode.node;
                     row.push(targetNode)
+
                 } else {
                     let newTile = new Tile(null, [i, j], this, true);
                     row.push(newTile);
@@ -39,7 +40,6 @@ export default class Board {
 
             this.grid.push(row);
         }
-        // debugger
     }
 
     setRoot(pos) {
@@ -54,35 +54,33 @@ export default class Board {
         oldRootTile.node.value = null;
         oldNullTile.node.value = "root";
 
-        oldRootTile.tile.classlist = "";
-        oldRootTile.tile.classList.remove("root-node")
-        oldRootTile.tile.classList.add("tile");
+        oldRootTile.tile.classList.remove("root-node");
+        oldNullTile.tile.classList.add("root-node");
 
-        oldNullTile.tile.classList = ""
-        oldNullTile.tile.classList.add("tile")
-        oldNullTile.tile.classList.add("root-node")
+        // Call setDraggingFunctions on both adjusted nodes here
 
         this.rootNode = oldNullTile.node;
     }
 
     setTarget(pos) {
-        // Remove old target
         const oldX = this.targetNode.position[0];
         const oldY = this.targetNode.position[1];
-        let newTile = new Tile(null, this.targetNode.position, this)
-        this.grid[oldX][oldY] = newTile;
-
-        // Set new target
         const x = pos[0];
         const y = pos[1];
-        let newTarget = new Tile ("target", [pos[0], pos[1]], this);
-        newTarget.tile.classList.add("target-node")
-        newTarget.tile.setAttribute("draggable", "true")
-        this.grid[x][y] = newTarget;
-        this.targetNode = newTarget;
-    }
 
-    
+        let oldTargetTile = this.grid[oldX][oldY];
+        let oldNullTile = this.grid[x][y];
+
+        oldTargetTile.node.value = null;
+        oldNullTile.node.value = "target";
+
+        oldTargetTile.tile.classList.remove("target-node");
+        oldNullTile.tile.classList.add("target-node");
+
+        // Call setDraggingFunctions on both adjusted nodes here
+
+        this.targetNode = oldNullTile.node;
+    }
 
     validPos(pos) {
         return (pos[0] >= 0 && pos[0] < 25) && (pos[1] >= 0 && pos[1] < 48);

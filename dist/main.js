@@ -377,13 +377,11 @@ var PolyTreeNode = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Board; });
 /* harmony import */ var _tile__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tile */ "./src/tile.js");
-/* harmony import */ var _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./algorithms/polytreenode */ "./src/algorithms/polytreenode.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 
 
 
@@ -393,8 +391,8 @@ var Board = /*#__PURE__*/function () {
 
     this.grid = [];
     this.rootNode;
-    this.targetNode; // this.fillGrid = this.fillGrid.bind(this);
-
+    this.targetNode;
+    this.lastNodeType;
     this.validPos = this.validPos.bind(this);
     this.setRoot = this.setRoot.bind(this);
     this.setTarget = this.setTarget.bind(this);
@@ -403,7 +401,7 @@ var Board = /*#__PURE__*/function () {
   _createClass(Board, [{
     key: "fillGrid",
     value: function fillGrid() {
-      // Create tiles, populate this.grid
+      // Create tile objects, populate this.grid
       for (var i = 0; i < 25; i++) {
         // Board is 25 x 48, 1200 total tiles
         var row = [];
@@ -413,13 +411,13 @@ var Board = /*#__PURE__*/function () {
             var rootNode = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("root", [i, j], this, true);
             rootNode.tile.classList.add("root-node");
             rootNode.tile.setAttribute("draggable", "true");
-            this.rootNode = rootNode;
+            this.rootNode = rootNode.node;
             row.push(rootNode);
-          } else if (i === 17 && j === 29) {
+          } else if (i === 12 && j === 37) {
             var targetNode = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("target", [i, j], this, true);
             targetNode.tile.classList.add("target-node");
             targetNode.tile.setAttribute("draggable", "true");
-            this.targetNode = targetNode;
+            this.targetNode = targetNode.node;
             row.push(targetNode);
           } else {
             var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"](null, [i, j], this, true);
@@ -428,8 +426,7 @@ var Board = /*#__PURE__*/function () {
         }
 
         this.grid.push(row);
-      } // debugger
-
+      }
     }
   }, {
     key: "setRoot",
@@ -442,30 +439,26 @@ var Board = /*#__PURE__*/function () {
       var oldNullTile = this.grid[x][y];
       oldRootTile.node.value = null;
       oldNullTile.node.value = "root";
-      oldRootTile.tile.classlist = "";
       oldRootTile.tile.classList.remove("root-node");
-      oldRootTile.tile.classList.add("tile");
-      oldNullTile.tile.classList = "";
-      oldNullTile.tile.classList.add("tile");
-      oldNullTile.tile.classList.add("root-node");
+      oldNullTile.tile.classList.add("root-node"); // Call setDraggingFunctions on both adjusted nodes here
+
       this.rootNode = oldNullTile.node;
     }
   }, {
     key: "setTarget",
     value: function setTarget(pos) {
-      // Remove old target
       var oldX = this.targetNode.position[0];
       var oldY = this.targetNode.position[1];
-      var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"](null, this.targetNode.position, this);
-      this.grid[oldX][oldY] = newTile; // Set new target
-
       var x = pos[0];
       var y = pos[1];
-      var newTarget = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("target", [pos[0], pos[1]], this);
-      newTarget.tile.classList.add("target-node");
-      newTarget.tile.setAttribute("draggable", "true");
-      this.grid[x][y] = newTarget;
-      this.targetNode = newTarget;
+      var oldTargetTile = this.grid[oldX][oldY];
+      var oldNullTile = this.grid[x][y];
+      oldTargetTile.node.value = null;
+      oldNullTile.node.value = "target";
+      oldTargetTile.tile.classList.remove("target-node");
+      oldNullTile.tile.classList.add("target-node"); // Call setDraggingFunctions on both adjusted nodes here
+
+      this.targetNode = oldNullTile.node;
     }
   }, {
     key: "validPos",
@@ -497,7 +490,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create and fill board
   var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
   board.fillGrid();
-  board.rootNode = board.grid[12][9].node;
   console.log("Board initialized and populated"); // Add functionality to radio buttons
 
   function setAlgo(event) {
@@ -516,8 +508,6 @@ document.addEventListener("DOMContentLoaded", function () {
   dfsButton.addEventListener("click", setAlgo); // Add functionality to Visualize button
 
   function runAlgorithm() {
-    // let rootNode;
-    // let rootNode = board.grid[12][9].node;
     var rootNode = board.rootNode;
 
     switch (algorithm) {
@@ -550,10 +540,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function reset() {
     var grid = document.getElementById("grid");
     grid.innerHTML = "";
-    board.grid = [];
+    board.grid = []; // board.lastNodeType = "";
+
     console.log("Board cleared");
     board.fillGrid();
-    board.rootNode = board.grid[12][9].node;
   }
 
   var resetButton = document.getElementById("reset-button");
@@ -594,34 +584,79 @@ var Tile = /*#__PURE__*/function () {
     grid.appendChild(this.tile);
     this.node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_0__["default"](nodeValue, position, board); // This MUST come after this.tile's id is set
 
-    this.makeDraggable();
+    this.setDraggingFunctions();
   }
 
   _createClass(Tile, [{
-    key: "makeDraggable",
-    value: function makeDraggable() {
+    key: "setDraggingFunctions",
+    value: function setDraggingFunctions() {
       var board = this.board;
 
+      var handleDragStart = function handleDragStart(event) {
+        console.log("Drag start fired");
+        var tileId = event.target.id.split("-");
+        var dragStartPos = [+tileId[0], +tileId[1]];
+        board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
+      };
+
+      var handleDragEnter = function handleDragEnter(event) {
+        console.log("Drag enter fired");
+        event.preventDefault();
+      };
+
+      var handleDragOver = function handleDragOver(event) {
+        console.log("Drag over fired");
+        event.preventDefault();
+      };
+
+      var handleDrop = function handleDrop(event) {
+        console.log("Drop fired");
+        event.preventDefault();
+        var tileId = event.target.id.split("-");
+        var dragEndPos = [+tileId[0], +tileId[1]];
+
+        if (board.lastNodeType === "root") {
+          board.setRoot(dragEndPos);
+        } else if (board.lastNodeType === "target") {
+          board.setTarget(dragEndPos);
+        } else if (board.lastNodeType === null) {// Logic for wall dragging here
+        }
+      };
+
       if (this.node.value === "root" || this.node.value === "target") {
-        this.tile.addEventListener("dragstart", function (event) {
-          console.log("Dragstart fired"); // event.target.classList.add("dragging")
-        });
+        // this.tile.addEventListener("dragstart", (event) => {
+        //     console.log("Dragstart fired")
+        //     let tileId = event.target.id.split("-");
+        //     let dragStartPos = [+tileId[0], +tileId[1]];
+        //     originNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
+        // });
+        this.tile.addEventListener("dragstart", handleDragStart);
       } else {
-        this.tile.addEventListener("dragenter", function (event) {
-          console.log("Drag enter fired");
-          event.preventDefault();
-        });
-        this.tile.addEventListener("dragover", function (event) {
-          console.log("Drag over fired");
-          event.preventDefault();
-        });
-        this.tile.addEventListener("drop", function (event) {
-          console.log("Drop fired");
-          event.preventDefault();
-          var tileId = event.target.id.split("-");
-          var newRootPos = [+tileId[0], +tileId[1]];
-          board.setRoot(newRootPos); // Check target value to determine which board function to call
-        });
+        this.tile.addEventListener("dragenter", handleDragEnter);
+        this.tile.addEventListener("dragover", handleDragOver);
+        this.tile.addEventListener("drop", handleDrop); // this.tile.addEventListener("dragenter", (event) => {
+        //     console.log("Drag enter fired")
+        //     event.preventDefault()
+        // })
+        // this.tile.addEventListener("dragover", (event) => {
+        //     console.log("Drag over fired")
+        //     event.preventDefault()
+        // })
+        // this.tile.addEventListener("drop", (event) => {
+        //     console.log("Drop fired")
+        //     event.preventDefault();
+        //     // debugger
+        //     let tileId= event.target.id.split("-");
+        //     let dragEndPos = [+tileId[0], +tileId[1]];
+        //     if (originNodeType === "root") {
+        //         board.setRoot(dragEndPos)
+        //     } else if (originNodeType === "target") {
+        //         board.setTarget(dragEndPos)
+        //     } else if (originNodeType === null) {
+        //         // Logic for wall dragging here
+        //     }
+        //     // Check target value to determine which board function to call
+        // });
       }
     }
   }]);
