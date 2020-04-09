@@ -14,13 +14,15 @@
 
 .root-node {
     background-color: white;
+    cursor: pointer;
 }
 
 .target-node {
     background-color: green;
+    cursor: pointer;
 }
 
-/* ANIMATIONS =================================================== */
+/* TILE TYPES =================================================== */
 
 .visited {
     /* animation: 1s ease both markVisited; */
@@ -52,6 +54,26 @@
     }
 }
 
+/* .dragging {
+    opacity: 0.9;
+} */
+
+/* .dragging * {
+    pointer-events: none;
+} */
+
 .shortest-path-node {
     background-color: purple;
+}
+
+.wall {
+    background-color: red;
+}
+
+.parent {
+    background-color: teal;
+}
+
+.child {
+    background-color: white;
 }

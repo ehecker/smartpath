@@ -1,10 +1,9 @@
 import PolyTreeNode from "./algorithms/polytreenode";
 
 export default class Tile {
-    
-    constructor(position, board) {
+    constructor(nodeValue, position, board) {
         this.position = position;
-        this.board = board; // Do I actually need this?
+        this.board = board;
 
         this.tile = document.createElement("div");
         this.tile.classList.add("tile");
@@ -13,14 +12,97 @@ export default class Tile {
         let grid = document.getElementById("grid");
         grid.appendChild(this.tile);
 
-        this.node = new PolyTreeNode(null, position, board.grid);
+        this.node = new PolyTreeNode(nodeValue, position, board); // This MUST come after this.tile's id is set
+
+        this.setDraggingFunctions();
     }
 
-    visit() {
-        this.tile.classList.add("visited");
+    setDraggingFunctions() {
+        let board = this.board;
+
+        const handleDragStart = event => {
+            console.log("Drag start fired")
+
+            let tileId = event.target.id.split("-");
+            let dragStartPos = [+tileId[0], +tileId[1]];
+            board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
+        }
+
+        const handleDragEnter = event => {
+            console.log("Drag enter fired")
+            event.preventDefault()
+        }
+
+        const handleDragOver = event => {
+            console.log("Drag over fired")
+            event.preventDefault()
+        }
+
+        const handleDrop = event => {
+            console.log("Drop fired")
+            event.preventDefault();
+
+            let tileId= event.target.id.split("-");
+            let dragEndPos = [+tileId[0], +tileId[1]];
+
+            if (board.lastNodeType === "root") {
+                board.setRoot(dragEndPos)
+            } else if (board.lastNodeType === "target") {
+                board.setTarget(dragEndPos)
+            } else if (board.lastNodeType === null) {
+                // Logic for wall dragging here
+            }
+        }
+
+        
+        
+
+        if (this.node.value === "root" || this.node.value === "target") {
+            // this.tile.addEventListener("dragstart", (event) => {
+            //     console.log("Dragstart fired")
+
+            //     let tileId = event.target.id.split("-");
+            //     let dragStartPos = [+tileId[0], +tileId[1]];
+            //     originNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
+            // });
+            this.tile.addEventListener("dragstart", handleDragStart)
+
+        } else {
+            this.tile.addEventListener("dragenter", handleDragEnter)
+            this.tile.addEventListener("dragover", handleDragOver)
+            this.tile.addEventListener("drop", handleDrop)
+
+            // this.tile.addEventListener("dragenter", (event) => {
+            //     console.log("Drag enter fired")
+            //     event.preventDefault()
+            // })
+
+            // this.tile.addEventListener("dragover", (event) => {
+            //     console.log("Drag over fired")
+            //     event.preventDefault()
+            // })
+
+            // this.tile.addEventListener("drop", (event) => {
+            //     console.log("Drop fired")
+            //     event.preventDefault();
+
+            //     // debugger
+
+            //     let tileId= event.target.id.split("-");
+            //     let dragEndPos = [+tileId[0], +tileId[1]];
+
+            //     if (originNodeType === "root") {
+            //         board.setRoot(dragEndPos)
+            //     } else if (originNodeType === "target") {
+            //         board.setTarget(dragEndPos)
+            //     } else if (originNodeType === null) {
+            //         // Logic for wall dragging here
+            //     }
+
+            //     // Check target value to determine which board function to call
+            // });
+
+        }
     }
-    
-    markFound() {
-        this.tile.classList.add("target-found")
-    }
+
 }

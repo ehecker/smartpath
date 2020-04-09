@@ -1,56 +1,88 @@
 import Tile from "./tile";
-import PolyTreeNode from "./algorithms/polytreenode";
 
 export default class Board { 
-
     constructor() {
         this.grid = [];
+        this.rootNode;
+        this.targetNode;
 
-        // this.fillGrid = this.fillGrid.bind(this);
+        this.lastNodeType;
+
+        this.validPos = this.validPos.bind(this);
+        this.setRoot = this.setRoot.bind(this);
+        this.setTarget = this.setTarget.bind(this);
     }
 
-    fillGrid() {   
-        // Create tiles, populate this.grid
+    fillGrid() { // Create tile objects, populate this.grid
         for (let i = 0; i < 25; i++) { // Board is 25 x 48, 1200 total tiles
             let row = [];
 
             for (let j = 0; j < 48; j++) {
-                let newTile = new Tile([i, j], this);
-                row.push(newTile);
+                if (i === 12 && j === 9) {
+                    let rootNode = new Tile("root", [i, j], this, true)
+                    rootNode.tile.classList.add("root-node")
+                    rootNode.tile.setAttribute("draggable", "true")
+                    this.rootNode = rootNode.node;
+                    row.push(rootNode)
+
+                } else if (i === 12 && j === 37) {
+                    let targetNode = new Tile("target", [i, j], this, true)
+                    targetNode.tile.classList.add("target-node")
+                    targetNode.tile.setAttribute("draggable", "true")
+                    this.targetNode = targetNode.node;
+                    row.push(targetNode)
+
+                } else {
+                    let newTile = new Tile(null, [i, j], this, true);
+                    row.push(newTile);
+                }
             }
 
             this.grid.push(row);
         }
-
-        // Set root node // Change these to ifs within for loop? Then use continue for each
-        this.grid[12][9].node = new PolyTreeNode("root", [12, 9], this.grid);
-        let rootNode = this.grid[12][9];
-        rootNode.tile.classList.add("root-node")
-        console.log("Root node set");
-
-        // Set target node
-        this.grid[17][29].node = new PolyTreeNode("target", [17, 29], this.grid);
-        let targetNode = this.grid[17][29];
-        targetNode.tile.classList.add("target-node")
-        console.log("Target node set");
-    }
-
-    validPos(pos) {
-        
     }
 
     setRoot(pos) {
-    
+        const oldX = this.rootNode.position[0];
+        const oldY = this.rootNode.position[1];
+        const x = pos[0];
+        const y = pos[1];
+
+        let oldRootTile = this.grid[oldX][oldY];
+        let oldNullTile = this.grid[x][y];
+
+        oldRootTile.node.value = null;
+        oldNullTile.node.value = "root";
+
+        oldRootTile.tile.classList.remove("root-node");
+        oldNullTile.tile.classList.add("root-node");
+
+        // Call setDraggingFunctions on both adjusted nodes here
+
+        this.rootNode = oldNullTile.node;
     }
 
     setTarget(pos) {
+        const oldX = this.targetNode.position[0];
+        const oldY = this.targetNode.position[1];
+        const x = pos[0];
+        const y = pos[1];
 
+        let oldTargetTile = this.grid[oldX][oldY];
+        let oldNullTile = this.grid[x][y];
+
+        oldTargetTile.node.value = null;
+        oldNullTile.node.value = "target";
+
+        oldTargetTile.tile.classList.remove("target-node");
+        oldNullTile.tile.classList.add("target-node");
+
+        // Call setDraggingFunctions on both adjusted nodes here
+
+        this.targetNode = oldNullTile.node;
     }
 
-    // reset() {
-    //     debugger
-    //     this.grid = [];
-    //     this.fillGrid();
-    // }
-
+    validPos(pos) {
+        return (pos[0] >= 0 && pos[0] < 25) && (pos[1] >= 0 && pos[1] < 48);
+    }
 }

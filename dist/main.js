@@ -115,12 +115,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var PolyTreeNode = /*#__PURE__*/function () {
-  function PolyTreeNode(value, position, grid) {
+  function PolyTreeNode(value, position, board) {
     _classCallCheck(this, PolyTreeNode);
 
     this.value = value;
     this.position = position;
-    this.grid = grid;
+    this.board = board;
+    this.grid = board.grid;
     this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1]));
     this.parent = null;
     this.children = [];
@@ -132,9 +133,37 @@ var PolyTreeNode = /*#__PURE__*/function () {
     this.visited.add(this.position.join("-"));
     this.visualize = this.visualize.bind(this);
     this.visualizeShortestPath = this.visualizeShortestPath.bind(this);
+    this.placeWall = this.placeWall.bind(this);
+    this.removeWall = this.removeWall.bind(this); // this.showChildren = this.showChildren.bind(this);
+    // this.hideChildren = this.hideChildren.bind(this);
+    // this.tileObj.addEventListener("mouseenter", this.showChildren)
+    // this.tileObj.addEventListener("mouseleave", this.hideChildren)
+    // if (this.value === "root") {
+    //     this.buildTree();
+    // }
+
+    if (this.value !== "root" && this.value !== "target") {
+      this.tileObj.addEventListener("click", this.placeWall);
+    }
   }
 
   _createClass(PolyTreeNode, [{
+    key: "showChildren",
+    value: function showChildren() {
+      this.tileObj.classList.add("parent");
+      this.children.forEach(function (child) {
+        child.tileObj.classList.add("child");
+      });
+    }
+  }, {
+    key: "hideChildren",
+    value: function hideChildren() {
+      this.tileObj.classList.remove("parent");
+      this.children.forEach(function (child) {
+        child.tileObj.classList.remove("child");
+      });
+    }
+  }, {
     key: "visualize",
     value: function visualize(visitedTiles, grid) {
       var viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
@@ -174,6 +203,11 @@ var PolyTreeNode = /*#__PURE__*/function () {
       while (queue.length > 0) {
         var currentNode = queue.shift();
 
+        if (currentNode.value === "wall") {
+          // debugger
+          continue;
+        }
+
         if (currentNode.value !== "root" && currentNode.value !== "target") {
           this.visitedTiles.push(currentNode.position);
         }
@@ -181,14 +215,14 @@ var PolyTreeNode = /*#__PURE__*/function () {
         if (currentNode.value === target) {
           this.visitedTiles.push(currentNode.position);
           this.findShortestPath();
-          this.visualize(this.visitedTiles, this.grid); // Visualize algorithm execution
-
+          this.visualize(this.visitedTiles, this.grid);
           return currentNode;
         }
 
         queue.push.apply(queue, _toConsumableArray(currentNode.children));
-      } // Logic for handling unsolvable grid goes here
+      }
 
+      console.log("Unsolvable grid detected"); // Logic for handling unsolvable grid goes here
     }
   }, {
     key: "dfs",
@@ -216,8 +250,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
   }, {
     key: "buildTree",
     value: function buildTree() {
-      var _this = this;
-
       var increments = [[-1, 0], // Up
       [0, 1], // Right
       [1, 0], // Down
@@ -234,32 +266,44 @@ var PolyTreeNode = /*#__PURE__*/function () {
 
       var neighbors = [this]; // This is a queue
 
-      var _loop = function _loop() {
+      while (neighbors.length > 0) {
         var currentNode = neighbors.shift();
-        increments.forEach(function (inc) {
-          var newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]]; // If the position is valid:
 
-          if (newPos[0] >= 0 && newPos[0] < 25 && newPos[1] >= 0 && newPos[1] < 48) {
-            if (_this.visited.has(newPos.join("-"))) {
-              return;
+        for (var i = 0; i < increments.length; i++) {
+          var inc = increments[i];
+          var newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
+
+          if (currentNode.board.validPos(newPos)) {
+            if (this.visited.has(newPos.join("-"))) {
+              // Call join on newPos to convert it to a valid keyname
+              continue;
             }
 
-            _this.visited.add(newPos.join("-")); // console.log(newPos.join("-"))
-
-
-            var neighborTile = _this.grid[newPos[0]][newPos[1]];
-            neighbors.push(neighborTile.node);
-            neighborTile.node.addParent(currentNode); // If the neighbor exists, has no parent, and is not already a child of the current node:
-            // if (neighborTile.node.parent === null && !currentNode.children.includes(neighborTile.node)) {
-            //     neighbors.push(neighborTile.node);
-            //     neighborTile.node.addParent(currentNode);
-            // }
+            this.visited.add(newPos.join("-"));
+            var neighborNode = this.grid[newPos[0]][newPos[1]].node;
+            neighborNode.addParent(currentNode);
+            neighbors.push(neighborNode);
           }
-        });
-      };
+        } // increments.forEach(inc => {
+        //     let newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
+        //     // If the position is valid:
+        //     if (newPos[0] >= 0 && newPos[0] < 25 && newPos[1] >= 0 && newPos[1] < 48) {
+        //     // if (this.board.validPos(newPos)) { // MAKE THIS.BOARD A THING               d
+        //         if (this.visited.has(newPos.join("-"))) {
+        //             return
+        //         }
+        //         this.visited.add(newPos.join("-"));
+        //         let neighborTile = this.grid[newPos[0]][newPos[1]];
+        //         neighbors.push(neighborTile.node);
+        //         neighborTile.node.addParent(currentNode);
+        //         // If the neighbor exists, has no parent, and is not already a child of the current node:
+        //         // if (neighborTile.node.parent === null && !currentNode.children.includes(neighborTile.node)) {
+        //         //     neighbors.push(neighborTile.node);
+        //         //     neighborTile.node.addParent(currentNode);
+        //         // }
+        //     }
+        // })
 
-      while (neighbors.length > 0) {
-        _loop();
       }
     }
   }, {
@@ -269,6 +313,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
       var currentNode = this.grid[targetNodePos[0]][targetNodePos[1]].node; // Very ugly way to get target node
 
       this.shortestPath.unshift(currentNode.position);
+      debugger;
 
       while (currentNode.value !== "root" && currentNode.parent.value !== "root") {
         this.shortestPath.unshift(currentNode.parent.position);
@@ -280,6 +325,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
     value: function addParent(parentNode) {
       if (this.parent !== null) {
         // Check to see if current node already has a parent
+        // debugger
         this.parent.removeChild(this); // Remove itself from old parent's children
       }
 
@@ -292,12 +338,25 @@ var PolyTreeNode = /*#__PURE__*/function () {
     key: "placeWall",
     value: function placeWall() {
       if (this.value !== "root" && this.value !== "target") {
+        // debugger
         this.value = "wall";
+        this.tileObj.classList.add("wall");
+        this.tileObj.removeEventListener("click", this.placeWall);
+        this.tileObj.addEventListener("click", this.removeWall);
+        console.log("Wall placed");
       }
     }
   }, {
     key: "removeWall",
-    value: function removeWall() {}
+    value: function removeWall() {
+      if (this.value === "wall") {
+        this.value = null;
+        this.tileObj.classList.remove("wall");
+        this.tileObj.removeEventListener("click", this.removeWall);
+        this.tileObj.addEventListener("click", this.placeWall);
+        console.log("Wall removed");
+      }
+    }
   }]);
 
   return PolyTreeNode;
@@ -318,7 +377,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Board; });
 /* harmony import */ var _tile__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tile */ "./src/tile.js");
-/* harmony import */ var _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./algorithms/polytreenode */ "./src/algorithms/polytreenode.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -327,55 +385,86 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
 var Board = /*#__PURE__*/function () {
   function Board() {
     _classCallCheck(this, Board);
 
-    this.grid = []; // this.fillGrid = this.fillGrid.bind(this);
+    this.grid = [];
+    this.rootNode;
+    this.targetNode;
+    this.lastNodeType;
+    this.validPos = this.validPos.bind(this);
+    this.setRoot = this.setRoot.bind(this);
+    this.setTarget = this.setTarget.bind(this);
   }
 
   _createClass(Board, [{
     key: "fillGrid",
     value: function fillGrid() {
-      // Create tiles, populate this.grid
+      // Create tile objects, populate this.grid
       for (var i = 0; i < 25; i++) {
         // Board is 25 x 48, 1200 total tiles
         var row = [];
 
         for (var j = 0; j < 48; j++) {
-          var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]([i, j], this);
-          row.push(newTile);
+          if (i === 12 && j === 9) {
+            var rootNode = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("root", [i, j], this, true);
+            rootNode.tile.classList.add("root-node");
+            rootNode.tile.setAttribute("draggable", "true");
+            this.rootNode = rootNode.node;
+            row.push(rootNode);
+          } else if (i === 12 && j === 37) {
+            var targetNode = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("target", [i, j], this, true);
+            targetNode.tile.classList.add("target-node");
+            targetNode.tile.setAttribute("draggable", "true");
+            this.targetNode = targetNode.node;
+            row.push(targetNode);
+          } else {
+            var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"](null, [i, j], this, true);
+            row.push(newTile);
+          }
         }
 
         this.grid.push(row);
-      } // Set root node // Change these to ifs within for loop? Then use continue for each
+      }
+    }
+  }, {
+    key: "setRoot",
+    value: function setRoot(pos) {
+      var oldX = this.rootNode.position[0];
+      var oldY = this.rootNode.position[1];
+      var x = pos[0];
+      var y = pos[1];
+      var oldRootTile = this.grid[oldX][oldY];
+      var oldNullTile = this.grid[x][y];
+      oldRootTile.node.value = null;
+      oldNullTile.node.value = "root";
+      oldRootTile.tile.classList.remove("root-node");
+      oldNullTile.tile.classList.add("root-node"); // Call setDraggingFunctions on both adjusted nodes here
 
+      this.rootNode = oldNullTile.node;
+    }
+  }, {
+    key: "setTarget",
+    value: function setTarget(pos) {
+      var oldX = this.targetNode.position[0];
+      var oldY = this.targetNode.position[1];
+      var x = pos[0];
+      var y = pos[1];
+      var oldTargetTile = this.grid[oldX][oldY];
+      var oldNullTile = this.grid[x][y];
+      oldTargetTile.node.value = null;
+      oldNullTile.node.value = "target";
+      oldTargetTile.tile.classList.remove("target-node");
+      oldNullTile.tile.classList.add("target-node"); // Call setDraggingFunctions on both adjusted nodes here
 
-      this.grid[12][9].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("root", [12, 9], this.grid);
-      var rootNode = this.grid[12][9];
-      rootNode.tile.classList.add("root-node");
-      console.log("Root node set"); // Set target node
-
-      this.grid[17][29].node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_1__["default"]("target", [17, 29], this.grid);
-      var targetNode = this.grid[17][29];
-      targetNode.tile.classList.add("target-node");
-      console.log("Target node set");
+      this.targetNode = oldNullTile.node;
     }
   }, {
     key: "validPos",
-    value: function validPos(pos) {}
-  }, {
-    key: "setRoot",
-    value: function setRoot(pos) {}
-  }, {
-    key: "setTarget",
-    value: function setTarget(pos) {} // reset() {
-    //     debugger
-    //     this.grid = [];
-    //     this.fillGrid();
-    // }
-
+    value: function validPos(pos) {
+      return pos[0] >= 0 && pos[0] < 25 && pos[1] >= 0 && pos[1] < 48;
+    }
   }]);
 
   return Board;
@@ -419,10 +508,12 @@ document.addEventListener("DOMContentLoaded", function () {
   dfsButton.addEventListener("click", setAlgo); // Add functionality to Visualize button
 
   function runAlgorithm() {
-    var rootNode = board.grid[12][9].node;
+    var rootNode = board.rootNode;
 
     switch (algorithm) {
       case "bfs-btn":
+        // rootnode = board.grid[12][9].node; // Temporarily remove reset functionality to account for walls
+        // reset();
         rootNode.buildTree();
         console.log("Node tree built");
         rootNode.bfs("target");
@@ -430,6 +521,8 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
 
       case "dfs-btn":
+        // rootnode = board.grid[12][9].node;
+        // reset();
         rootNode.buildTree();
         console.log("Node tree built");
         rootNode.dfs("target");
@@ -447,7 +540,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function reset() {
     var grid = document.getElementById("grid");
     grid.innerHTML = "";
-    board.grid = [];
+    board.grid = []; // board.lastNodeType = "";
+
     console.log("Board cleared");
     board.fillGrid();
   }
@@ -478,29 +572,92 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 var Tile = /*#__PURE__*/function () {
-  function Tile(position, board) {
+  function Tile(nodeValue, position, board) {
     _classCallCheck(this, Tile);
 
     this.position = position;
-    this.board = board; // Do I actually need this?
-
+    this.board = board;
     this.tile = document.createElement("div");
     this.tile.classList.add("tile");
     this.tile.id = "".concat(position[0], "-").concat(position[1]);
     var grid = document.getElementById("grid");
     grid.appendChild(this.tile);
-    this.node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_0__["default"](null, position, board.grid);
+    this.node = new _algorithms_polytreenode__WEBPACK_IMPORTED_MODULE_0__["default"](nodeValue, position, board); // This MUST come after this.tile's id is set
+
+    this.setDraggingFunctions();
   }
 
   _createClass(Tile, [{
-    key: "visit",
-    value: function visit() {
-      this.tile.classList.add("visited");
-    }
-  }, {
-    key: "markFound",
-    value: function markFound() {
-      this.tile.classList.add("target-found");
+    key: "setDraggingFunctions",
+    value: function setDraggingFunctions() {
+      var board = this.board;
+
+      var handleDragStart = function handleDragStart(event) {
+        console.log("Drag start fired");
+        var tileId = event.target.id.split("-");
+        var dragStartPos = [+tileId[0], +tileId[1]];
+        board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
+      };
+
+      var handleDragEnter = function handleDragEnter(event) {
+        console.log("Drag enter fired");
+        event.preventDefault();
+      };
+
+      var handleDragOver = function handleDragOver(event) {
+        console.log("Drag over fired");
+        event.preventDefault();
+      };
+
+      var handleDrop = function handleDrop(event) {
+        console.log("Drop fired");
+        event.preventDefault();
+        var tileId = event.target.id.split("-");
+        var dragEndPos = [+tileId[0], +tileId[1]];
+
+        if (board.lastNodeType === "root") {
+          board.setRoot(dragEndPos);
+        } else if (board.lastNodeType === "target") {
+          board.setTarget(dragEndPos);
+        } else if (board.lastNodeType === null) {// Logic for wall dragging here
+        }
+      };
+
+      if (this.node.value === "root" || this.node.value === "target") {
+        // this.tile.addEventListener("dragstart", (event) => {
+        //     console.log("Dragstart fired")
+        //     let tileId = event.target.id.split("-");
+        //     let dragStartPos = [+tileId[0], +tileId[1]];
+        //     originNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
+        // });
+        this.tile.addEventListener("dragstart", handleDragStart);
+      } else {
+        this.tile.addEventListener("dragenter", handleDragEnter);
+        this.tile.addEventListener("dragover", handleDragOver);
+        this.tile.addEventListener("drop", handleDrop); // this.tile.addEventListener("dragenter", (event) => {
+        //     console.log("Drag enter fired")
+        //     event.preventDefault()
+        // })
+        // this.tile.addEventListener("dragover", (event) => {
+        //     console.log("Drag over fired")
+        //     event.preventDefault()
+        // })
+        // this.tile.addEventListener("drop", (event) => {
+        //     console.log("Drop fired")
+        //     event.preventDefault();
+        //     // debugger
+        //     let tileId= event.target.id.split("-");
+        //     let dragEndPos = [+tileId[0], +tileId[1]];
+        //     if (originNodeType === "root") {
+        //         board.setRoot(dragEndPos)
+        //     } else if (originNodeType === "target") {
+        //         board.setTarget(dragEndPos)
+        //     } else if (originNodeType === null) {
+        //         // Logic for wall dragging here
+        //     }
+        //     // Check target value to determine which board function to call
+        // });
+      }
     }
   }]);
 

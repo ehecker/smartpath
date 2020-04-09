@@ -28,10 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add functionality to Visualize button
     function runAlgorithm() {
-        let rootNode = board.grid[12][9].node;
+        let rootNode = board.rootNode;
 
         switch (algorithm) {
             case "bfs-btn":
+                // rootnode = board.grid[12][9].node; // Temporarily remove reset functionality to account for walls
+                // reset();
                 rootNode.buildTree();
                 console.log("Node tree built")
 
@@ -39,6 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("BFS executed");
                 break;
             case "dfs-btn":
+                // rootnode = board.grid[12][9].node;
+                // reset();
                 rootNode.buildTree();
                 console.log("Node tree built")
 
@@ -59,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         grid.innerHTML = "";
         
         board.grid = [];
+        // board.lastNodeType = "";
         console.log("Board cleared")
         board.fillGrid();
     }

@@ -1,9 +1,10 @@
 export default class PolyTreeNode {
 
-    constructor(value, position, grid) {
+    constructor(value, position, board) {
         this.value = value;
         this.position = position;
-        this.grid = grid;
+        this.board = board;
+        this.grid = board.grid;
 
         this.tileObj = document.getElementById(`${position[0]}-${position[1]}`);
 
@@ -18,6 +19,37 @@ export default class PolyTreeNode {
 
         this.visualize = this.visualize.bind(this);
         this.visualizeShortestPath = this.visualizeShortestPath.bind(this);
+
+        this.placeWall = this.placeWall.bind(this);
+        this.removeWall = this.removeWall.bind(this);
+
+        // this.showChildren = this.showChildren.bind(this);
+        // this.hideChildren = this.hideChildren.bind(this);
+
+        // this.tileObj.addEventListener("mouseenter", this.showChildren)
+        // this.tileObj.addEventListener("mouseleave", this.hideChildren)
+
+        // if (this.value === "root") {
+        //     this.buildTree();
+        // }
+
+        if (this.value !== "root" && this.value !== "target") {
+            this.tileObj.addEventListener("click", this.placeWall)
+        }
+    }
+
+    showChildren() {
+        this.tileObj.classList.add("parent")
+        this.children.forEach(child => {
+            child.tileObj.classList.add("child")
+        })
+    }
+
+    hideChildren() {
+        this.tileObj.classList.remove("parent")
+        this.children.forEach(child => {
+            child.tileObj.classList.remove("child")
+        })
     }
 
     visualize(visitedTiles, grid) {
@@ -60,6 +92,11 @@ export default class PolyTreeNode {
 
             let currentNode = queue.shift();
 
+            if (currentNode.value === "wall") {
+                // debugger
+                continue
+            }
+
             if (currentNode.value !== "root" && currentNode.value !== "target") {
                 this.visitedTiles.push(currentNode.position)
             }
@@ -67,13 +104,13 @@ export default class PolyTreeNode {
             if (currentNode.value === target) {
                 this.visitedTiles.push(currentNode.position)
                 this.findShortestPath();
-                this.visualize(this.visitedTiles, this.grid); // Visualize algorithm execution
+                this.visualize(this.visitedTiles, this.grid);
                 return currentNode;
             }
             
             queue.push(...currentNode.children);
         }
-
+        console.log("Unsolvable grid detected")
         // Logic for handling unsolvable grid goes here
     }
 
@@ -125,33 +162,49 @@ export default class PolyTreeNode {
 
         while (neighbors.length > 0) {
             let currentNode = neighbors.shift();
-            
-            increments.forEach(inc => {
+
+            for (let i = 0; i < increments.length; i++) {
+                let inc = increments[i];
                 let newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
-                
 
-                // If the position is valid:
-                if (newPos[0] >= 0 && newPos[0] < 25 && newPos[1] >= 0 && newPos[1] < 48) {
+                if (currentNode.board.validPos(newPos)) {
 
-                    if (this.visited.has(newPos.join("-"))) {
-                        return
+                    if (this.visited.has(newPos.join("-"))) { // Call join on newPos to convert it to a valid keyname
+                        continue;
                     }
-    
+
                     this.visited.add(newPos.join("-"));
 
-                    // console.log(newPos.join("-"))
-
-                    let neighborTile = this.grid[newPos[0]][newPos[1]];
-                    neighbors.push(neighborTile.node);
-                    neighborTile.node.addParent(currentNode);
-
-                    // If the neighbor exists, has no parent, and is not already a child of the current node:
-                    // if (neighborTile.node.parent === null && !currentNode.children.includes(neighborTile.node)) {
-                    //     neighbors.push(neighborTile.node);
-                    //     neighborTile.node.addParent(currentNode);
-                    // }
+                    let neighborNode = this.grid[newPos[0]][newPos[1]].node;
+                    neighborNode.addParent(currentNode)
+                    neighbors.push(neighborNode);
                 }
-            })
+            }
+
+            // increments.forEach(inc => {
+            //     let newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
+
+            //     // If the position is valid:
+            //     if (newPos[0] >= 0 && newPos[0] < 25 && newPos[1] >= 0 && newPos[1] < 48) {
+            //     // if (this.board.validPos(newPos)) { // MAKE THIS.BOARD A THING               d
+
+            //         if (this.visited.has(newPos.join("-"))) {
+            //             return
+            //         }
+    
+            //         this.visited.add(newPos.join("-"));
+
+            //         let neighborTile = this.grid[newPos[0]][newPos[1]];
+            //         neighbors.push(neighborTile.node);
+            //         neighborTile.node.addParent(currentNode);
+
+            //         // If the neighbor exists, has no parent, and is not already a child of the current node:
+            //         // if (neighborTile.node.parent === null && !currentNode.children.includes(neighborTile.node)) {
+            //         //     neighbors.push(neighborTile.node);
+            //         //     neighborTile.node.addParent(currentNode);
+            //         // }
+            //     }
+            // })
 
         }
 
@@ -162,9 +215,8 @@ export default class PolyTreeNode {
         let currentNode = this.grid[targetNodePos[0]][targetNodePos[1]].node; // Very ugly way to get target node
 
         this.shortestPath.unshift(currentNode.position);
-
+        debugger
         while (currentNode.value !== "root" && currentNode.parent.value !== "root") {
-            
             this.shortestPath.unshift(currentNode.parent.position)
             currentNode = currentNode.parent;
         }
@@ -173,6 +225,7 @@ export default class PolyTreeNode {
 
     addParent(parentNode) {
         if (this.parent !== null) { // Check to see if current node already has a parent
+            // debugger
             this.parent.removeChild(this) // Remove itself from old parent's children
         }
 
@@ -183,16 +236,24 @@ export default class PolyTreeNode {
     }
 
     placeWall() {
-
         if (this.value !== "root" && this.value !== "target") {
+            // debugger
             this.value = "wall";
-
+            this.tileObj.classList.add("wall")
+            this.tileObj.removeEventListener("click", this.placeWall)
+            this.tileObj.addEventListener("click", this.removeWall)
+            console.log("Wall placed")
         }
-
     }
 
     removeWall() {
-
+        if (this.value === "wall") {
+            this.value = null;
+            this.tileObj.classList.remove("wall")
+            this.tileObj.removeEventListener("click", this.removeWall)
+            this.tileObj.addEventListener("click", this.placeWall);
+            console.log("Wall removed")
+        }
     }
 
 }
