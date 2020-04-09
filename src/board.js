@@ -57,7 +57,8 @@ export default class Board {
         oldRootTile.tile.classList.remove("root-node");
         oldNullTile.tile.classList.add("root-node");
 
-        // Call setDraggingFunctions on both adjusted nodes here
+        oldRootTile.setDraggingFunctions();
+        oldNullTile.setDraggingFunctions();
 
         this.rootNode = oldNullTile.node;
     }
@@ -77,7 +78,8 @@ export default class Board {
         oldTargetTile.tile.classList.remove("target-node");
         oldNullTile.tile.classList.add("target-node");
 
-        // Call setDraggingFunctions on both adjusted nodes here
+        oldTargetTile.setDraggingFunctions();
+        oldNullTile.setDraggingFunctions();
 
         this.targetNode = oldNullTile.node;
     }

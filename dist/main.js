@@ -440,8 +440,9 @@ var Board = /*#__PURE__*/function () {
       oldRootTile.node.value = null;
       oldNullTile.node.value = "root";
       oldRootTile.tile.classList.remove("root-node");
-      oldNullTile.tile.classList.add("root-node"); // Call setDraggingFunctions on both adjusted nodes here
-
+      oldNullTile.tile.classList.add("root-node");
+      oldRootTile.setDraggingFunctions();
+      oldNullTile.setDraggingFunctions();
       this.rootNode = oldNullTile.node;
     }
   }, {
@@ -456,8 +457,9 @@ var Board = /*#__PURE__*/function () {
       oldTargetTile.node.value = null;
       oldNullTile.node.value = "target";
       oldTargetTile.tile.classList.remove("target-node");
-      oldNullTile.tile.classList.add("target-node"); // Call setDraggingFunctions on both adjusted nodes here
-
+      oldNullTile.tile.classList.add("target-node");
+      oldTargetTile.setDraggingFunctions();
+      oldNullTile.setDraggingFunctions();
       this.targetNode = oldNullTile.node;
     }
   }, {
