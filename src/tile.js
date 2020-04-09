@@ -54,54 +54,12 @@ export default class Tile {
             }
         }
 
-        
-        
-
         if (this.node.value === "root" || this.node.value === "target") {
-            // this.tile.addEventListener("dragstart", (event) => {
-            //     console.log("Dragstart fired")
-
-            //     let tileId = event.target.id.split("-");
-            //     let dragStartPos = [+tileId[0], +tileId[1]];
-            //     originNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
-            // });
             this.tile.addEventListener("dragstart", handleDragStart)
-
         } else {
             this.tile.addEventListener("dragenter", handleDragEnter)
             this.tile.addEventListener("dragover", handleDragOver)
             this.tile.addEventListener("drop", handleDrop)
-
-            // this.tile.addEventListener("dragenter", (event) => {
-            //     console.log("Drag enter fired")
-            //     event.preventDefault()
-            // })
-
-            // this.tile.addEventListener("dragover", (event) => {
-            //     console.log("Drag over fired")
-            //     event.preventDefault()
-            // })
-
-            // this.tile.addEventListener("drop", (event) => {
-            //     console.log("Drop fired")
-            //     event.preventDefault();
-
-            //     // debugger
-
-            //     let tileId= event.target.id.split("-");
-            //     let dragEndPos = [+tileId[0], +tileId[1]];
-
-            //     if (originNodeType === "root") {
-            //         board.setRoot(dragEndPos)
-            //     } else if (originNodeType === "target") {
-            //         board.setTarget(dragEndPos)
-            //     } else if (originNodeType === null) {
-            //         // Logic for wall dragging here
-            //     }
-
-            //     // Check target value to determine which board function to call
-            // });
-
         }
     }
 

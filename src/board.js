@@ -25,7 +25,7 @@ export default class Board {
                     this.rootNode = rootNode.node;
                     row.push(rootNode)
 
-                } else if (i === 12 && j === 37) {
+                } else if (i === 12 && j === 38) {
                     let targetNode = new Tile("target", [i, j], this, true)
                     targetNode.tile.classList.add("target-node")
                     targetNode.tile.setAttribute("draggable", "true")
@@ -57,6 +57,8 @@ export default class Board {
         oldRootTile.tile.classList.remove("root-node");
         oldNullTile.tile.classList.add("root-node");
 
+        oldNullTile.tile.setAttribute("draggable", "true")
+
         oldRootTile.setDraggingFunctions();
         oldNullTile.setDraggingFunctions();
 
@@ -77,6 +79,8 @@ export default class Board {
 
         oldTargetTile.tile.classList.remove("target-node");
         oldNullTile.tile.classList.add("target-node");
+
+        oldNullTile.tile.setAttribute("draggable", "true")
 
         oldTargetTile.setDraggingFunctions();
         oldNullTile.setDraggingFunctions();
