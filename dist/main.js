@@ -134,13 +134,12 @@ var PolyTreeNode = /*#__PURE__*/function () {
     this.visualize = this.visualize.bind(this);
     this.visualizeShortestPath = this.visualizeShortestPath.bind(this);
     this.placeWall = this.placeWall.bind(this);
-    this.removeWall = this.removeWall.bind(this); // this.showChildren = this.showChildren.bind(this);
-    // this.hideChildren = this.hideChildren.bind(this);
-    // this.tileObj.addEventListener("mouseenter", this.showChildren)
-    // this.tileObj.addEventListener("mouseleave", this.hideChildren)
-    // if (this.value === "root") {
-    //     this.buildTree();
-    // }
+    this.removeWall = this.removeWall.bind(this); // Comment these in or out to toggle showing children on hover.
+
+    this.showChildren = this.showChildren.bind(this);
+    this.hideChildren = this.hideChildren.bind(this);
+    this.tileObj.addEventListener("mouseenter", this.showChildren);
+    this.tileObj.addEventListener("mouseleave", this.hideChildren);
 
     if (this.value !== "root" && this.value !== "target") {
       this.tileObj.addEventListener("click", this.placeWall);
@@ -205,7 +204,8 @@ var PolyTreeNode = /*#__PURE__*/function () {
 
         if (currentNode.value !== "root" && currentNode.value !== "target" && currentNode.value !== "wall") {
           this.visitedTiles.push(currentNode.position);
-        }
+        } // if value === wall, push currentNode.children into queue[0].children ????
+
 
         if (currentNode.value === target) {
           this.visitedTiles.push(currentNode.position);
@@ -245,18 +245,104 @@ var PolyTreeNode = /*#__PURE__*/function () {
   }, {
     key: "buildTree",
     value: function buildTree() {
-      var increments = [[-1, 0], // Up
-      [0, 1], // Right
-      [1, 0], // Down
-      [0, -1] // Left
+      // Maybe I DON'T want to build the tree from the root node???
+      var increments = [// // UP FIRST OPTIONS
+      // [-1, 0], // Up // Default
+      // [0, 1], // Right
       // [1, 0], // Down
+      // [0, -1] // Left
+      // [-1, 0], // No blatant issues
+      // [0, 1],
+      // [0, -1],
+      // [1, 0]
+      // [-1, 0],
+      // [0, -1], // Left second
+      // [0, 1],
+      // [1, 0]
+      // [-1, 0], // Interesting DFS
+      // [0, -1],
+      // [1, 0],
+      // [0, 1]
+      // [-1, 0], // Down second
+      // [1, 0],
+      // [0, -1],
+      // [0, 1]
+      // [-1, 0],
+      // [1, 0],
+      // [0, 1],
+      // [0, -1]
+      // RIGHT FIRST OPTIONS
+      [0, 1], // Very interesting
+      [1, 0], [-1, 0], [0, -1] // [0, 1], // This one breaks, only searches down and right.
+      // [1, 0], // Down
+      // [0, -1] // Left
+      // [-1, 0], // Up
+      // [0, 1],
+      // [0, -1],
+      // [1, 0],
+      // [-1, 0]
+      // [0, 1],
+      // [0, -1],
+      // [-1, 0],
+      // [1, 0]
+      // [0, 1],
+      // [-1, 0],
+      // [0, -1],
+      // [1, 0]
+      // [0, 1],
+      // [-1, 0],
+      // [1, 0],
+      // [0, -1]
+      // DOWN FIRST OPTIONS
+      // [1, 0], // Down // Second try
       // [0, -1], // Left
       // [-1, 0], // Up
       // [0, 1] // Right
-      // [0, 1] // Why does this one break everything?
       // [1, 0],
+      // [0, -1],
+      // [0, 1],
+      // [-1, 0]
+      // [1, 0],
+      // [0, 1],
+      // [0, -1],
+      // [-1, 0]
+      // [1, 0],
+      // [0, 1],
       // [-1, 0],
       // [0, -1]
+      // [1, 0],
+      // [-1, 0],
+      // [0, 1],
+      // [0, -1]
+      // [1, 0],
+      // [-1, 0],
+      // [0, -1],
+      // [0, 1]
+      // LEFT FIRST OPTIONS
+      // [0, -1],
+      // [-1, 0],
+      // [0, 1],
+      // [1, 0]
+      // [0, -1],
+      // [-1, 0],
+      // [1, 0],
+      // [0, 1]
+      // [0, -1],
+      // [1, 0],
+      // [-1, 0],
+      // [0, 1]
+      // [0, -1],
+      // [1, 0],
+      // [0, 1],
+      // [-1, 0]
+      // [0, -1],
+      // [0, 1],
+      // [1, 0],
+      // [-1, 0]
+      // [0, -1],
+      // [0, 1],
+      // [-1, 0],
+      // [1, 0]
       ]; // buildTree function will use the node on which it is called as the root node of the tree
 
       var neighbors = [this]; // This is a queue
@@ -308,7 +394,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
       var currentNode = this.grid[targetNodePos[0]][targetNodePos[1]].node; // Very ugly way to get target node
 
       this.shortestPath.unshift(currentNode.position);
-      debugger;
 
       while (currentNode.value !== "root" && currentNode.parent.value !== "root") {
         this.shortestPath.unshift(currentNode.parent.position);
@@ -320,7 +405,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
     value: function addParent(parentNode) {
       if (this.parent !== null) {
         // Check to see if current node already has a parent
-        // debugger
         this.parent.removeChild(this); // Remove itself from old parent's children
       }
 
@@ -483,7 +567,7 @@ var Board = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board */ "./src/board.js");
- // This is the Smartpath application's entry file
+ // Smartpath Entry File:
 
 document.addEventListener("DOMContentLoaded", function () {
   // Create and fill board
@@ -495,7 +579,7 @@ document.addEventListener("DOMContentLoaded", function () {
     algorithm = event.target.id;
   }
 
-  var algorithm = "bfs-btn"; // Default algorithm
+  var algorithm = "bfs-btn"; // Set default algorithm
 
   var dijkstrasButton = document.getElementById("dijkstras-btn");
   var astarButton = document.getElementById("astar-btn");
@@ -511,8 +595,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (algorithm) {
       case "bfs-btn":
-        // rootnode = board.grid[12][9].node; // Temporarily remove reset functionality to account for walls
-        // reset();
         rootNode.buildTree();
         console.log("Node tree built");
         rootNode.bfs("target");
@@ -520,8 +602,6 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
 
       case "dfs-btn":
-        // rootnode = board.grid[12][9].node;
-        // reset();
         rootNode.buildTree();
         console.log("Node tree built");
         rootNode.dfs("target");
@@ -534,13 +614,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   var visButton = document.getElementById("vis-button");
-  visButton.addEventListener("click", runAlgorithm); // Add functionality to Clear button
+  visButton.addEventListener("click", runAlgorithm); // Add functionality to Reset button
 
   function reset() {
     var grid = document.getElementById("grid");
     grid.innerHTML = "";
-    board.grid = []; // board.lastNodeType = "";
-
+    board.grid = [];
     console.log("Board cleared");
     board.fillGrid();
   }

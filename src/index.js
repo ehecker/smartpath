@@ -1,6 +1,6 @@
 import Board from "./board";
 
-// This is the Smartpath application's entry file
+// Smartpath Entry File:
 document.addEventListener("DOMContentLoaded", () => {
 
     // Create and fill board
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
         algorithm = event.target.id;
     }
 
-    let algorithm = "bfs-btn"; // Default algorithm
+    let algorithm = "bfs-btn"; // Set default algorithm
        
     const dijkstrasButton = document.getElementById("dijkstras-btn");
     const astarButton = document.getElementById("astar-btn");
@@ -32,8 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         switch (algorithm) {
             case "bfs-btn":
-                // rootnode = board.grid[12][9].node; // Temporarily remove reset functionality to account for walls
-                // reset();
                 rootNode.buildTree();
                 console.log("Node tree built")
 
@@ -41,8 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("BFS executed");
                 break;
             case "dfs-btn":
-                // rootnode = board.grid[12][9].node;
-                // reset();
                 rootNode.buildTree();
                 console.log("Node tree built")
 
@@ -54,20 +50,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    let visButton = document.getElementById("vis-button");
+    const visButton = document.getElementById("vis-button");
     visButton.addEventListener("click", runAlgorithm);
 
-    // Add functionality to Clear button
+    // Add functionality to Reset button
     function reset() {
         let grid = document.getElementById("grid");
         grid.innerHTML = "";
         
         board.grid = [];
-        // board.lastNodeType = "";
         console.log("Board cleared")
         board.fillGrid();
     }
 
-    let resetButton = document.getElementById("reset-button");
+    const resetButton = document.getElementById("reset-button");
     resetButton.addEventListener("click", reset)
 })

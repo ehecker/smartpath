@@ -23,15 +23,12 @@ export default class PolyTreeNode {
         this.placeWall = this.placeWall.bind(this);
         this.removeWall = this.removeWall.bind(this);
 
-        // this.showChildren = this.showChildren.bind(this);
-        // this.hideChildren = this.hideChildren.bind(this);
 
-        // this.tileObj.addEventListener("mouseenter", this.showChildren)
-        // this.tileObj.addEventListener("mouseleave", this.hideChildren)
-
-        // if (this.value === "root") {
-        //     this.buildTree();
-        // }
+        // Comment these in or out to toggle showing children on hover.
+        this.showChildren = this.showChildren.bind(this);
+        this.hideChildren = this.hideChildren.bind(this);
+        this.tileObj.addEventListener("mouseenter", this.showChildren)
+        this.tileObj.addEventListener("mouseleave", this.hideChildren)
 
         if (this.value !== "root" && this.value !== "target") {
             this.tileObj.addEventListener("click", this.placeWall)
@@ -95,6 +92,8 @@ export default class PolyTreeNode {
                 this.visitedTiles.push(currentNode.position)
             }
 
+            // if value === wall, push currentNode.children into queue[0].children ????
+
             if (currentNode.value === target) {
                 this.visitedTiles.push(currentNode.position)
                 this.findShortestPath();
@@ -133,22 +132,136 @@ export default class PolyTreeNode {
 
     }
 
-    buildTree() {
+    buildTree() { // Maybe I DON'T want to build the tree from the root node???
         const increments = [
-            [-1, 0], // Up
-            [0, 1], // Right
-            [1, 0], // Down
-            [0, -1] // Left
 
+            // // UP FIRST OPTIONS
+            // [-1, 0], // Up // Default
+            // [0, 1], // Right
             // [1, 0], // Down
+            // [0, -1] // Left
+
+            // [-1, 0], // No blatant issues
+            // [0, 1],
+            // [0, -1],
+            // [1, 0]
+
+            // [-1, 0],
+            // [0, -1], // Left second
+            // [0, 1],
+            // [1, 0]
+
+            // [-1, 0], // Interesting DFS
+            // [0, -1],
+            // [1, 0],
+            // [0, 1]
+
+            // [-1, 0], // Down second
+            // [1, 0],
+            // [0, -1],
+            // [0, 1]
+
+            // [-1, 0],
+            // [1, 0],
+            // [0, 1],
+            // [0, -1]
+
+            // RIGHT FIRST OPTIONS
+
+            [0, 1], // Very interesting
+            [1, 0],
+            [-1, 0],
+            [0, -1]
+
+            // [0, 1], // This one breaks, only searches down and right.
+            // [1, 0], // Down
+            // [0, -1] // Left
+            // [-1, 0], // Up
+
+            // [0, 1],
+            // [0, -1],
+            // [1, 0],
+            // [-1, 0]
+
+            // [0, 1],
+            // [0, -1],
+            // [-1, 0],
+            // [1, 0]
+
+            // [0, 1],
+            // [-1, 0],
+            // [0, -1],
+            // [1, 0]
+
+            // [0, 1],
+            // [-1, 0],
+            // [1, 0],
+            // [0, -1]
+
+            // DOWN FIRST OPTIONS
+
+            // [1, 0], // Down // Second try
             // [0, -1], // Left
             // [-1, 0], // Up
             // [0, 1] // Right
 
-            // [0, 1] // Why does this one break everything?
             // [1, 0],
+            // [0, -1],
+            // [0, 1],
+            // [-1, 0]
+
+            // [1, 0],
+            // [0, 1],
+            // [0, -1],
+            // [-1, 0]
+            
+            // [1, 0],
+            // [0, 1],
             // [-1, 0],
             // [0, -1]
+
+            // [1, 0],
+            // [-1, 0],
+            // [0, 1],
+            // [0, -1]
+
+            // [1, 0],
+            // [-1, 0],
+            // [0, -1],
+            // [0, 1]
+
+            // LEFT FIRST OPTIONS
+
+            // [0, -1],
+            // [-1, 0],
+            // [0, 1],
+            // [1, 0]
+
+            // [0, -1],
+            // [-1, 0],
+            // [1, 0],
+            // [0, 1]
+
+            // [0, -1],
+            // [1, 0],
+            // [-1, 0],
+            // [0, 1]
+
+            // [0, -1],
+            // [1, 0],
+            // [0, 1],
+            // [-1, 0]
+
+            // [0, -1],
+            // [0, 1],
+            // [1, 0],
+            // [-1, 0]
+
+            // [0, -1],
+            // [0, 1],
+            // [-1, 0],
+            // [1, 0]
+
         ];
 
         // buildTree function will use the node on which it is called as the root node of the tree
@@ -209,7 +322,7 @@ export default class PolyTreeNode {
         let currentNode = this.grid[targetNodePos[0]][targetNodePos[1]].node; // Very ugly way to get target node
 
         this.shortestPath.unshift(currentNode.position);
-        debugger
+
         while (currentNode.value !== "root" && currentNode.parent.value !== "root") {
             this.shortestPath.unshift(currentNode.parent.position)
             currentNode = currentNode.parent;
@@ -219,7 +332,6 @@ export default class PolyTreeNode {
 
     addParent(parentNode) {
         if (this.parent !== null) { // Check to see if current node already has a parent
-            // debugger
             this.parent.removeChild(this) // Remove itself from old parent's children
         }
 
