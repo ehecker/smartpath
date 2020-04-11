@@ -132,17 +132,11 @@ var PolyTreeNode = /*#__PURE__*/function () {
 
     this.visited.add(this.position.join("-"));
     this.visualize = this.visualize.bind(this);
-    this.visualizeShortestPath = this.visualizeShortestPath.bind(this);
-    this.placeWall = this.placeWall.bind(this);
-    this.removeWall = this.removeWall.bind(this); // Comment these in or out to toggle showing children on hover.
+    this.visualizeShortestPath = this.visualizeShortestPath.bind(this); // Comment these in to toggle showing children on hover.
     // this.showChildren = this.showChildren.bind(this);
     // this.hideChildren = this.hideChildren.bind(this);
     // this.tileObj.addEventListener("mouseenter", this.showChildren)
     // this.tileObj.addEventListener("mouseleave", this.hideChildren)
-
-    if (this.value !== "root" && this.value !== "target") {
-      this.tileObj.addEventListener("click", this.placeWall);
-    }
   }
 
   _createClass(PolyTreeNode, [{
@@ -298,28 +292,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
         parentNode.children.push(this);
       }
     }
-  }, {
-    key: "placeWall",
-    value: function placeWall() {
-      if (this.value !== "root" && this.value !== "target") {
-        this.value = "wall";
-        this.tileObj.classList.add("wall");
-        this.tileObj.removeEventListener("click", this.placeWall);
-        this.tileObj.addEventListener("click", this.removeWall);
-        console.log("Wall placed");
-      }
-    }
-  }, {
-    key: "removeWall",
-    value: function removeWall() {
-      if (this.value === "wall") {
-        this.value = null;
-        this.tileObj.classList.remove("wall");
-        this.tileObj.removeEventListener("click", this.removeWall);
-        this.tileObj.addEventListener("click", this.placeWall);
-        console.log("Wall removed");
-      }
-    }
   }]);
 
   return PolyTreeNode;
@@ -384,6 +356,7 @@ var Board = /*#__PURE__*/function () {
             row.push(targetNode);
           } else {
             var newTile = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"](null, [i, j], this, true);
+            newTile.tile.setAttribute("draggable", "true");
             row.push(newTile);
           }
         }
@@ -394,6 +367,7 @@ var Board = /*#__PURE__*/function () {
   }, {
     key: "setRoot",
     value: function setRoot(pos) {
+      // Change variables in this & setTarget to newRootTile/newNullTile
       var oldX = this.rootNode.position[0];
       var oldY = this.rootNode.position[1];
       var x = pos[0];
@@ -564,6 +538,16 @@ var Tile = /*#__PURE__*/function () {
       var handleDragEnter = function handleDragEnter(event) {
         console.log("Drag enter fired");
         event.preventDefault();
+        var tileId = event.target.id.split("-");
+        var currentTile = board.grid[+tileId[0]][+tileId[1]];
+
+        if (board.lastNodeType === "wall" || board.lastNodeType === null) {
+          if (currentTile.node.value === "wall") {
+            currentTile.removeWall();
+          } else if (currentTile.node.value === null) {
+            currentTile.placeWall();
+          }
+        }
       };
 
       var handleDragOver = function handleDragOver(event) {
@@ -581,17 +565,31 @@ var Tile = /*#__PURE__*/function () {
           board.setRoot(dragEndPos);
         } else if (board.lastNodeType === "target") {
           board.setTarget(dragEndPos);
-        } else if (board.lastNodeType === null) {// Logic for wall dragging here
         }
-      };
+      }; // All tiles listen for dragstart
 
-      if (this.node.value === "root" || this.node.value === "target") {
-        this.tile.addEventListener("dragstart", handleDragStart);
-      } else {
+
+      this.tile.addEventListener("dragstart", handleDragStart); // Only walls and nulls receive other listeners
+
+      if (this.node.value === "wall" || this.node.value === null) {
         this.tile.addEventListener("dragenter", handleDragEnter);
         this.tile.addEventListener("dragover", handleDragOver);
         this.tile.addEventListener("drop", handleDrop);
       }
+    }
+  }, {
+    key: "placeWall",
+    value: function placeWall() {
+      this.node.value = "wall";
+      this.tile.classList.add("wall");
+      console.log("Wall placed");
+    }
+  }, {
+    key: "removeWall",
+    value: function removeWall() {
+      this.node.value = null;
+      this.tile.classList.remove("wall");
+      console.log("Wall removed");
     }
   }]);
 

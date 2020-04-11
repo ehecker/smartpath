@@ -20,18 +20,11 @@ export default class PolyTreeNode {
         this.visualize = this.visualize.bind(this);
         this.visualizeShortestPath = this.visualizeShortestPath.bind(this);
 
-        this.placeWall = this.placeWall.bind(this);
-        this.removeWall = this.removeWall.bind(this);
-
-        // Comment these in or out to toggle showing children on hover.
+        // Comment these in to toggle showing children on hover.
         // this.showChildren = this.showChildren.bind(this);
         // this.hideChildren = this.hideChildren.bind(this);
         // this.tileObj.addEventListener("mouseenter", this.showChildren)
         // this.tileObj.addEventListener("mouseleave", this.hideChildren)
-
-        if (this.value !== "root" && this.value !== "target") {
-            this.tileObj.addEventListener("click", this.placeWall)
-        }
     }
 
     showChildren() {
@@ -191,26 +184,6 @@ export default class PolyTreeNode {
         if (parentNode !== null) {
             this.parent = parentNode;
             parentNode.children.push(this);
-        }
-    }
-
-    placeWall() {
-        if (this.value !== "root" && this.value !== "target") {
-            this.value = "wall";
-            this.tileObj.classList.add("wall")
-            this.tileObj.removeEventListener("click", this.placeWall)
-            this.tileObj.addEventListener("click", this.removeWall)
-            console.log("Wall placed")
-        }
-    }
-
-    removeWall() {
-        if (this.value === "wall") {
-            this.value = null;
-            this.tileObj.classList.remove("wall")
-            this.tileObj.removeEventListener("click", this.removeWall)
-            this.tileObj.addEventListener("click", this.placeWall);
-            console.log("Wall removed")
         }
     }
 

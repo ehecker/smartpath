@@ -31,6 +31,17 @@ export default class Tile {
         const handleDragEnter = event => {
             console.log("Drag enter fired")
             event.preventDefault()
+
+            let tileId = event.target.id.split("-");
+            let currentTile = board.grid[+tileId[0]][+tileId[1]]
+
+            if (board.lastNodeType === "wall" || board.lastNodeType === null) {
+                if (currentTile.node.value === "wall") {
+                    currentTile.removeWall()
+                } else if (currentTile.node.value === null) {
+                    currentTile.placeWall()
+                }
+            }
         }
 
         const handleDragOver = event => {
@@ -42,25 +53,37 @@ export default class Tile {
             console.log("Drop fired")
             event.preventDefault();
 
-            let tileId= event.target.id.split("-");
+            let tileId = event.target.id.split("-");
             let dragEndPos = [+tileId[0], +tileId[1]];
 
             if (board.lastNodeType === "root") {
                 board.setRoot(dragEndPos)
             } else if (board.lastNodeType === "target") {
                 board.setTarget(dragEndPos)
-            } else if (board.lastNodeType === null) {
-                // Logic for wall dragging here
             }
         }
 
-        if (this.node.value === "root" || this.node.value === "target") {
-            this.tile.addEventListener("dragstart", handleDragStart)
-        } else {
+        // All tiles listen for dragstart
+        this.tile.addEventListener("dragstart", handleDragStart)
+
+        // Only walls and nulls receive other listeners
+        if (this.node.value === "wall" || this.node.value === null) {
             this.tile.addEventListener("dragenter", handleDragEnter)
             this.tile.addEventListener("dragover", handleDragOver)
             this.tile.addEventListener("drop", handleDrop)
         }
+    }
+
+    placeWall() {
+        this.node.value = "wall";
+        this.tile.classList.add("wall")
+        console.log("Wall placed")
+    }
+
+    removeWall() {
+        this.node.value = null;
+        this.tile.classList.remove("wall")
+        console.log("Wall removed")
     }
 
 }

@@ -63,11 +63,11 @@
 } */
 
 .shortest-path-node {
-    background-color: #af10c4;
+    background-color: #bc13fe;
 }
 
 .wall {
-    background-color: red;
+    background-color: #B50721;
 }
 
 .parent {

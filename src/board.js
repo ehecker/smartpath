@@ -34,6 +34,7 @@ export default class Board {
 
                 } else {
                     let newTile = new Tile(null, [i, j], this, true);
+                    newTile.tile.setAttribute("draggable", "true")
                     row.push(newTile);
                 }
             }
@@ -42,7 +43,7 @@ export default class Board {
         }
     }
 
-    setRoot(pos) {
+    setRoot(pos) { // Change variables in this & setTarget to newRootTile/newNullTile
         const oldX = this.rootNode.position[0];
         const oldY = this.rootNode.position[1];
         const x = pos[0];
