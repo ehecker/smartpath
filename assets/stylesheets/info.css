@@ -66,12 +66,14 @@
 .legend-item-box {
     margin: 5px;
     display: flex;
+    align-items: center;
 }
 
 .legend-tile {
     height: 24px;
     width: 24px;
-    border: 1px solid #666
+    border: 1px solid #666;
+    margin-left: 5px;
 }
 
 .white {
