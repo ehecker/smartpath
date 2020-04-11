@@ -25,6 +25,7 @@ export default class Tile {
 
             let tileId = event.target.id.split("-");
             let dragStartPos = [+tileId[0], +tileId[1]];
+            let currentTile = board.grid[dragStartPos[0]][dragStartPos[1]]
             board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
         }
 
@@ -63,6 +64,20 @@ export default class Tile {
             }
         }
 
+        const handleClick = event => {
+            console.log("Click fired")
+            event.preventDefault()
+
+            let tileId = event.target.id.split("-");
+            let currentTile = board.grid[+tileId[0]][+tileId[1]]
+
+            if (currentTile.node.value === "wall") {
+                currentTile.removeWall()
+            } else if (currentTile.node.value === null) {
+                currentTile.placeWall()
+            }
+        }
+
         // All tiles listen for dragstart
         this.tile.addEventListener("dragstart", handleDragStart)
 
@@ -71,6 +86,7 @@ export default class Tile {
             this.tile.addEventListener("dragenter", handleDragEnter)
             this.tile.addEventListener("dragover", handleDragOver)
             this.tile.addEventListener("drop", handleDrop)
+            this.tile.addEventListener("click", handleClick)
         }
     }
 

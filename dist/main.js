@@ -532,6 +532,7 @@ var Tile = /*#__PURE__*/function () {
         console.log("Drag start fired");
         var tileId = event.target.id.split("-");
         var dragStartPos = [+tileId[0], +tileId[1]];
+        var currentTile = board.grid[dragStartPos[0]][dragStartPos[1]];
         board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
       };
 
@@ -566,6 +567,19 @@ var Tile = /*#__PURE__*/function () {
         } else if (board.lastNodeType === "target") {
           board.setTarget(dragEndPos);
         }
+      };
+
+      var handleClick = function handleClick(event) {
+        console.log("Click fired");
+        event.preventDefault();
+        var tileId = event.target.id.split("-");
+        var currentTile = board.grid[+tileId[0]][+tileId[1]];
+
+        if (currentTile.node.value === "wall") {
+          currentTile.removeWall();
+        } else if (currentTile.node.value === null) {
+          currentTile.placeWall();
+        }
       }; // All tiles listen for dragstart
 
 
@@ -575,6 +589,7 @@ var Tile = /*#__PURE__*/function () {
         this.tile.addEventListener("dragenter", handleDragEnter);
         this.tile.addEventListener("dragover", handleDragOver);
         this.tile.addEventListener("drop", handleDrop);
+        this.tile.addEventListener("click", handleClick);
       }
     }
   }, {
