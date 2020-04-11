@@ -18,7 +18,7 @@
 }
 
 .target-node {
-    background-color: green;
+    background-color: blue;
     cursor: pointer;
 }
 
@@ -42,6 +42,11 @@
 .target-found {
     /* animation: .5s ease both markFound; */
     background-color: blue;
+    border: 1px solid white;
+    height: 23px;
+    width: 23px;
+
+    
 }
 
 @keyframes markFound {
@@ -63,7 +68,7 @@
 } */
 
 .shortest-path-node {
-    background-color: #bc13fe;
+    background-color: #15BEFF;
 }
 
 .wall {

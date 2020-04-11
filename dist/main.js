@@ -532,7 +532,6 @@ var Tile = /*#__PURE__*/function () {
         console.log("Drag start fired");
         var tileId = event.target.id.split("-");
         var dragStartPos = [+tileId[0], +tileId[1]];
-        var currentTile = board.grid[dragStartPos[0]][dragStartPos[1]];
         board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
       };
 
@@ -552,6 +551,7 @@ var Tile = /*#__PURE__*/function () {
       };
 
       var handleDragOver = function handleDragOver(event) {
+        // DO NOT ERASE. Root/target node repositioning does not work without this.
         console.log("Drag over fired");
         event.preventDefault();
       };

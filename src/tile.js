@@ -25,7 +25,6 @@ export default class Tile {
 
             let tileId = event.target.id.split("-");
             let dragStartPos = [+tileId[0], +tileId[1]];
-            let currentTile = board.grid[dragStartPos[0]][dragStartPos[1]]
             board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
         }
 
@@ -45,7 +44,7 @@ export default class Tile {
             }
         }
 
-        const handleDragOver = event => {
+        const handleDragOver = event => { // DO NOT ERASE. Root/target node repositioning does not work without this.
             console.log("Drag over fired")
             event.preventDefault()
         }
