@@ -1,6 +1,7 @@
 main {
     display: flex;
     justify-content: center;
+    margin: 20px;
 }
 
 #grid {
@@ -13,7 +14,6 @@ main {
     
     height: 625px;
     width: 1200px;
-    margin: 10px;
 
     display: flex;
     flex-wrap: wrap;
