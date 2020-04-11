@@ -23,12 +23,11 @@ export default class PolyTreeNode {
         this.placeWall = this.placeWall.bind(this);
         this.removeWall = this.removeWall.bind(this);
 
-
         // Comment these in or out to toggle showing children on hover.
-        this.showChildren = this.showChildren.bind(this);
-        this.hideChildren = this.hideChildren.bind(this);
-        this.tileObj.addEventListener("mouseenter", this.showChildren)
-        this.tileObj.addEventListener("mouseleave", this.hideChildren)
+        // this.showChildren = this.showChildren.bind(this);
+        // this.hideChildren = this.hideChildren.bind(this);
+        // this.tileObj.addEventListener("mouseenter", this.showChildren)
+        // this.tileObj.addEventListener("mouseleave", this.hideChildren)
 
         if (this.value !== "root" && this.value !== "target") {
             this.tileObj.addEventListener("click", this.placeWall)
@@ -88,11 +87,9 @@ export default class PolyTreeNode {
         while (queue.length > 0) {
             let currentNode = queue.shift();
             
-            if (currentNode.value !== "root" && currentNode.value !== "target" && currentNode.value !== "wall") {
+            if (currentNode.value !== "root" && currentNode.value !== "target") {
                 this.visitedTiles.push(currentNode.position)
             }
-
-            // if value === wall, push currentNode.children into queue[0].children ????
 
             if (currentNode.value === target) {
                 this.visitedTiles.push(currentNode.position)
@@ -107,7 +104,7 @@ export default class PolyTreeNode {
         // Logic for handling unsolvable grid goes here
     }
 
-    dfs(target) { // Appears to still be broken
+    dfs(target) {
         let stack = [this];
 
         while (stack.length > 0) {
@@ -132,136 +129,18 @@ export default class PolyTreeNode {
 
     }
 
-    buildTree() { // Maybe I DON'T want to build the tree from the root node???
+    buildTree() {
         const increments = [
-
-            // // UP FIRST OPTIONS
-            // [-1, 0], // Up // Default
-            // [0, 1], // Right
-            // [1, 0], // Down
-            // [0, -1] // Left
-
-            // [-1, 0], // No blatant issues
-            // [0, 1],
-            // [0, -1],
-            // [1, 0]
-
-            // [-1, 0],
-            // [0, -1], // Left second
-            // [0, 1],
-            // [1, 0]
-
-            // [-1, 0], // Interesting DFS
-            // [0, -1],
-            // [1, 0],
-            // [0, 1]
-
-            // [-1, 0], // Down second
-            // [1, 0],
-            // [0, -1],
-            // [0, 1]
-
-            // [-1, 0],
-            // [1, 0],
-            // [0, 1],
-            // [0, -1]
-
-            // RIGHT FIRST OPTIONS
-
-            [0, 1], // Very interesting
+            [0, 1],
             [1, 0],
             [-1, 0],
             [0, -1]
 
-            // [0, 1], // This one breaks, only searches down and right.
+            // Original, up-first tree build
+            // [-1, 0], // Up
+            // [0, 1], // Right
             // [1, 0], // Down
             // [0, -1] // Left
-            // [-1, 0], // Up
-
-            // [0, 1],
-            // [0, -1],
-            // [1, 0],
-            // [-1, 0]
-
-            // [0, 1],
-            // [0, -1],
-            // [-1, 0],
-            // [1, 0]
-
-            // [0, 1],
-            // [-1, 0],
-            // [0, -1],
-            // [1, 0]
-
-            // [0, 1],
-            // [-1, 0],
-            // [1, 0],
-            // [0, -1]
-
-            // DOWN FIRST OPTIONS
-
-            // [1, 0], // Down // Second try
-            // [0, -1], // Left
-            // [-1, 0], // Up
-            // [0, 1] // Right
-
-            // [1, 0],
-            // [0, -1],
-            // [0, 1],
-            // [-1, 0]
-
-            // [1, 0],
-            // [0, 1],
-            // [0, -1],
-            // [-1, 0]
-            
-            // [1, 0],
-            // [0, 1],
-            // [-1, 0],
-            // [0, -1]
-
-            // [1, 0],
-            // [-1, 0],
-            // [0, 1],
-            // [0, -1]
-
-            // [1, 0],
-            // [-1, 0],
-            // [0, -1],
-            // [0, 1]
-
-            // LEFT FIRST OPTIONS
-
-            // [0, -1],
-            // [-1, 0],
-            // [0, 1],
-            // [1, 0]
-
-            // [0, -1],
-            // [-1, 0],
-            // [1, 0],
-            // [0, 1]
-
-            // [0, -1],
-            // [1, 0],
-            // [-1, 0],
-            // [0, 1]
-
-            // [0, -1],
-            // [1, 0],
-            // [0, 1],
-            // [-1, 0]
-
-            // [0, -1],
-            // [0, 1],
-            // [1, 0],
-            // [-1, 0]
-
-            // [0, -1],
-            // [0, 1],
-            // [-1, 0],
-            // [1, 0]
-
         ];
 
         // buildTree function will use the node on which it is called as the root node of the tree
@@ -274,7 +153,7 @@ export default class PolyTreeNode {
                 let inc = increments[i];
                 let newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
 
-                if (currentNode.board.validPos(newPos)) {
+                if (currentNode.board.validPos(newPos) && this.grid[newPos[0]][newPos[1]].node.value !== "wall") {
 
                     if (this.visited.has(newPos.join("-"))) { // Call join on newPos to convert it to a valid keyname
                         continue;
@@ -287,32 +166,6 @@ export default class PolyTreeNode {
                     neighbors.push(neighborNode);
                 }
             }
-
-            // increments.forEach(inc => {
-            //     let newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
-
-            //     // If the position is valid:
-            //     if (newPos[0] >= 0 && newPos[0] < 25 && newPos[1] >= 0 && newPos[1] < 48) {
-            //     // if (this.board.validPos(newPos)) { // MAKE THIS.BOARD A THING               d
-
-            //         if (this.visited.has(newPos.join("-"))) {
-            //             return
-            //         }
-    
-            //         this.visited.add(newPos.join("-"));
-
-            //         let neighborTile = this.grid[newPos[0]][newPos[1]];
-            //         neighbors.push(neighborTile.node);
-            //         neighborTile.node.addParent(currentNode);
-
-            //         // If the neighbor exists, has no parent, and is not already a child of the current node:
-            //         // if (neighborTile.node.parent === null && !currentNode.children.includes(neighborTile.node)) {
-            //         //     neighbors.push(neighborTile.node);
-            //         //     neighborTile.node.addParent(currentNode);
-            //         // }
-            //     }
-            // })
-
         }
 
     }
@@ -343,7 +196,6 @@ export default class PolyTreeNode {
 
     placeWall() {
         if (this.value !== "root" && this.value !== "target") {
-            // debugger
             this.value = "wall";
             this.tileObj.classList.add("wall")
             this.tileObj.removeEventListener("click", this.placeWall)
