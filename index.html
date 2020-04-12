@@ -67,12 +67,12 @@
     <main>
         <div id="info-box">
             <div class="algo-info-container">
-                <h2 class="algo-title">Breadth First Search</h2>
+                <h2 id="algo-title">
+                    <!-- Current algorithm title inserted here -->
+                </h2>
                 <div class="algo-text-box">
-                    <p class="algo-info">
-                        Breadth First Search (BFS) is a search algorithm used for navigating graph data structures.
-                        It utilizes a "breadth-first" strategy, meaning that each node explores each of its neighbor nodes before moving onto the nodes at the next level of depth.
-                        It was invented in 1945 by Konrad Zuse.
+                    <p id="algo-info">
+                        <!-- Current algorithm text inserted here -->
                     </p>
                 </div>
             </div>
@@ -108,8 +108,21 @@
                 </div>
                 
             </div>
-            <div class="buttons-container">
-
+            <div class="controls-container">
+                <h2 class="legend-title">Controls</h2>
+                <div class="control-rows-container">
+                    <div class="controls-row">
+                        <p>Animation Speed:</p>
+                        <select id="anim-speed">
+                            <option value="lightning">Lightning</option>
+                            <option value="veryfast">Very Fast</option>
+                            <option value="medium">Medium</option>
+                            <option value="slowmotion">Slow Motion</option>
+                        </select>
+                    </div>
+                    <div class="controls-row"></div>
+                    <div class="controls-row"></div>
+                </div>
             </div>
         </div>
         <div id="grid">

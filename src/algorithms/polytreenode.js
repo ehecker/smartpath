@@ -41,7 +41,7 @@ export default class PolyTreeNode {
         })
     }
 
-    visualize(visitedTiles, grid) {
+    visualize(visitedTiles, grid, speed) {
         let viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
 
         if (visitedTiles.length > 1) {
@@ -49,8 +49,8 @@ export default class PolyTreeNode {
                 let currentPos = visitedTiles.shift()
                 grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
 
-                viz(visitedTiles, grid); // Calls itself recursively to ensure other code has finished before starting next step
-            }, 5)
+                viz(visitedTiles, grid, speed); // Calls itself recursively to ensure other code has finished before starting next step
+            }, speed)
 
         } else if (visitedTiles.length === 1) {
             let targetPos = visitedTiles[0];
@@ -70,7 +70,7 @@ export default class PolyTreeNode {
 
                 viz(pathPositions, grid)
             }, 25)
-        }
+        } // Can I put an else if here to change board's currently running status? Else if .length === 0
         console.log("Shortest path animated")
     }
 
@@ -87,7 +87,7 @@ export default class PolyTreeNode {
             if (currentNode.value === target) {
                 this.visitedTiles.push(currentNode.position)
                 this.findShortestPath();
-                this.visualize(this.visitedTiles, this.grid);
+                this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
                 return currentNode;
             }
             
@@ -107,7 +107,7 @@ export default class PolyTreeNode {
                 if (currentNode.value === target) {
                     this.visitedTiles.push(currentNode.position)
                     this.findShortestPath();
-                    this.visualize(this.visitedTiles, this.grid);
+                    this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
                     return currentNode;
 
                 } else if (currentNode.value !== "root") {

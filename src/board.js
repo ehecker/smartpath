@@ -7,6 +7,7 @@ export default class Board {
         this.targetNode;
 
         this.lastNodeType;
+        this.animationSpeed = 5;
 
         this.validPos = this.validPos.bind(this);
         this.setRoot = this.setRoot.bind(this);

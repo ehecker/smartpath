@@ -29,15 +29,18 @@
     width: 400px;
 }
 
-.buttons-container {
+.controls-container {
     /* background-color: blue; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: 208px;
     width: 400px;
 }
 
 /* ALGO INFO CONTAINER */
 
-.algo-title {
+#algo-title {
     color: white;
     font-size: 20px;
     padding-top: 15px;
@@ -48,7 +51,7 @@
     /* background-color: red; */
 }
 
-.algo-info {
+#algo-info {
     /* background-color: blue; */
     color: white;
     font-size: 14px;
@@ -106,4 +109,18 @@
 
 .skyblue {
     background-color: #15BEFF;
+}
+
+/* CONTROLS CONTAINER */
+
+.control-rows-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.controls-row {
+    display: flex;
+    justify-content: center;
 }

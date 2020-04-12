@@ -157,15 +157,15 @@ var PolyTreeNode = /*#__PURE__*/function () {
     }
   }, {
     key: "visualize",
-    value: function visualize(visitedTiles, grid) {
+    value: function visualize(visitedTiles, grid, speed) {
       var viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
 
       if (visitedTiles.length > 1) {
         setTimeout(function () {
           var currentPos = visitedTiles.shift();
           grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
-          viz(visitedTiles, grid); // Calls itself recursively to ensure other code has finished before starting next step
-        }, 5);
+          viz(visitedTiles, grid, speed); // Calls itself recursively to ensure other code has finished before starting next step
+        }, speed);
       } else if (visitedTiles.length === 1) {
         var targetPos = visitedTiles[0];
         grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found");
@@ -183,7 +183,8 @@ var PolyTreeNode = /*#__PURE__*/function () {
           grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
           viz(pathPositions, grid);
         }, 25);
-      }
+      } // Can I put an else if here to change board's currently running status? Else if .length === 0
+
 
       console.log("Shortest path animated");
     }
@@ -202,7 +203,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
         if (currentNode.value === target) {
           this.visitedTiles.push(currentNode.position);
           this.findShortestPath();
-          this.visualize(this.visitedTiles, this.grid);
+          this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
           return currentNode;
         }
 
@@ -223,7 +224,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
           if (currentNode.value === target) {
             this.visitedTiles.push(currentNode.position);
             this.findShortestPath();
-            this.visualize(this.visitedTiles, this.grid);
+            this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
             return currentNode;
           } else if (currentNode.value !== "root") {
             this.visitedTiles.push(currentNode.position);
@@ -328,6 +329,7 @@ var Board = /*#__PURE__*/function () {
     this.rootNode;
     this.targetNode;
     this.lastNodeType;
+    this.animationSpeed = 5;
     this.validPos = this.validPos.bind(this);
     this.setRoot = this.setRoot.bind(this);
     this.setTarget = this.setTarget.bind(this);
@@ -439,8 +441,27 @@ document.addEventListener("DOMContentLoaded", function () {
     algorithm = event.target.id;
     var newActive = document.getElementById(algorithm);
     newActive.classList.add("active");
-    console.log("Algorithm changed to: ".concat(algorithm));
+
+    if (algorithm === "bfs-btn") {
+      infoTitleEl.innerHTML = "Breadth First Search";
+      infoTextEl.innerHTML = bfsText;
+    } else if (algorithm === "dfs-btn") {
+      infoTitleEl.innerHTML = "Depth First Search";
+      infoTextEl.innerHTML = dfsText;
+    } else if (algorithm === "dijkstras-btn") {
+      infoTitleEl.innerHTML = "Dijkstra's Algorithm";
+      infoTextEl.innerHTML = dijkstrasText;
+    }
   }
+
+  var bfsText = "Breadth First Search (BFS) is a search algorithm used for navigating graph data structures. It utilizes a 'breadth-first' strategy, meaning that each node explores each of its neighbor nodes before moving onto the nodes at the next level of depth. It was invented in 1945 by Konrad Zuse.";
+  var dfsText = "Depth First Search (DFS) is a search algorithm which prioritizes exploration of nodes located 'deeper' in a graph structure. It was originally invented by French mathematician Charles Pierre Tremaux in the 19th century.";
+  var dijkstrasText = "Dijkstra's algorithm is a search algorithm which guarantees discovery of the shortest path between nodes. It is considered the most efficient search algorithm in existence. It was invented by Edsger W. Dijkstra in 1956.";
+  var infoTitleEl = document.getElementById("algo-title");
+  var infoTextEl = document.getElementById("algo-info");
+  infoTitleEl.innerHTML = "Breadth First Search"; // Set default title
+
+  infoTextEl.innerHTML = bfsText; // Set default text
 
   var algorithm = "bfs-btn"; // Set default algorithm
 
@@ -486,7 +507,37 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   var resetButton = document.getElementById("reset-button");
-  resetButton.addEventListener("click", reset);
+  resetButton.addEventListener("click", reset); // Add functionality to Animation Speed dropdown
+
+  function setAnimationSpeed(event) {
+    var newSpeed;
+
+    switch (event.target.value) {
+      case "lightning":
+        newSpeed = 5;
+        break;
+
+      case "veryfast":
+        newSpeed = 15;
+        break;
+
+      case "medium":
+        newSpeed = 30;
+        break;
+
+      case "slowmotion":
+        newSpeed = 75;
+        break;
+
+      default:
+        break;
+    }
+
+    board.animationSpeed = newSpeed;
+  }
+
+  var selectButton = document.getElementById("anim-speed");
+  selectButton.addEventListener("change", setAnimationSpeed);
 });
 
 /***/ }),
@@ -536,12 +587,6 @@ var Tile = /*#__PURE__*/function () {
         var tileId = event.target.id.split("-");
         var dragStartPos = [+tileId[0], +tileId[1]];
         board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
-
-        if (board.lastNodeType === "wall" || board.lastNodeType === null) {// var crt = this.cloneNode(true);
-          // crt.style.display = "none";
-          // document.body.appendChild(crt);
-          // e.dataTransfer.setDragImage(crt, 0, 0);
-        }
       };
 
       var handleDragEnter = function handleDragEnter(event) {
@@ -560,7 +605,7 @@ var Tile = /*#__PURE__*/function () {
       };
 
       var handleDragOver = function handleDragOver(event) {
-        // DO NOT ERASE. Root/target node repositioning does not work without this.
+        // DO NOT REMOVE. Root/target node repositioning does not work without this.
         console.log("Drag over fired");
         event.preventDefault();
       };
