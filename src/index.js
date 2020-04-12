@@ -22,12 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let algorithm = "bfs-btn"; // Set default algorithm
        
     const dijkstrasButton = document.getElementById("dijkstras-btn");
-    const astarButton = document.getElementById("astar-btn");
     const bfsButton = document.getElementById("bfs-btn");
     const dfsButton = document.getElementById("dfs-btn");
     
     dijkstrasButton.addEventListener("click", setAlgo);
-    astarButton.addEventListener("click", setAlgo);
     bfsButton.addEventListener("click", setAlgo);
     dfsButton.addEventListener("click", setAlgo);
 

@@ -445,11 +445,9 @@ document.addEventListener("DOMContentLoaded", function () {
   var algorithm = "bfs-btn"; // Set default algorithm
 
   var dijkstrasButton = document.getElementById("dijkstras-btn");
-  var astarButton = document.getElementById("astar-btn");
   var bfsButton = document.getElementById("bfs-btn");
   var dfsButton = document.getElementById("dfs-btn");
   dijkstrasButton.addEventListener("click", setAlgo);
-  astarButton.addEventListener("click", setAlgo);
   bfsButton.addEventListener("click", setAlgo);
   dfsButton.addEventListener("click", setAlgo); // Add functionality to Visualize button
 
@@ -531,8 +529,6 @@ var Tile = /*#__PURE__*/function () {
   _createClass(Tile, [{
     key: "setDraggingFunctions",
     value: function setDraggingFunctions() {
-      var _this = this;
-
       var board = this.board;
 
       var handleDragStart = function handleDragStart(event) {
@@ -541,13 +537,10 @@ var Tile = /*#__PURE__*/function () {
         var dragStartPos = [+tileId[0], +tileId[1]];
         board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
 
-        if (board.lastNodeType === "wall" || board.lastNodeType === null) {
-          var crt = _this.cloneNode(true); // crt.style.backgroundColor = "red";
-
-
-          crt.style.display = "none";
-          document.body.appendChild(crt);
-          e.dataTransfer.setDragImage(crt, 0, 0);
+        if (board.lastNodeType === "wall" || board.lastNodeType === null) {// var crt = this.cloneNode(true);
+          // crt.style.display = "none";
+          // document.body.appendChild(crt);
+          // e.dataTransfer.setDragImage(crt, 0, 0);
         }
       };
 

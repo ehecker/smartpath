@@ -28,11 +28,10 @@ export default class Tile {
             board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
 
             if (board.lastNodeType === "wall" || board.lastNodeType === null) {
-                var crt = this.cloneNode(true);
-                // crt.style.backgroundColor = "red";
-                crt.style.display = "none";
-                document.body.appendChild(crt);
-                e.dataTransfer.setDragImage(crt, 0, 0);
+                // var crt = this.cloneNode(true);
+                // crt.style.display = "none";
+                // document.body.appendChild(crt);
+                // e.dataTransfer.setDragImage(crt, 0, 0);
             }
         }
 

@@ -27,6 +27,7 @@
 .visited {
     /* animation: 1s ease both markVisited; */
     background-color: orange;
+    /* background-color: #15BEFF; */
 }
 
 @keyframes markVisited {
@@ -58,7 +59,8 @@
 
 .shortest-path-node {
     background-color: #15BEFF;
-    /* background-color: #ABD1DD; */
+    /* background-color: orange; */
+
 }
 
 .wall {
