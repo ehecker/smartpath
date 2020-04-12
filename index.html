@@ -43,23 +43,20 @@
                 <a href="https://github.com/ehecker" target="_blank" ><i class="fab fa-github fa-2x"></i></a>
             </div>
         </div>
+
         <div class="nav-bottom">
-            <h3 class="algos-title">Algorithms:</h3>
-            <div class="algo-box">
+            <h3 class="algos-main-title">Algorithms:</h3>
+            <div id="dijkstras-btn" class="algo-button">
                 <p>Dijkstra's Algorithm</p>
-                <input id="dijkstras-btn" type="radio" name="algos" class="algo-buttons">
             </div>
-            <div class="algo-box">
+            <div id="astar-btn" class="algo-button">
                 <p>A* Algorithm</p>
-                <input id="astar-btn" type="radio" name="algos" class="algo-buttons">
             </div>
-            <div class="algo-box">
+            <div id="bfs-btn" class="algo-button active">
                 <p>Breadth First Search</p>
-                <input id="bfs-btn" type="radio" name="algos" class="algo-buttons" checked>
             </div>
-            <div class="algo-box">
+            <div id="dfs-btn" class="algo-button">
                 <p>Depth First Search</p>
-                <input id="dfs-btn" type="radio" name="algos" class="algo-buttons">
             </div>
 
             <button id="vis-button"><p>Visualize!</p></button>
@@ -72,7 +69,7 @@
             <div class="algo-info-container">
                 <h2 class="algo-title">Breadth First Search</h2>
                 <p class="algo-info">
-                    Breadth First Search (BFS) is an algorithm for traversing graph data structures.
+                    Breadth First Search (BFS) is a search algorithm used for navigating graph data structures.
                     It utilizes a "breadth-first" strategy, meaning that each node explores each of its neighbor nodes before moving onto the nodes at the next level of depth.
                     It was invented in 1945 by Konrad Zuse.
                 </p>

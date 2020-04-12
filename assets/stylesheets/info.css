@@ -77,6 +77,10 @@
     margin-left: 5px;
 }
 
+.legend-item {
+    margin-left: 3px;
+}
+
 .white {
     background-color: white;
 }

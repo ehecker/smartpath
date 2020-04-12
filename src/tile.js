@@ -26,6 +26,14 @@ export default class Tile {
             let tileId = event.target.id.split("-");
             let dragStartPos = [+tileId[0], +tileId[1]];
             board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
+
+            if (board.lastNodeType === "wall" || board.lastNodeType === null) {
+                var crt = this.cloneNode(true);
+                // crt.style.backgroundColor = "red";
+                crt.style.display = "none";
+                document.body.appendChild(crt);
+                e.dataTransfer.setDragImage(crt, 0, 0);
+            }
         }
 
         const handleDragEnter = event => {

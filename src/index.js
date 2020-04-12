@@ -10,7 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add functionality to radio buttons
     function setAlgo(event) {
+        let oldActive = document.getElementById(algorithm)
+        oldActive.classList.remove("active")
+
         algorithm = event.target.id;
+        let newActive = document.getElementById(algorithm)
+        newActive.classList.add("active")
+        console.log(`Algorithm changed to: ${algorithm}`)
     }
 
     let algorithm = "bfs-btn"; // Set default algorithm

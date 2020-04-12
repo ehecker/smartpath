@@ -434,7 +434,12 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Board initialized and populated"); // Add functionality to radio buttons
 
   function setAlgo(event) {
+    var oldActive = document.getElementById(algorithm);
+    oldActive.classList.remove("active");
     algorithm = event.target.id;
+    var newActive = document.getElementById(algorithm);
+    newActive.classList.add("active");
+    console.log("Algorithm changed to: ".concat(algorithm));
   }
 
   var algorithm = "bfs-btn"; // Set default algorithm
@@ -526,6 +531,8 @@ var Tile = /*#__PURE__*/function () {
   _createClass(Tile, [{
     key: "setDraggingFunctions",
     value: function setDraggingFunctions() {
+      var _this = this;
+
       var board = this.board;
 
       var handleDragStart = function handleDragStart(event) {
@@ -533,6 +540,15 @@ var Tile = /*#__PURE__*/function () {
         var tileId = event.target.id.split("-");
         var dragStartPos = [+tileId[0], +tileId[1]];
         board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
+
+        if (board.lastNodeType === "wall" || board.lastNodeType === null) {
+          var crt = _this.cloneNode(true); // crt.style.backgroundColor = "red";
+
+
+          crt.style.display = "none";
+          document.body.appendChild(crt);
+          e.dataTransfer.setDragImage(crt, 0, 0);
+        }
       };
 
       var handleDragEnter = function handleDragEnter(event) {

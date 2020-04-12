@@ -81,26 +81,56 @@ a {
 
 /* NAV-BOTTOM ======================================== */
 
-.algos-title {
+.algos-main-title {
     font-size: 35px;
     margin-right: 20px;
 }
 
-.algo-box {
+.algo-button {
     display: flex;
+    background-color: red;
+    border-radius: 5px;
+    height: 50px;
+    /* width: 140px; */
     margin: 0 15px 0 15px;
     align-items: center;
+    cursor: pointer;
 }
 
-.algo-buttons {
-    height: 18px;
-    width: 18px;
-    border-radius: 0;
+/* This prevents all child elements from blocking click listeners */
+.algo-button > * {
+    pointer-events: none;
+}
+
+.algo-button p {
+    /* font-weight: 600; */
+    padding: 0 10px 0 10px;
+}
+
+#dijkstras-btn {
+
+}
+
+#astar-btn {
+
+}
+
+#bfs-btn {
+    /* background-image: linear-gradient(60deg, #000080, white); */
+    background: rgb(0,0,128);
+    background: linear-gradient(90deg, rgba(0,0,128,1) 54%, rgba(2,0,36,1) 89%);
+}
+
+#dfs-btn {
+
+}
+
+.active {
+    border: 2px solid white;
 }
 
 #vis-button {
     border-style: none;
-    /* background-color: orange; */
     background-image: linear-gradient(60deg,#d69e2e,#fbd38d);
     border-radius: 5px;
     color: white;
