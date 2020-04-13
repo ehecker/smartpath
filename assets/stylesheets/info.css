@@ -57,6 +57,7 @@
     font-size: 14px;
     padding: 15px 20px 20px 20px;
     line-height: 1.7;
+    /* font-family: sans-serif; */
 }
 
 /* LEGEND CONTAINER */
@@ -123,4 +124,20 @@
 .controls-row {
     display: flex;
     justify-content: center;
+}
+
+#anim-speed {
+    margin-left: 10px;
+}
+
+.clear-button {
+    background-color: #333;
+    border-style: none;
+    margin: 10px;
+    padding: 10px;
+}
+
+.clear-button:hover {
+    cursor: pointer;
+    opacity: 0.8;
 }

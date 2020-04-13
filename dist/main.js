@@ -167,7 +167,8 @@ var PolyTreeNode = /*#__PURE__*/function () {
           viz(visitedTiles, grid, speed); // Calls itself recursively to ensure other code has finished before starting next step
         }, speed);
       } else if (visitedTiles.length === 1) {
-        var targetPos = visitedTiles[0];
+        // let targetPos = visitedTiles[0];
+        var targetPos = visitedTiles.shift();
         grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found");
         this.visualizeShortestPath(this.shortestPath, this.grid);
       }
@@ -404,6 +405,9 @@ var Board = /*#__PURE__*/function () {
       this.targetNode = oldNullTile.node;
     }
   }, {
+    key: "generateScatterMaze",
+    value: function generateScatterMaze() {}
+  }, {
     key: "validPos",
     value: function validPos(pos) {
       return pos[0] >= 0 && pos[0] < 25 && pos[1] >= 0 && pos[1] < 48;
@@ -433,7 +437,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create and fill board
   var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
   board.fillGrid();
-  console.log("Board initialized and populated"); // Add functionality to radio buttons
+  console.log("Board initialized and populated");
+  var bfsText = "Breadth First Search (BFS) is a search algorithm used for navigating graph data structures. It utilizes a 'breadth-first' strategy, meaning that each node explores each of its neighbor nodes before moving onto the nodes at the next level of depth. It was invented in 1945 by Konrad Zuse.";
+  var dfsText = "Depth First Search (DFS) is a search algorithm which prioritizes exploration of nodes located 'deeper' in a graph structure. It was originally invented by French mathematician Charles Pierre Tremaux in the 19th century.";
+  var dijkstrasText = "Dijkstra's algorithm is a search algorithm which guarantees discovery of the shortest path between nodes. It is considered the most efficient search algorithm in existence. It was invented by Edsger W. Dijkstra in 1956.";
+  var infoTitleEl = document.getElementById("algo-title");
+  var infoTextEl = document.getElementById("algo-info"); // Add functionality to radio buttons
 
   function setAlgo(event) {
     var oldActive = document.getElementById(algorithm);
@@ -452,13 +461,9 @@ document.addEventListener("DOMContentLoaded", function () {
       infoTitleEl.innerHTML = "Dijkstra's Algorithm";
       infoTextEl.innerHTML = dijkstrasText;
     }
-  }
+  } // Set defaults
 
-  var bfsText = "Breadth First Search (BFS) is a search algorithm used for navigating graph data structures. It utilizes a 'breadth-first' strategy, meaning that each node explores each of its neighbor nodes before moving onto the nodes at the next level of depth. It was invented in 1945 by Konrad Zuse.";
-  var dfsText = "Depth First Search (DFS) is a search algorithm which prioritizes exploration of nodes located 'deeper' in a graph structure. It was originally invented by French mathematician Charles Pierre Tremaux in the 19th century.";
-  var dijkstrasText = "Dijkstra's algorithm is a search algorithm which guarantees discovery of the shortest path between nodes. It is considered the most efficient search algorithm in existence. It was invented by Edsger W. Dijkstra in 1956.";
-  var infoTitleEl = document.getElementById("algo-title");
-  var infoTextEl = document.getElementById("algo-info");
+
   infoTitleEl.innerHTML = "Breadth First Search"; // Set default title
 
   infoTextEl.innerHTML = bfsText; // Set default text
@@ -474,6 +479,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function runAlgorithm() {
     var rootNode = board.rootNode;
+    clearPath();
 
     switch (algorithm) {
       case "bfs-btn":
@@ -517,7 +523,7 @@ document.addEventListener("DOMContentLoaded", function () {
         newSpeed = 5;
         break;
 
-      case "veryfast":
+      case "fast":
         newSpeed = 15;
         break;
 
@@ -526,7 +532,7 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
 
       case "slowmotion":
-        newSpeed = 75;
+        newSpeed = 100;
         break;
 
       default:
@@ -537,7 +543,37 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   var selectButton = document.getElementById("anim-speed");
-  selectButton.addEventListener("change", setAnimationSpeed);
+  selectButton.addEventListener("change", setAnimationSpeed); // Add functionality to Clear Walls and Clear Path buttons
+
+  function clearWalls() {
+    var wallTiles = Array.from(document.getElementsByClassName("wall"));
+
+    for (var _i = 0, _wallTiles = wallTiles; _i < _wallTiles.length; _i++) {
+      var wallEl = _wallTiles[_i];
+      var wallPos = wallEl.id.split("-");
+      var wallTile = board.grid[+wallPos[0]][+wallPos[1]];
+      wallTile.node.value = null;
+      wallEl.classList.remove("wall");
+    }
+  }
+
+  function clearPath() {
+    var visitedTiles = Array.from(document.getElementsByClassName("visited"));
+
+    for (var _i2 = 0, _visitedTiles = visitedTiles; _i2 < _visitedTiles.length; _i2++) {
+      var tile = _visitedTiles[_i2];
+      tile.classList.remove("visited");
+      tile.classList.remove("shortest-path-node");
+    }
+
+    var targetTile = document.getElementsByClassName("target-node");
+    targetTile[0].classList.remove("target-found");
+  }
+
+  var clearWallsButton = document.getElementById("clear-walls");
+  clearWallsButton.addEventListener("click", clearWalls);
+  var clearPathButton = document.getElementById("clear-path");
+  clearPathButton.addEventListener("click", clearPath);
 });
 
 /***/ }),

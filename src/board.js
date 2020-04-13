@@ -90,6 +90,10 @@ export default class Board {
         this.targetNode = oldNullTile.node;
     }
 
+    generateScatterMaze() {
+        
+    }
+
     validPos(pos) {
         return (pos[0] >= 0 && pos[0] < 25) && (pos[1] >= 0 && pos[1] < 48);
     }

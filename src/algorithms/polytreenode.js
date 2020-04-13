@@ -53,7 +53,8 @@ export default class PolyTreeNode {
             }, speed)
 
         } else if (visitedTiles.length === 1) {
-            let targetPos = visitedTiles[0];
+            // let targetPos = visitedTiles[0];
+            let targetPos = visitedTiles.shift();
             grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found")
             this.visualizeShortestPath(this.shortestPath, this.grid);
         }
