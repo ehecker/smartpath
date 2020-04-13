@@ -53,21 +53,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add functionality to Visualize button
     function runAlgorithm() {
+        if (board.algorithmIsRunning === true) return;
+
         let rootNode = board.rootNode;
         clearPath();
 
         switch (algorithm) {
             case "bfs-btn":
+                board.resetTree()
+                board.algorithmIsRunning = true;
+                rootNode.visited = new Set();
+                rootNode.visited.add(rootNode.position.join("-"));
+
                 rootNode.buildTree();
                 console.log("Node tree built")
-
                 rootNode.bfs("target");
                 console.log("BFS executed");
                 break;
             case "dfs-btn":
+                board.resetTree()
+                board.algorithmIsRunning = true;
+                rootNode.visited = new Set();
+                rootNode.visited.add(rootNode.position.join("-"));
+
                 rootNode.buildTree();
                 console.log("Node tree built")
-
                 rootNode.dfs("target");
                 console.log("DFS executed");
                 break;
@@ -84,8 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let grid = document.getElementById("grid");
         grid.innerHTML = "";
         
+        board.algorithmIsRunning = false;
         board.grid = [];
-        console.log("Board cleared")
         board.fillGrid();
     }
 
@@ -121,6 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add functionality to Clear Walls and Clear Path buttons
     function clearWalls() {
+        if (board.algorithmIsRunning === true) return;
+
         let wallTiles = Array.from(document.getElementsByClassName("wall"));
         
         for (let wallEl of wallTiles) {
@@ -133,10 +145,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function clearPath() {
+        if (board.algorithmIsRunning === true) return;
+
         const visitedTiles = Array.from(document.getElementsByClassName("visited"))
+        const shortestPathTiles = Array.from(document.getElementsByClassName("shortest-path-node"))
+
         for (let tile of visitedTiles) {
             tile.classList.remove("visited");
-            tile.classList.remove("shortest-path-node");
+        }
+
+        for (let shortTile of shortestPathTiles) {
+            shortTile.classList.remove("shortest-path-node")
         }
 
         const targetTile = document.getElementsByClassName("target-node");

@@ -160,16 +160,18 @@ var PolyTreeNode = /*#__PURE__*/function () {
     value: function visualize(visitedTiles, grid, speed) {
       var viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
 
-      if (visitedTiles.length > 1) {
+      if (visitedTiles.length >= 1) {
         setTimeout(function () {
           var currentPos = visitedTiles.shift();
           grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
           viz(visitedTiles, grid, speed); // Calls itself recursively to ensure other code has finished before starting next step
         }, speed);
-      } else if (visitedTiles.length === 1) {
+      } else if (visitedTiles.length === 0) {
         // let targetPos = visitedTiles[0];
-        var targetPos = visitedTiles.shift();
-        grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found");
+        // let targetPos = visitedTiles.shift();
+        // grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found")
+        if (this.board.algorithmIsRunning === false) return;
+        this.board.targetNode.tileObj.classList.add("target-found");
         this.visualizeShortestPath(this.shortestPath, this.grid);
       }
     }
@@ -178,12 +180,14 @@ var PolyTreeNode = /*#__PURE__*/function () {
     value: function visualizeShortestPath(pathPositions, grid) {
       var viz = this.visualizeShortestPath;
 
-      if (pathPositions.length > 1) {
+      if (pathPositions.length >= 1) {
         setTimeout(function () {
           var currentPos = pathPositions.shift();
           grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
           viz(pathPositions, grid);
         }, 25);
+      } else if (pathPositions.length === 0) {
+        this.board.algorithmIsRunning = false;
       } // Can I put an else if here to change board's currently running status? Else if .length === 0
 
 
@@ -202,7 +206,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
         }
 
         if (currentNode.value === target) {
-          this.visitedTiles.push(currentNode.position);
+          // this.visitedTiles.push(currentNode.position)
           this.findShortestPath();
           this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
           return currentNode;
@@ -212,6 +216,9 @@ var PolyTreeNode = /*#__PURE__*/function () {
       }
 
       console.log("Unsolvable grid detected"); // Logic for handling unsolvable grid goes here
+
+      this.board.algorithmIsRunning = false;
+      alert("Ha! Nice try. This maze is unsolvable. Please remove some walls to set your algorithms free.");
     }
   }, {
     key: "dfs",
@@ -223,7 +230,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
           var currentNode = stack.shift();
 
           if (currentNode.value === target) {
-            this.visitedTiles.push(currentNode.position);
+            // this.visitedTiles.push(currentNode.position)
             this.findShortestPath();
             this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
             return currentNode;
@@ -234,6 +241,10 @@ var PolyTreeNode = /*#__PURE__*/function () {
           stack.unshift.apply(stack, _toConsumableArray(currentNode.children));
         }
       }
+
+      console.log("Unsolvable grid detected");
+      this.board.algorithmIsRunning = false;
+      alert("Ha! Nice try. This maze is unsolvable. Please remove some walls to set your algorithms free.");
     }
   }, {
     key: "buildTree",
@@ -246,6 +257,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
       ]; // buildTree function will use the node on which it is called as the root node of the tree
 
       var neighbors = [this]; // This is a queue
+      // debugger
 
       while (neighbors.length > 0) {
         var currentNode = neighbors.shift();
@@ -255,6 +267,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
           var newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
 
           if (currentNode.board.validPos(newPos) && this.grid[newPos[0]][newPos[1]].node.value !== "wall") {
+            // debugger
             if (this.visited.has(newPos.join("-"))) {
               // Call join on newPos to convert it to a valid keyname
               continue;
@@ -271,10 +284,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
   }, {
     key: "findShortestPath",
     value: function findShortestPath() {
-      var targetNodePos = this.visitedTiles[this.visitedTiles.length - 1];
-      var currentNode = this.grid[targetNodePos[0]][targetNodePos[1]].node; // Very ugly way to get target node
-
-      this.shortestPath.unshift(currentNode.position);
+      var currentNode = this.board.targetNode;
 
       while (currentNode.value !== "root" && currentNode.parent.value !== "root") {
         this.shortestPath.unshift(currentNode.parent.position);
@@ -293,6 +303,12 @@ var PolyTreeNode = /*#__PURE__*/function () {
         this.parent = parentNode;
         parentNode.children.push(this);
       }
+    }
+  }, {
+    key: "removeChild",
+    value: function removeChild(childNode) {
+      var i = this.children.indexOf(childNode);
+      this.children.splice(i, 1);
     }
   }]);
 
@@ -314,6 +330,12 @@ var PolyTreeNode = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Board; });
 /* harmony import */ var _tile__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tile */ "./src/tile.js");
+function _createForOfIteratorHelper(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -331,6 +353,7 @@ var Board = /*#__PURE__*/function () {
     this.targetNode;
     this.lastNodeType;
     this.animationSpeed = 5;
+    this.algorithmIsRunning = false;
     this.validPos = this.validPos.bind(this);
     this.setRoot = this.setRoot.bind(this);
     this.setTarget = this.setTarget.bind(this);
@@ -408,6 +431,37 @@ var Board = /*#__PURE__*/function () {
     key: "generateScatterMaze",
     value: function generateScatterMaze() {}
   }, {
+    key: "resetTree",
+    value: function resetTree() {
+      var _iterator = _createForOfIteratorHelper(this.grid),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var row = _step.value;
+
+          var _iterator2 = _createForOfIteratorHelper(row),
+              _step2;
+
+          try {
+            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+              var tile = _step2.value;
+              tile.node.parent = null;
+              tile.node.children = [];
+            }
+          } catch (err) {
+            _iterator2.e(err);
+          } finally {
+            _iterator2.f();
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+  }, {
     key: "validPos",
     value: function validPos(pos) {
       return pos[0] >= 0 && pos[0] < 25 && pos[1] >= 0 && pos[1] < 48;
@@ -478,11 +532,16 @@ document.addEventListener("DOMContentLoaded", function () {
   dfsButton.addEventListener("click", setAlgo); // Add functionality to Visualize button
 
   function runAlgorithm() {
+    if (board.algorithmIsRunning === true) return;
     var rootNode = board.rootNode;
     clearPath();
 
     switch (algorithm) {
       case "bfs-btn":
+        board.resetTree();
+        board.algorithmIsRunning = true;
+        rootNode.visited = new Set();
+        rootNode.visited.add(rootNode.position.join("-"));
         rootNode.buildTree();
         console.log("Node tree built");
         rootNode.bfs("target");
@@ -490,6 +549,10 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
 
       case "dfs-btn":
+        board.resetTree();
+        board.algorithmIsRunning = true;
+        rootNode.visited = new Set();
+        rootNode.visited.add(rootNode.position.join("-"));
         rootNode.buildTree();
         console.log("Node tree built");
         rootNode.dfs("target");
@@ -507,8 +570,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function reset() {
     var grid = document.getElementById("grid");
     grid.innerHTML = "";
+    board.algorithmIsRunning = false;
     board.grid = [];
-    console.log("Board cleared");
     board.fillGrid();
   }
 
@@ -546,6 +609,7 @@ document.addEventListener("DOMContentLoaded", function () {
   selectButton.addEventListener("change", setAnimationSpeed); // Add functionality to Clear Walls and Clear Path buttons
 
   function clearWalls() {
+    if (board.algorithmIsRunning === true) return;
     var wallTiles = Array.from(document.getElementsByClassName("wall"));
 
     for (var _i = 0, _wallTiles = wallTiles; _i < _wallTiles.length; _i++) {
@@ -558,12 +622,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function clearPath() {
+    if (board.algorithmIsRunning === true) return;
     var visitedTiles = Array.from(document.getElementsByClassName("visited"));
+    var shortestPathTiles = Array.from(document.getElementsByClassName("shortest-path-node"));
 
     for (var _i2 = 0, _visitedTiles = visitedTiles; _i2 < _visitedTiles.length; _i2++) {
       var tile = _visitedTiles[_i2];
       tile.classList.remove("visited");
-      tile.classList.remove("shortest-path-node");
+    }
+
+    for (var _i3 = 0, _shortestPathTiles = shortestPathTiles; _i3 < _shortestPathTiles.length; _i3++) {
+      var shortTile = _shortestPathTiles[_i3];
+      shortTile.classList.remove("shortest-path-node");
     }
 
     var targetTile = document.getElementsByClassName("target-node");

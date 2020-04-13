@@ -8,6 +8,7 @@ export default class Board {
 
         this.lastNodeType;
         this.animationSpeed = 5;
+        this.algorithmIsRunning = false;
 
         this.validPos = this.validPos.bind(this);
         this.setRoot = this.setRoot.bind(this);
@@ -91,7 +92,16 @@ export default class Board {
     }
 
     generateScatterMaze() {
-        
+
+    }
+
+    resetTree() {
+        for (let row of this.grid) {
+            for (let tile of row) {
+                tile.node.parent = null;
+                tile.node.children = [];
+            }
+        }
     }
 
     validPos(pos) {

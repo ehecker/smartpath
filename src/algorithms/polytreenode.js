@@ -44,7 +44,7 @@ export default class PolyTreeNode {
     visualize(visitedTiles, grid, speed) {
         let viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
 
-        if (visitedTiles.length > 1) {
+        if (visitedTiles.length >= 1) {
             setTimeout(function() {
                 let currentPos = visitedTiles.shift()
                 grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
@@ -52,10 +52,12 @@ export default class PolyTreeNode {
                 viz(visitedTiles, grid, speed); // Calls itself recursively to ensure other code has finished before starting next step
             }, speed)
 
-        } else if (visitedTiles.length === 1) {
+        } else if (visitedTiles.length === 0) {
             // let targetPos = visitedTiles[0];
-            let targetPos = visitedTiles.shift();
-            grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found")
+            // let targetPos = visitedTiles.shift();
+            // grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found")
+            if (this.board.algorithmIsRunning === false) return;
+            this.board.targetNode.tileObj.classList.add("target-found");
             this.visualizeShortestPath(this.shortestPath, this.grid);
         }
 
@@ -64,14 +66,17 @@ export default class PolyTreeNode {
     visualizeShortestPath(pathPositions, grid) {
         let viz = this.visualizeShortestPath;
 
-        if (pathPositions.length > 1) {
+        if (pathPositions.length >= 1) {
             setTimeout(function() {
                 let currentPos = pathPositions.shift();
                 grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
 
                 viz(pathPositions, grid)
             }, 25)
-        } // Can I put an else if here to change board's currently running status? Else if .length === 0
+        } else if (pathPositions.length === 0) {
+            this.board.algorithmIsRunning = false;
+        } 
+        // Can I put an else if here to change board's currently running status? Else if .length === 0
         console.log("Shortest path animated")
     }
 
@@ -86,7 +91,7 @@ export default class PolyTreeNode {
             }
 
             if (currentNode.value === target) {
-                this.visitedTiles.push(currentNode.position)
+                // this.visitedTiles.push(currentNode.position)
                 this.findShortestPath();
                 this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
                 return currentNode;
@@ -96,6 +101,8 @@ export default class PolyTreeNode {
         }
         console.log("Unsolvable grid detected")
         // Logic for handling unsolvable grid goes here
+        this.board.algorithmIsRunning = false;
+        alert("Ha! Nice try. This maze is unsolvable. Please remove some walls to set your algorithms free.")
     }
 
     dfs(target) {
@@ -106,7 +113,7 @@ export default class PolyTreeNode {
                 let currentNode = stack.shift();
 
                 if (currentNode.value === target) {
-                    this.visitedTiles.push(currentNode.position)
+                    // this.visitedTiles.push(currentNode.position)
                     this.findShortestPath();
                     this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
                     return currentNode;
@@ -119,8 +126,9 @@ export default class PolyTreeNode {
             }
 
         }
-
-
+        console.log("Unsolvable grid detected")
+        this.board.algorithmIsRunning = false;
+        alert("Ha! Nice try. This maze is unsolvable. Please remove some walls to set your algorithms free.")
     }
 
     buildTree() {
@@ -139,6 +147,7 @@ export default class PolyTreeNode {
 
         // buildTree function will use the node on which it is called as the root node of the tree
         let neighbors = [this]; // This is a queue
+        // debugger
 
         while (neighbors.length > 0) {
             let currentNode = neighbors.shift();
@@ -148,7 +157,7 @@ export default class PolyTreeNode {
                 let newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
 
                 if (currentNode.board.validPos(newPos) && this.grid[newPos[0]][newPos[1]].node.value !== "wall") {
-
+                    // debugger
                     if (this.visited.has(newPos.join("-"))) { // Call join on newPos to convert it to a valid keyname
                         continue;
                     }
@@ -165,16 +174,12 @@ export default class PolyTreeNode {
     }
 
     findShortestPath() {
-        let targetNodePos = this.visitedTiles[this.visitedTiles.length - 1]; 
-        let currentNode = this.grid[targetNodePos[0]][targetNodePos[1]].node; // Very ugly way to get target node
-
-        this.shortestPath.unshift(currentNode.position);
+        let currentNode = this.board.targetNode;
 
         while (currentNode.value !== "root" && currentNode.parent.value !== "root") {
             this.shortestPath.unshift(currentNode.parent.position)
             currentNode = currentNode.parent;
         }
-
     }
 
     addParent(parentNode) {
@@ -186,6 +191,11 @@ export default class PolyTreeNode {
             this.parent = parentNode;
             parentNode.children.push(this);
         }
+    }
+
+    removeChild(childNode) {
+        let i = this.children.indexOf(childNode);
+        this.children.splice(i, 1)
     }
 
 }
