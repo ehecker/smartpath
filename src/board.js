@@ -47,50 +47,50 @@ export default class Board {
         }
     }
 
-    setRoot(pos) { // Change variables in this & setTarget to newRootTile/newNullTile
-        const oldX = this.rootNode.position[0];
-        const oldY = this.rootNode.position[1];
+    setRoot(pos) {
         const x = pos[0];
         const y = pos[1];
+        const oldX = this.rootNode.position[0];
+        const oldY = this.rootNode.position[1];
 
-        let oldRootTile = this.grid[oldX][oldY];
-        let oldNullTile = this.grid[x][y];
+        let newRootTile = this.grid[x][y];
+        let newNullTile = this.grid[oldX][oldY];
 
-        oldRootTile.node.value = null;
-        oldNullTile.node.value = "root";
+        newRootTile.node.value = "root";
+        newNullTile.node.value = null;
 
-        oldRootTile.tile.classList.remove("root-node");
-        oldNullTile.tile.classList.add("root-node");
+        newRootTile.tile.classList.add("root-node");
+        newNullTile.tile.classList.remove("root-node");
 
-        oldNullTile.tile.setAttribute("draggable", "true")
+        newRootTile.tile.setAttribute("draggable", "true")
 
-        oldRootTile.setDraggingFunctions();
-        oldNullTile.setDraggingFunctions();
+        newRootTile.setDraggingFunctions();
+        newNullTile.setDraggingFunctions();
 
-        this.rootNode = oldNullTile.node;
+        this.rootNode = newRootTile.node;
     }
 
     setTarget(pos) {
-        const oldX = this.targetNode.position[0];
-        const oldY = this.targetNode.position[1];
         const x = pos[0];
         const y = pos[1];
+        const oldX = this.targetNode.position[0];
+        const oldY = this.targetNode.position[1];
 
-        let oldTargetTile = this.grid[oldX][oldY];
-        let oldNullTile = this.grid[x][y];
+        let newTargetTile = this.grid[x][y];
+        let newNullTile = this.grid[oldX][oldY];
 
-        oldTargetTile.node.value = null;
-        oldNullTile.node.value = "target";
+        newTargetTile.node.value = "target";
+        newNullTile.node.value = null;
 
-        oldTargetTile.tile.classList.remove("target-node");
-        oldNullTile.tile.classList.add("target-node");
+        newTargetTile.tile.classList.add("target-node");
+        newNullTile.tile.classList.remove("target-node");
 
-        oldNullTile.tile.setAttribute("draggable", "true")
+        newTargetTile.tile.setAttribute("draggable", "true")
 
-        oldTargetTile.setDraggingFunctions();
-        oldNullTile.setDraggingFunctions();
+        newTargetTile.setDraggingFunctions();
+        newNullTile.setDraggingFunctions();
 
-        this.targetNode = oldNullTile.node;
+        this.targetNode = newTargetTile.node;
     }
 
     generateScatterMaze() {

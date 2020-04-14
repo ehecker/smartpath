@@ -391,39 +391,38 @@ var Board = /*#__PURE__*/function () {
   }, {
     key: "setRoot",
     value: function setRoot(pos) {
-      // Change variables in this & setTarget to newRootTile/newNullTile
-      var oldX = this.rootNode.position[0];
-      var oldY = this.rootNode.position[1];
       var x = pos[0];
       var y = pos[1];
-      var oldRootTile = this.grid[oldX][oldY];
-      var oldNullTile = this.grid[x][y];
-      oldRootTile.node.value = null;
-      oldNullTile.node.value = "root";
-      oldRootTile.tile.classList.remove("root-node");
-      oldNullTile.tile.classList.add("root-node");
-      oldNullTile.tile.setAttribute("draggable", "true");
-      oldRootTile.setDraggingFunctions();
-      oldNullTile.setDraggingFunctions();
-      this.rootNode = oldNullTile.node;
+      var oldX = this.rootNode.position[0];
+      var oldY = this.rootNode.position[1];
+      var newRootTile = this.grid[x][y];
+      var newNullTile = this.grid[oldX][oldY];
+      newRootTile.node.value = "root";
+      newNullTile.node.value = null;
+      newRootTile.tile.classList.add("root-node");
+      newNullTile.tile.classList.remove("root-node");
+      newRootTile.tile.setAttribute("draggable", "true");
+      newRootTile.setDraggingFunctions();
+      newNullTile.setDraggingFunctions();
+      this.rootNode = newRootTile.node;
     }
   }, {
     key: "setTarget",
     value: function setTarget(pos) {
-      var oldX = this.targetNode.position[0];
-      var oldY = this.targetNode.position[1];
       var x = pos[0];
       var y = pos[1];
-      var oldTargetTile = this.grid[oldX][oldY];
-      var oldNullTile = this.grid[x][y];
-      oldTargetTile.node.value = null;
-      oldNullTile.node.value = "target";
-      oldTargetTile.tile.classList.remove("target-node");
-      oldNullTile.tile.classList.add("target-node");
-      oldNullTile.tile.setAttribute("draggable", "true");
-      oldTargetTile.setDraggingFunctions();
-      oldNullTile.setDraggingFunctions();
-      this.targetNode = oldNullTile.node;
+      var oldX = this.targetNode.position[0];
+      var oldY = this.targetNode.position[1];
+      var newTargetTile = this.grid[x][y];
+      var newNullTile = this.grid[oldX][oldY];
+      newTargetTile.node.value = "target";
+      newNullTile.node.value = null;
+      newTargetTile.tile.classList.add("target-node");
+      newNullTile.tile.classList.remove("target-node");
+      newTargetTile.tile.setAttribute("draggable", "true");
+      newTargetTile.setDraggingFunctions();
+      newNullTile.setDraggingFunctions();
+      this.targetNode = newTargetTile.node;
     }
   }, {
     key: "generateScatterMaze",
