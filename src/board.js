@@ -14,6 +14,7 @@ export default class Board {
         this.setRoot = this.setRoot.bind(this);
         this.setTarget = this.setTarget.bind(this);
         this.generateScatterMaze = this.generateScatterMaze.bind(this);
+        this.clearWalls = this.clearWalls.bind(this);
         this.reset = this.reset.bind(this);
     }
 
@@ -100,7 +101,7 @@ export default class Board {
         this.clearPath();
         let wallCount = 0;
 
-        while (wallCount < 300) {
+        while (wallCount < 350) {
             let x = Math.floor(Math.random() * 25);
             let y = Math.floor(Math.random() * 48);
             

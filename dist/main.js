@@ -354,6 +354,7 @@ var Board = /*#__PURE__*/function () {
     this.setRoot = this.setRoot.bind(this);
     this.setTarget = this.setTarget.bind(this);
     this.generateScatterMaze = this.generateScatterMaze.bind(this);
+    this.clearWalls = this.clearWalls.bind(this);
     this.reset = this.reset.bind(this);
   }
 
@@ -432,7 +433,7 @@ var Board = /*#__PURE__*/function () {
       this.clearPath();
       var wallCount = 0;
 
-      while (wallCount < 300) {
+      while (wallCount < 350) {
         var x = Math.floor(Math.random() * 25);
         var y = Math.floor(Math.random() * 48);
         var currentNode = this.grid[x][y].node;
@@ -543,7 +544,6 @@ var Board = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board */ "./src/board.js");
- // Smartpath Entry File:
 
 document.addEventListener("DOMContentLoaded", function () {
   // Create and fill board
@@ -552,13 +552,14 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Board initialized and populated");
   var bfsText = "Breadth First Search (BFS) is a search algorithm used for navigating graph data structures. It utilizes a 'breadth-first' strategy, meaning that each node explores each of its neighbor nodes before moving onto the nodes at the next level of depth. It was invented in 1945 by Konrad Zuse.";
   var dfsText = "Depth First Search (DFS) is a search algorithm which prioritizes exploration of nodes located 'deeper' in a graph structure. It was originally invented by French mathematician Charles Pierre Tremaux in the 19th century.";
-  var dijkstrasText = "Dijkstra's algorithm is a search algorithm which guarantees discovery of the shortest path between nodes. It is considered the most efficient search algorithm in existence. It was invented by Edsger W. Dijkstra in 1956.";
+  var dijkstrasText = "Dijkstra's algorithm is a search algorithm which guarantees discovery of the shortest path between two nodes. Considered one of the most efficient pathfinding algorithms, it has widespread application in many fields, especially those related to navigation.";
   var infoTitleEl = document.getElementById("algo-title");
   var infoTextEl = document.getElementById("algo-info"); // Add functionality to radio buttons
 
   function setAlgo(event) {
     var oldActive = document.getElementById(algorithm);
     oldActive.classList.remove("active");
+    visButton.classList.remove("vis-disabled");
     algorithm = event.target.id;
     var newActive = document.getElementById(algorithm);
     newActive.classList.add("active");
@@ -570,7 +571,8 @@ document.addEventListener("DOMContentLoaded", function () {
       infoTitleEl.innerHTML = "Depth First Search";
       infoTextEl.innerHTML = dfsText;
     } else if (algorithm === "dijkstras-btn") {
-      infoTitleEl.innerHTML = "Dijkstra's Algorithm";
+      visButton.classList.add("vis-disabled");
+      infoTitleEl.innerHTML = "Dijkstra's Algorithm - Coming Soon";
       infoTextEl.innerHTML = dijkstrasText;
     }
   } // Set defaults
@@ -588,6 +590,9 @@ document.addEventListener("DOMContentLoaded", function () {
   dijkstrasButton.addEventListener("click", setAlgo);
   bfsButton.addEventListener("click", setAlgo);
   dfsButton.addEventListener("click", setAlgo); // Add functionality to Visualize button
+
+  var visButton = document.getElementById("vis-button");
+  visButton.addEventListener("click", runAlgorithm);
 
   function runAlgorithm() {
     if (board.algorithmIsRunning === true) return;
@@ -620,10 +625,8 @@ document.addEventListener("DOMContentLoaded", function () {
       default:
         break;
     }
-  }
+  } // Add functionality to Reset button
 
-  var visButton = document.getElementById("vis-button");
-  visButton.addEventListener("click", runAlgorithm); // Add functionality to Reset button
 
   var resetButton = document.getElementById("reset-button");
   resetButton.addEventListener("click", board.reset); // Add functionality to Animation Speed dropdown

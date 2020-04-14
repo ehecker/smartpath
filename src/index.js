@@ -1,6 +1,5 @@
 import Board from "./board";
 
-// Smartpath Entry File:
 document.addEventListener("DOMContentLoaded", () => {
 
     // Create and fill board
@@ -10,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const bfsText = "Breadth First Search (BFS) is a search algorithm used for navigating graph data structures. It utilizes a 'breadth-first' strategy, meaning that each node explores each of its neighbor nodes before moving onto the nodes at the next level of depth. It was invented in 1945 by Konrad Zuse."
     const dfsText = "Depth First Search (DFS) is a search algorithm which prioritizes exploration of nodes located 'deeper' in a graph structure. It was originally invented by French mathematician Charles Pierre Tremaux in the 19th century."
-    const dijkstrasText = "Dijkstra's algorithm is a search algorithm which guarantees discovery of the shortest path between nodes. It is considered the most efficient search algorithm in existence. It was invented by Edsger W. Dijkstra in 1956."
+    const dijkstrasText = "Dijkstra's algorithm is a search algorithm which guarantees discovery of the shortest path between two nodes. Considered one of the most efficient pathfinding algorithms, it has widespread application in many fields, especially those related to navigation."
     
     const infoTitleEl = document.getElementById("algo-title")
     const infoTextEl = document.getElementById("algo-info");
@@ -19,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function setAlgo(event) {
         let oldActive = document.getElementById(algorithm);
         oldActive.classList.remove("active");
+
+        visButton.classList.remove("vis-disabled")
 
         algorithm = event.target.id;
         let newActive = document.getElementById(algorithm);
@@ -31,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
             infoTitleEl.innerHTML = "Depth First Search";
             infoTextEl.innerHTML = dfsText;
         } else if (algorithm === "dijkstras-btn") {
-            infoTitleEl.innerHTML = "Dijkstra's Algorithm"
+            visButton.classList.add("vis-disabled")
+            infoTitleEl.innerHTML = "Dijkstra's Algorithm - Coming Soon"
             infoTextEl.innerHTML = dijkstrasText;
         }
     }
@@ -50,6 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
     dfsButton.addEventListener("click", setAlgo);
 
     // Add functionality to Visualize button
+    const visButton = document.getElementById("vis-button");
+    visButton.addEventListener("click", runAlgorithm);
+
     function runAlgorithm() {
         if (board.algorithmIsRunning === true) return;
 
@@ -83,9 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 break;
         }
     }
-
-    const visButton = document.getElementById("vis-button");
-    visButton.addEventListener("click", runAlgorithm);
 
     // Add functionality to Reset button
     const resetButton = document.getElementById("reset-button");

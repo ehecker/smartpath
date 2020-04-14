@@ -8,6 +8,7 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./assets/stylesheets/reset.css"> 
+    <link rel="stylesheet" href="./assets/stylesheets/modal.css">
     <link rel="stylesheet" href="./assets/stylesheets/nav.css">
     <link rel="stylesheet" href="./assets/stylesheets/info.css">
     <link rel="stylesheet" href="./assets/stylesheets/board.css">
@@ -49,9 +50,6 @@
             <div id="dijkstras-btn" class="algo-button">
                 <p>Dijkstra's Algorithm</p>
             </div>
-            <!-- <div id="astar-btn" class="algo-button">
-                <p>A* Algorithm</p>
-            </div> -->
             <div id="bfs-btn" class="algo-button active">
                 <p>Breadth First Search</p>
             </div>
@@ -134,5 +132,24 @@
             <!-- Tiles are appended here in Tile class constructor -->
         </div>
     </main>
+    <div class="modal">
+        <div class="modal-screen"></div>
+        <div class="modal-content">
+            <h2 class="modal-title">Welcome to Smartpath!</h2>
+
+            <div class="modal-main">
+                <div class="modal-row">
+                    <h3 class="modal-subtitle">What is Smartpath?</h3>
+                    <p class="modal-text">Smartpath is a Pathfinding Algorithm Visualizer - but unless you have a technical background,
+                         that probably isn't a very helpful answer. What, then, is a pathfinding algorithm?
+                        A pathfinding algorithm is a computer program which finds the shortest possible path between two nodes: a root, and a target.</p>
+                </div>
+            </div>
+
+            <div class="modal-nav">
+                <button class="next-button">Next</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
