@@ -60,8 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         switch (algorithm) {
             case "bfs-btn":
-                board.resetTree()
                 board.algorithmIsRunning = true;
+                board.resetTree()
                 rootNode.visited = new Set();
                 rootNode.visited.add(rootNode.position.join("-"));
 
@@ -71,8 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("BFS executed");
                 break;
             case "dfs-btn":
-                board.resetTree()
                 board.algorithmIsRunning = true;
+                board.resetTree()
                 rootNode.visited = new Set();
                 rootNode.visited.add(rootNode.position.join("-"));
 
@@ -91,6 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add functionality to Reset button
     function reset() {
+        if (board.algorithmIsRunning === true) return;
+
         let grid = document.getElementById("grid");
         grid.innerHTML = "";
         

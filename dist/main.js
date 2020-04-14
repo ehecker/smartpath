@@ -167,9 +167,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
           viz(visitedTiles, grid, speed); // Calls itself recursively to ensure other code has finished before starting next step
         }, speed);
       } else if (visitedTiles.length === 0) {
-        // let targetPos = visitedTiles[0];
-        // let targetPos = visitedTiles.shift();
-        // grid[targetPos[0]][targetPos[1]].tile.classList.add("target-found")
         if (this.board.algorithmIsRunning === false) return;
         this.board.targetNode.tileObj.classList.add("target-found");
         this.visualizeShortestPath(this.shortestPath, this.grid);
@@ -257,7 +254,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
       ]; // buildTree function will use the node on which it is called as the root node of the tree
 
       var neighbors = [this]; // This is a queue
-      // debugger
 
       while (neighbors.length > 0) {
         var currentNode = neighbors.shift();
@@ -538,8 +534,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (algorithm) {
       case "bfs-btn":
-        board.resetTree();
         board.algorithmIsRunning = true;
+        board.resetTree();
         rootNode.visited = new Set();
         rootNode.visited.add(rootNode.position.join("-"));
         rootNode.buildTree();
@@ -549,8 +545,8 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
 
       case "dfs-btn":
-        board.resetTree();
         board.algorithmIsRunning = true;
+        board.resetTree();
         rootNode.visited = new Set();
         rootNode.visited.add(rootNode.position.join("-"));
         rootNode.buildTree();
@@ -568,6 +564,7 @@ document.addEventListener("DOMContentLoaded", function () {
   visButton.addEventListener("click", runAlgorithm); // Add functionality to Reset button
 
   function reset() {
+    if (board.algorithmIsRunning === true) return;
     var grid = document.getElementById("grid");
     grid.innerHTML = "";
     board.algorithmIsRunning = false;
