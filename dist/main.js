@@ -401,6 +401,7 @@ var Board = /*#__PURE__*/function () {
       newRootTile.node.value = "root";
       newNullTile.node.value = null;
       newRootTile.tile.classList.add("root-node");
+      newRootTile.tile.classList.remove("wall");
       newNullTile.tile.classList.remove("root-node");
       newRootTile.tile.setAttribute("draggable", "true");
       newRootTile.setDraggingFunctions();
@@ -419,6 +420,7 @@ var Board = /*#__PURE__*/function () {
       newTargetTile.node.value = "target";
       newNullTile.node.value = null;
       newTargetTile.tile.classList.add("target-node");
+      newTargetTile.tile.classList.remove("wall");
       newNullTile.tile.classList.remove("target-node");
       newTargetTile.tile.setAttribute("draggable", "true");
       newTargetTile.setDraggingFunctions();

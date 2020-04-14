@@ -61,6 +61,7 @@ export default class Board {
         newNullTile.node.value = null;
 
         newRootTile.tile.classList.add("root-node");
+        newRootTile.tile.classList.remove("wall")
         newNullTile.tile.classList.remove("root-node");
 
         newRootTile.tile.setAttribute("draggable", "true")
@@ -84,6 +85,7 @@ export default class Board {
         newNullTile.node.value = null;
 
         newTargetTile.tile.classList.add("target-node");
+        newTargetTile.tile.classList.remove("wall")
         newNullTile.tile.classList.remove("target-node");
 
         newTargetTile.tile.setAttribute("draggable", "true")
