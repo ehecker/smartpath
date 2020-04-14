@@ -49,7 +49,8 @@ nav {
 
 .main-title {
     font-size: 50px;
-    color: orange;
+    /* color: orange; */
+    color: white;
     font-weight: 700;
     cursor: pointer;
 }
@@ -108,7 +109,8 @@ a {
 }
 
 #bfs-btn {
-    background-color: black;
+    /* background-color: black; */
+    background-color: #3ac961
 }
 
 #dfs-btn {
