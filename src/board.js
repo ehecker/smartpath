@@ -13,6 +13,8 @@ export default class Board {
         this.validPos = this.validPos.bind(this);
         this.setRoot = this.setRoot.bind(this);
         this.setTarget = this.setTarget.bind(this);
+        this.generateScatterMaze = this.generateScatterMaze.bind(this);
+        this.reset = this.reset.bind(this);
     }
 
     fillGrid() { // Create tile objects, populate this.grid
@@ -92,7 +94,34 @@ export default class Board {
     }
 
     generateScatterMaze() {
+        if (this.algorithmIsRunning === true) return;
 
+        this.clearWalls();
+        this.clearPath();
+        let wallCount = 0;
+
+        while (wallCount < 300) {
+            let x = Math.floor(Math.random() * 25);
+            let y = Math.floor(Math.random() * 48);
+            
+            let currentNode = this.grid[x][y].node;
+            if (currentNode.value === null) {
+                currentNode.value = "wall"
+                currentNode.tileObj.classList.add("wall")
+                wallCount++
+            }
+        }
+    }
+
+    reset() {
+        if (this.algorithmIsRunning === true) return;
+
+        let grid = document.getElementById("grid");
+        grid.innerHTML = "";
+        
+        this.algorithmIsRunning = false;
+        this.grid = [];
+        this.fillGrid();
     }
 
     resetTree() {
@@ -101,6 +130,38 @@ export default class Board {
                 tile.node.parent = null;
                 tile.node.children = [];
             }
+        }
+    }
+
+    clearPath() {
+        if (this.algorithmIsRunning === true) return;
+
+        const visitedTiles = Array.from(document.getElementsByClassName("visited"))
+        const shortestPathTiles = Array.from(document.getElementsByClassName("shortest-path-node"))
+
+        for (let tile of visitedTiles) {
+            tile.classList.remove("visited");
+        }
+
+        for (let shortTile of shortestPathTiles) {
+            shortTile.classList.remove("shortest-path-node")
+        }
+
+        const targetTile = document.getElementsByClassName("target-node");
+        targetTile[0].classList.remove("target-found")
+    }
+
+    clearWalls() {
+        if (this.algorithmIsRunning === true) return;
+
+        let wallTiles = Array.from(document.getElementsByClassName("wall"));
+        
+        for (let wallEl of wallTiles) {
+            let wallPos = wallEl.id.split("-")
+            let wallTile = this.grid[+wallPos[0]][+wallPos[1]];
+
+            wallTile.node.value = null;
+            wallEl.classList.remove("wall");
         }
     }
 

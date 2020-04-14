@@ -353,6 +353,8 @@ var Board = /*#__PURE__*/function () {
     this.validPos = this.validPos.bind(this);
     this.setRoot = this.setRoot.bind(this);
     this.setTarget = this.setTarget.bind(this);
+    this.generateScatterMaze = this.generateScatterMaze.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   _createClass(Board, [{
@@ -425,7 +427,34 @@ var Board = /*#__PURE__*/function () {
     }
   }, {
     key: "generateScatterMaze",
-    value: function generateScatterMaze() {}
+    value: function generateScatterMaze() {
+      if (this.algorithmIsRunning === true) return;
+      this.clearWalls();
+      this.clearPath();
+      var wallCount = 0;
+
+      while (wallCount < 300) {
+        var x = Math.floor(Math.random() * 25);
+        var y = Math.floor(Math.random() * 48);
+        var currentNode = this.grid[x][y].node;
+
+        if (currentNode.value === null) {
+          currentNode.value = "wall";
+          currentNode.tileObj.classList.add("wall");
+          wallCount++;
+        }
+      }
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      if (this.algorithmIsRunning === true) return;
+      var grid = document.getElementById("grid");
+      grid.innerHTML = "";
+      this.algorithmIsRunning = false;
+      this.grid = [];
+      this.fillGrid();
+    }
   }, {
     key: "resetTree",
     value: function resetTree() {
@@ -455,6 +484,40 @@ var Board = /*#__PURE__*/function () {
         _iterator.e(err);
       } finally {
         _iterator.f();
+      }
+    }
+  }, {
+    key: "clearPath",
+    value: function clearPath() {
+      if (this.algorithmIsRunning === true) return;
+      var visitedTiles = Array.from(document.getElementsByClassName("visited"));
+      var shortestPathTiles = Array.from(document.getElementsByClassName("shortest-path-node"));
+
+      for (var _i = 0, _visitedTiles = visitedTiles; _i < _visitedTiles.length; _i++) {
+        var tile = _visitedTiles[_i];
+        tile.classList.remove("visited");
+      }
+
+      for (var _i2 = 0, _shortestPathTiles = shortestPathTiles; _i2 < _shortestPathTiles.length; _i2++) {
+        var shortTile = _shortestPathTiles[_i2];
+        shortTile.classList.remove("shortest-path-node");
+      }
+
+      var targetTile = document.getElementsByClassName("target-node");
+      targetTile[0].classList.remove("target-found");
+    }
+  }, {
+    key: "clearWalls",
+    value: function clearWalls() {
+      if (this.algorithmIsRunning === true) return;
+      var wallTiles = Array.from(document.getElementsByClassName("wall"));
+
+      for (var _i3 = 0, _wallTiles = wallTiles; _i3 < _wallTiles.length; _i3++) {
+        var wallEl = _wallTiles[_i3];
+        var wallPos = wallEl.id.split("-");
+        var wallTile = this.grid[+wallPos[0]][+wallPos[1]];
+        wallTile.node.value = null;
+        wallEl.classList.remove("wall");
       }
     }
   }, {
@@ -530,7 +593,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function runAlgorithm() {
     if (board.algorithmIsRunning === true) return;
     var rootNode = board.rootNode;
-    clearPath();
+    board.clearPath();
 
     switch (algorithm) {
       case "bfs-btn":
@@ -563,17 +626,8 @@ document.addEventListener("DOMContentLoaded", function () {
   var visButton = document.getElementById("vis-button");
   visButton.addEventListener("click", runAlgorithm); // Add functionality to Reset button
 
-  function reset() {
-    if (board.algorithmIsRunning === true) return;
-    var grid = document.getElementById("grid");
-    grid.innerHTML = "";
-    board.algorithmIsRunning = false;
-    board.grid = [];
-    board.fillGrid();
-  }
-
   var resetButton = document.getElementById("reset-button");
-  resetButton.addEventListener("click", reset); // Add functionality to Animation Speed dropdown
+  resetButton.addEventListener("click", board.reset); // Add functionality to Animation Speed dropdown
 
   function setAnimationSpeed(event) {
     var newSpeed;
@@ -605,42 +659,13 @@ document.addEventListener("DOMContentLoaded", function () {
   var selectButton = document.getElementById("anim-speed");
   selectButton.addEventListener("change", setAnimationSpeed); // Add functionality to Clear Walls and Clear Path buttons
 
-  function clearWalls() {
-    if (board.algorithmIsRunning === true) return;
-    var wallTiles = Array.from(document.getElementsByClassName("wall"));
-
-    for (var _i = 0, _wallTiles = wallTiles; _i < _wallTiles.length; _i++) {
-      var wallEl = _wallTiles[_i];
-      var wallPos = wallEl.id.split("-");
-      var wallTile = board.grid[+wallPos[0]][+wallPos[1]];
-      wallTile.node.value = null;
-      wallEl.classList.remove("wall");
-    }
-  }
-
-  function clearPath() {
-    if (board.algorithmIsRunning === true) return;
-    var visitedTiles = Array.from(document.getElementsByClassName("visited"));
-    var shortestPathTiles = Array.from(document.getElementsByClassName("shortest-path-node"));
-
-    for (var _i2 = 0, _visitedTiles = visitedTiles; _i2 < _visitedTiles.length; _i2++) {
-      var tile = _visitedTiles[_i2];
-      tile.classList.remove("visited");
-    }
-
-    for (var _i3 = 0, _shortestPathTiles = shortestPathTiles; _i3 < _shortestPathTiles.length; _i3++) {
-      var shortTile = _shortestPathTiles[_i3];
-      shortTile.classList.remove("shortest-path-node");
-    }
-
-    var targetTile = document.getElementsByClassName("target-node");
-    targetTile[0].classList.remove("target-found");
-  }
-
   var clearWallsButton = document.getElementById("clear-walls");
-  clearWallsButton.addEventListener("click", clearWalls);
+  clearWallsButton.addEventListener("click", board.clearWalls);
   var clearPathButton = document.getElementById("clear-path");
-  clearPathButton.addEventListener("click", clearPath);
+  clearPathButton.addEventListener("click", board.clearPath); // Add functionality to Generate Maze button
+
+  var genMazeButton = document.getElementById("gen-maze-button");
+  genMazeButton.addEventListener("click", board.generateScatterMaze);
 });
 
 /***/ }),

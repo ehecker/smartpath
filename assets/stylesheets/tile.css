@@ -27,7 +27,6 @@
 .visited {
     /* animation: 1s ease both markVisited; */
     background-color: orange;
-    /* background-color: #15BEFF; */
 }
 
 @keyframes markVisited {

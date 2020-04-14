@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     infoTitleEl.innerHTML = "Breadth First Search"; // Set default title
     infoTextEl.innerHTML = bfsText; // Set default text
     let algorithm = "bfs-btn"; // Set default algorithm
-
        
     const dijkstrasButton = document.getElementById("dijkstras-btn");
     const bfsButton = document.getElementById("bfs-btn");
@@ -50,13 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
     bfsButton.addEventListener("click", setAlgo);
     dfsButton.addEventListener("click", setAlgo);
 
-
     // Add functionality to Visualize button
     function runAlgorithm() {
         if (board.algorithmIsRunning === true) return;
 
         let rootNode = board.rootNode;
-        clearPath();
+        board.clearPath();
 
         switch (algorithm) {
             case "bfs-btn":
@@ -90,19 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
     visButton.addEventListener("click", runAlgorithm);
 
     // Add functionality to Reset button
-    function reset() {
-        if (board.algorithmIsRunning === true) return;
-
-        let grid = document.getElementById("grid");
-        grid.innerHTML = "";
-        
-        board.algorithmIsRunning = false;
-        board.grid = [];
-        board.fillGrid();
-    }
-
     const resetButton = document.getElementById("reset-button");
-    resetButton.addEventListener("click", reset)
+    resetButton.addEventListener("click", board.reset)
 
     // Add functionality to Animation Speed dropdown
     function setAnimationSpeed(event) {
@@ -132,41 +119,13 @@ document.addEventListener("DOMContentLoaded", () => {
     selectButton.addEventListener("change", setAnimationSpeed)
 
     // Add functionality to Clear Walls and Clear Path buttons
-    function clearWalls() {
-        if (board.algorithmIsRunning === true) return;
-
-        let wallTiles = Array.from(document.getElementsByClassName("wall"));
-        
-        for (let wallEl of wallTiles) {
-            let wallPos = wallEl.id.split("-")
-            let wallTile = board.grid[+wallPos[0]][+wallPos[1]];
-
-            wallTile.node.value = null;
-            wallEl.classList.remove("wall");
-        }
-    }
-
-    function clearPath() {
-        if (board.algorithmIsRunning === true) return;
-
-        const visitedTiles = Array.from(document.getElementsByClassName("visited"))
-        const shortestPathTiles = Array.from(document.getElementsByClassName("shortest-path-node"))
-
-        for (let tile of visitedTiles) {
-            tile.classList.remove("visited");
-        }
-
-        for (let shortTile of shortestPathTiles) {
-            shortTile.classList.remove("shortest-path-node")
-        }
-
-        const targetTile = document.getElementsByClassName("target-node");
-        targetTile[0].classList.remove("target-found")
-    }
-
     const clearWallsButton = document.getElementById("clear-walls");
-    clearWallsButton.addEventListener("click", clearWalls);
+    clearWallsButton.addEventListener("click", board.clearWalls);
 
     const clearPathButton = document.getElementById("clear-path");
-    clearPathButton.addEventListener("click", clearPath)
+    clearPathButton.addEventListener("click", board.clearPath)
+
+    // Add functionality to Generate Maze button
+    const genMazeButton = document.getElementById("gen-maze-button");
+    genMazeButton.addEventListener("click", board.generateScatterMaze);
 })
