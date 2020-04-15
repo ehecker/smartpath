@@ -74,7 +74,6 @@ export default class PolyTreeNode {
         } else if (pathPositions.length === 0) {
             this.board.algorithmIsRunning = false;
         } 
-        // Can I put an else if here to change board's currently running status? Else if .length === 0
         console.log("Shortest path animated")
     }
 

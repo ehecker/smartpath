@@ -10,7 +10,7 @@
 }
 
 .modal-screen {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
     bottom: 0;
@@ -38,13 +38,33 @@
 
 /* MODAL CONTENT */
 
+.modal-title-row {
+    color: white;
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-between;
+    width: 100%;
+}
+
 .modal-title {
     /* background-color: red; */
-    color: white;
-    font-size: 28px;
+    color: #3ac961;
+    font-size: 32px;
     font-family: "Raleway", sans-serif;
     font-weight: 600;
     padding: 25px 0 20px 0;
+}
+
+.modal-counter {
+    font-size: 18px;
+    margin-top: 25px;
+    margin: 25px 0 0 20px;
+}
+
+.modal-close {
+    font-size: 40px;
+    cursor: pointer;
+    margin: 15px 20px 0 0;
 }
 
 .modal-main {
@@ -73,8 +93,9 @@
 .modal-text {
     color: white;
     font-family: "Raleway", sans-serif;
-    font-size: 15px;
+    font-size: 17px;
     line-height: 1.5;
+    /* margin-left: 20px; */
 }
 
 .modal-nav {
@@ -93,7 +114,7 @@
     padding: 7px 25px 7px 25px;
     border-style: none;
     text-align: center;
-    margin-right: 50px;
+    margin-right: 30px;
 }
 
 .next-button:hover {

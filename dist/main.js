@@ -185,8 +185,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
         }, 25);
       } else if (pathPositions.length === 0) {
         this.board.algorithmIsRunning = false;
-      } // Can I put an else if here to change board's currently running status? Else if .length === 0
-
+      }
 
       console.log("Shortest path animated");
     }
@@ -552,8 +551,8 @@ document.addEventListener("DOMContentLoaded", function () {
   var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
   board.fillGrid();
   console.log("Board initialized and populated");
-  var bfsText = "Breadth First Search (BFS) is a search algorithm used for navigating graph data structures. It utilizes a 'breadth-first' strategy, meaning that each node explores each of its neighbor nodes before moving onto the nodes at the next level of depth. It was invented in 1945 by Konrad Zuse.";
-  var dfsText = "Depth First Search (DFS) is a search algorithm which prioritizes exploration of nodes located 'deeper' in a graph structure. It was originally invented by French mathematician Charles Pierre Tremaux in the 19th century.";
+  var bfsText = "Breadth-First Search (BFS) is a search algorithm in which nodes prioritize exploration of their immediate neighbors before moving on to nodes at the next level of depth. BFS guarantees discovery of the shortest path.";
+  var dfsText = "Depth-First Search (DFS) is a search algorithm in which nodes prioritize exploration of nodes located deeper in the graph structure before backtracing to immediate neighbors. Note that although we include the animation for illustrative purposes, DFS does not guarantee discovery of the shortest path.";
   var dijkstrasText = "Dijkstra's algorithm is a search algorithm which guarantees discovery of the shortest path between two nodes. Considered one of the most efficient pathfinding algorithms, it has widespread application in many fields, especially those related to navigation.";
   var infoTitleEl = document.getElementById("algo-title");
   var infoTextEl = document.getElementById("algo-info"); // Add functionality to radio buttons
@@ -567,10 +566,10 @@ document.addEventListener("DOMContentLoaded", function () {
     newActive.classList.add("active");
 
     if (algorithm === "bfs-btn") {
-      infoTitleEl.innerHTML = "Breadth First Search";
+      infoTitleEl.innerHTML = "Breadth-First Search";
       infoTextEl.innerHTML = bfsText;
     } else if (algorithm === "dfs-btn") {
-      infoTitleEl.innerHTML = "Depth First Search";
+      infoTitleEl.innerHTML = "Depth-First Search";
       infoTextEl.innerHTML = dfsText;
     } else if (algorithm === "dijkstras-btn") {
       visButton.classList.add("vis-disabled");
@@ -580,7 +579,7 @@ document.addEventListener("DOMContentLoaded", function () {
   } // Set defaults
 
 
-  infoTitleEl.innerHTML = "Breadth First Search"; // Set default title
+  infoTitleEl.innerHTML = "Breadth-First Search"; // Set default title
 
   infoTextEl.innerHTML = bfsText; // Set default text
 
