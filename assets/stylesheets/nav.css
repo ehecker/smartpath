@@ -93,6 +93,7 @@ a {
     margin: 0 15px 0 15px;
     align-items: center;
     cursor: pointer;
+    /* opacity: 0.8; */
 }
 
 .algo-button p {

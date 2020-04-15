@@ -36,20 +36,20 @@
     align-items: center;
 }
 
-/* MODAL CONTENT */
+/* MODAL PAGE 1 CONTENT */
 
 .modal-title-row {
     color: white;
     display: flex;
-    /* align-items: center; */
     justify-content: space-between;
     width: 100%;
 }
 
 .modal-title {
     /* background-color: red; */
-    color: #3ac961;
-    font-size: 32px;
+    /* color: #3ac961; */
+    color: white;
+    font-size: 34px;
     font-family: "Raleway", sans-serif;
     font-weight: 600;
     padding: 25px 0 20px 0;
@@ -61,7 +61,7 @@
     margin: 25px 0 0 20px;
 }
 
-.modal-close {
+.modal-close-btn {
     font-size: 40px;
     cursor: pointer;
     margin: 15px 20px 0 0;
@@ -82,12 +82,13 @@
 }
 
 .modal-subtitle {
-    color: white;
+    /* color: white; */
+    color: #3ac961;
     font-family: "Raleway", sans-serif;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
     /* margin-left: 40px; */
-    padding-bottom: 8px;
+    padding-bottom: 10px;
 }
 
 .modal-text {
@@ -95,7 +96,25 @@
     font-family: "Raleway", sans-serif;
     font-size: 17px;
     line-height: 1.5;
-    /* margin-left: 20px; */
+    /* margin-left: 10px; */
+}
+
+.modal-orange {
+    color: #D69E2E;
+}
+
+.italic {
+    /* color: #3AC961; */
+    font-style: italic;
+}
+
+.modal-blue {
+    color: #15BEFF;
+    /* text-decoration: underline; */
+}
+
+.modal-red {
+    color: #B50721;
 }
 
 .modal-nav {
@@ -124,4 +143,26 @@
 
 .next-button:focus {
     outline: none;
+}
+
+/* MODAL PAGE 2 CONTENT */
+
+.modal-title-p2 {
+    color: white;
+    font-size: 34px;
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    padding: 25px 0 20px 0;
+}
+
+.modal-sec-title {
+    color: white;
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+.modal-text-p2 {
+    color: white;
+    font-size: 14px;
+    line-height: 1.5;
 }
