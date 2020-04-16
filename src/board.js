@@ -49,6 +49,8 @@ export default class Board {
     }
 
     setRoot(pos) {
+        if (this.algorithmIsRunning === true) return;
+
         const oldX = this.rootNode.position[0];
         const oldY = this.rootNode.position[1];
         const x = pos[0];
@@ -72,6 +74,8 @@ export default class Board {
     }
 
     setTarget(pos) {
+        if (this.algorithmIsRunning === true) return;
+
         const oldX = this.targetNode.position[0];
         const oldY = this.targetNode.position[1];
         const x = pos[0];

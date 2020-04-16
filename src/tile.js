@@ -98,12 +98,16 @@ export default class Tile {
     }
 
     placeWall() {
+        if (this.board.algorithmIsRunning === true) return;
+
         this.node.value = "wall";
         this.tile.classList.add("wall")
         console.log("Wall placed")
     }
 
     removeWall() {
+        if (this.board.algorithmIsRunning === true) return;
+
         this.node.value = null;
         this.tile.classList.remove("wall")
         console.log("Wall removed")

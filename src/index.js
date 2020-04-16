@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const bfsText = "Breadth-First Search (BFS) is a search algorithm in which nodes prioritize exploration of their immediate neighbors before moving on to nodes at the next level of depth. BFS guarantees discovery of the shortest path."
     const dfsText = "Depth-First Search (DFS) is a search algorithm in which nodes prioritize exploration of nodes located deeper in the graph structure before backtracing to immediate neighbors. Note that although we include the animation for illustrative purposes, DFS does not guarantee discovery of the shortest path."
-    const dijkstrasText = "Dijkstra's algorithm is a search algorithm capable of accounting for different levels of difficulty in traversing particular nodes. Considered the most efficient search algorithm, it has widespread application in many fields including navigational systems and Artificial Intelligence."
+    const dijkstrasText = "Dijkstra's algorithm is a search algorithm which applies a breadth-first strategy while also accounting for varying levels of difficulty in passing through certain nodes. Considered the most efficient pathfinding algorithm, it has widespread application in many fields including navigational systems and Artificial Intelligence."
     
     const infoTitleEl = document.getElementById("algo-title")
     const infoTextEl = document.getElementById("algo-info");
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (board.algorithmIsRunning === true) return;
 
         let rootNode = board.rootNode;
-        // board.clearPath();
+        board.clearPath();
 
         switch (algorithm) {
             case "bfs-btn":

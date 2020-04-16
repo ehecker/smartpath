@@ -391,6 +391,7 @@ var Board = /*#__PURE__*/function () {
   }, {
     key: "setRoot",
     value: function setRoot(pos) {
+      if (this.algorithmIsRunning === true) return;
       var oldX = this.rootNode.position[0];
       var oldY = this.rootNode.position[1];
       var x = pos[0];
@@ -410,6 +411,7 @@ var Board = /*#__PURE__*/function () {
   }, {
     key: "setTarget",
     value: function setTarget(pos) {
+      if (this.algorithmIsRunning === true) return;
       var oldX = this.targetNode.position[0];
       var oldY = this.targetNode.position[1];
       var x = pos[0];
@@ -553,7 +555,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Board initialized and populated");
   var bfsText = "Breadth-First Search (BFS) is a search algorithm in which nodes prioritize exploration of their immediate neighbors before moving on to nodes at the next level of depth. BFS guarantees discovery of the shortest path.";
   var dfsText = "Depth-First Search (DFS) is a search algorithm in which nodes prioritize exploration of nodes located deeper in the graph structure before backtracing to immediate neighbors. Note that although we include the animation for illustrative purposes, DFS does not guarantee discovery of the shortest path.";
-  var dijkstrasText = "Dijkstra's algorithm is a search algorithm capable of accounting for different levels of difficulty in traversing particular nodes. Considered the most efficient search algorithm, it has widespread application in many fields including navigational systems and Artificial Intelligence.";
+  var dijkstrasText = "Dijkstra's algorithm is a search algorithm which applies a breadth-first strategy while also accounting for varying levels of difficulty in passing through certain nodes. Considered the most efficient pathfinding algorithm, it has widespread application in many fields including navigational systems and Artificial Intelligence.";
   var infoTitleEl = document.getElementById("algo-title");
   var infoTextEl = document.getElementById("algo-info"); // Add functionality to radio buttons
 
@@ -597,7 +599,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function runAlgorithm() {
     if (board.algorithmIsRunning === true) return;
-    var rootNode = board.rootNode; // board.clearPath();
+    var rootNode = board.rootNode;
+    board.clearPath();
 
     switch (algorithm) {
       case "bfs-btn":
@@ -785,6 +788,7 @@ var Tile = /*#__PURE__*/function () {
   }, {
     key: "placeWall",
     value: function placeWall() {
+      if (this.board.algorithmIsRunning === true) return;
       this.node.value = "wall";
       this.tile.classList.add("wall");
       console.log("Wall placed");
@@ -792,6 +796,7 @@ var Tile = /*#__PURE__*/function () {
   }, {
     key: "removeWall",
     value: function removeWall() {
+      if (this.board.algorithmIsRunning === true) return;
       this.node.value = null;
       this.tile.classList.remove("wall");
       console.log("Wall removed");
