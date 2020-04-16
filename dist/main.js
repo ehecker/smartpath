@@ -740,6 +740,7 @@ var Tile = /*#__PURE__*/function () {
 
       var handleDragStart = function handleDragStart(event) {
         console.log("Drag start fired");
+        board.clearPath();
         var tileId = event.target.id.split("-");
         var dragStartPos = [+tileId[0], +tileId[1]];
         board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
@@ -816,7 +817,7 @@ var Tile = /*#__PURE__*/function () {
         } else if (currentTile.node.value === null) {
           currentTile.placeWall();
         }
-      }; // All tiles listen for dragstart
+      }; // All tiles listen for dragstart and dragend
 
 
       this.tile.addEventListener("dragstart", handleDragStart);
@@ -833,6 +834,7 @@ var Tile = /*#__PURE__*/function () {
     key: "placeWall",
     value: function placeWall() {
       if (this.board.algorithmIsRunning === true) return;
+      this.board.clearPath();
       this.node.value = "wall";
       this.tile.classList.add("wall");
       console.log("Wall placed");
@@ -841,6 +843,7 @@ var Tile = /*#__PURE__*/function () {
     key: "removeWall",
     value: function removeWall() {
       if (this.board.algorithmIsRunning === true) return;
+      this.board.clearPath();
       this.node.value = null;
       this.tile.classList.remove("wall");
       console.log("Wall removed");

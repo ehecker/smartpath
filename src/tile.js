@@ -22,6 +22,7 @@ export default class Tile {
 
         const handleDragStart = event => {
             console.log("Drag start fired")
+            board.clearPath();
 
             let tileId = event.target.id.split("-");
             let dragStartPos = [+tileId[0], +tileId[1]];
@@ -102,7 +103,7 @@ export default class Tile {
             }
         }
 
-        // All tiles listen for dragstart
+        // All tiles listen for dragstart and dragend
         this.tile.addEventListener("dragstart", handleDragStart)
         this.tile.addEventListener("dragend", handleDragEnd)
 
@@ -117,6 +118,7 @@ export default class Tile {
 
     placeWall() {
         if (this.board.algorithmIsRunning === true) return;
+        this.board.clearPath()
 
         this.node.value = "wall";
         this.tile.classList.add("wall")
@@ -125,6 +127,7 @@ export default class Tile {
 
     removeWall() {
         if (this.board.algorithmIsRunning === true) return;
+        this.board.clearPath()
 
         this.node.value = null;
         this.tile.classList.remove("wall")
