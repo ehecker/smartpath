@@ -73,7 +73,6 @@
 }
 
 .hidden {
-    /* visibility: hidden; */
-    /* background-color: black; */
-    transform: translateX(-9999px);
+    background-color: black;
+    /* transform: translateX(-9999px); */
 }

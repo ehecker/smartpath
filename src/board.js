@@ -50,23 +50,32 @@ export default class Board {
 
     setRoot(pos) {
         if (this.algorithmIsRunning === true) return;
-
+                
         const oldX = this.rootNode.position[0];
         const oldY = this.rootNode.position[1];
         const x = pos[0];
         const y = pos[1];
         let newNullTile = this.grid[oldX][oldY];
         let newRootTile = this.grid[x][y];
+        
+        // debugger
+
+        if (pos[0] === this.targetNode.position[0] && pos[1] === this.targetNode.position[1]) {
+            newNullTile.tile.classList.remove("hidden")
+            return;
+        }
 
         newNullTile.node.value = null;
         newRootTile.node.value = "root";
 
         newNullTile.tile.classList.remove("root-node");
+        newNullTile.tile.classList.remove("hidden")
+
+        // newRootTile.tile.classList.remove("hidden")
         newRootTile.tile.classList.remove("wall")
         newRootTile.tile.classList.remove("visited")
         newRootTile.tile.classList.remove("shortest-path-node")
         newRootTile.tile.classList.add("root-node");
-
         newRootTile.tile.setAttribute("draggable", "true")
 
         newNullTile.setDraggingFunctions();
@@ -77,7 +86,7 @@ export default class Board {
 
     setTarget(pos) {
         if (this.algorithmIsRunning === true) return;
-
+      
         const oldX = this.targetNode.position[0];
         const oldY = this.targetNode.position[1];
         const x = pos[0];
@@ -85,16 +94,23 @@ export default class Board {
         let newNullTile = this.grid[oldX][oldY];
         let newTargetTile = this.grid[x][y];
 
+        if (pos[0] === this.rootNode.position[0] && pos[1] === this.rootNode.position[1]) {
+            newNullTile.tile.classList.remove("hidden")
+            return;
+        }
+
         newNullTile.node.value = null;
         newTargetTile.node.value = "target";
 
         newNullTile.tile.classList.remove("target-node");
         newNullTile.tile.classList.remove("target-found");
+        newNullTile.tile.classList.remove("hidden")
+        
+        // newTargetTile.tile.classList.remove("hidden")
         newTargetTile.tile.classList.remove("wall")
         newTargetTile.tile.classList.remove("visited")
         newTargetTile.tile.classList.remove("shortest-path-node")
         newTargetTile.tile.classList.add("target-node");
-
         newTargetTile.tile.setAttribute("draggable", "true")
 
         newTargetTile.setDraggingFunctions();

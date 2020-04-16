@@ -397,10 +397,18 @@ var Board = /*#__PURE__*/function () {
       var x = pos[0];
       var y = pos[1];
       var newNullTile = this.grid[oldX][oldY];
-      var newRootTile = this.grid[x][y];
+      var newRootTile = this.grid[x][y]; // debugger
+
+      if (pos[0] === this.targetNode.position[0] && pos[1] === this.targetNode.position[1]) {
+        newNullTile.tile.classList.remove("hidden");
+        return;
+      }
+
       newNullTile.node.value = null;
       newRootTile.node.value = "root";
       newNullTile.tile.classList.remove("root-node");
+      newNullTile.tile.classList.remove("hidden"); // newRootTile.tile.classList.remove("hidden")
+
       newRootTile.tile.classList.remove("wall");
       newRootTile.tile.classList.remove("visited");
       newRootTile.tile.classList.remove("shortest-path-node");
@@ -420,10 +428,18 @@ var Board = /*#__PURE__*/function () {
       var y = pos[1];
       var newNullTile = this.grid[oldX][oldY];
       var newTargetTile = this.grid[x][y];
+
+      if (pos[0] === this.rootNode.position[0] && pos[1] === this.rootNode.position[1]) {
+        newNullTile.tile.classList.remove("hidden");
+        return;
+      }
+
       newNullTile.node.value = null;
       newTargetTile.node.value = "target";
       newNullTile.tile.classList.remove("target-node");
       newNullTile.tile.classList.remove("target-found");
+      newNullTile.tile.classList.remove("hidden"); // newTargetTile.tile.classList.remove("hidden")
+
       newTargetTile.tile.classList.remove("wall");
       newTargetTile.tile.classList.remove("visited");
       newTargetTile.tile.classList.remove("shortest-path-node");
@@ -559,7 +575,7 @@ document.addEventListener("DOMContentLoaded", function () {
   board.fillGrid();
   console.log("Board initialized and populated");
   var bfsText = "Breadth-First Search (BFS) is a search algorithm in which nodes prioritize exploration of their immediate neighbors before moving on to nodes at the next level of depth. BFS guarantees discovery of the shortest path.";
-  var dfsText = "Depth-First Search (DFS) is a search algorithm in which nodes prioritize exploration of nodes located deeper in the graph structure before backtracing to immediate neighbors. Note that although we include the animation for illustrative purposes, DFS does not guarantee discovery of the shortest path.";
+  var dfsText = "Depth-First Search (DFS) is a search algorithm in which nodes prioritize exploration of nodes located deeper in the graph structure before backtracing to immediate neighbors. Note that although the animation is included for illustrative purposes, DFS does not guarantee discovery of the shortest path.";
   var dijkstrasText = "Dijkstra's algorithm is a search algorithm which applies a breadth-first strategy while also accounting for varying levels of difficulty in passing through certain nodes. Considered the most efficient pathfinding algorithm, it has widespread application in many fields including navigational systems and artificial intelligence.";
   var infoTitleEl = document.getElementById("algo-title");
   var infoTextEl = document.getElementById("algo-info"); // Add functionality to radio buttons
@@ -740,11 +756,13 @@ var Tile = /*#__PURE__*/function () {
         console.log("Drag enter fired");
         event.preventDefault();
         var tileId = event.target.id.split("-");
-        var currentTile = board.grid[+tileId[0]][+tileId[1]]; // if (board.lastNodeType === "root") {
-        //     board.rootNode.tileObj.classList.add("hidden");
-        // } else if (board.lastNodeType === "target") {
-        //     board.targetNode.tileObj.classList.add("hidden");
-        // }
+        var currentTile = board.grid[+tileId[0]][+tileId[1]];
+
+        if (board.lastNodeType === "root") {
+          board.rootNode.tileObj.classList.add("hidden");
+        } else if (board.lastNodeType === "target") {
+          board.targetNode.tileObj.classList.add("hidden");
+        }
 
         if (board.lastNodeType === "wall" || board.lastNodeType === null) {
           if (currentTile.node.value === "wall") {
@@ -776,6 +794,17 @@ var Tile = /*#__PURE__*/function () {
         }
       };
 
+      var handleDragEnd = function handleDragEnd(event) {
+        console.log("Drop fired");
+        event.preventDefault();
+
+        if (board.lastNodeType === "root") {
+          board.rootNode.tileObj.classList.remove("hidden");
+        } else if (board.lastNodeType === "target") {
+          board.targetNode.tileObj.classList.remove("hidden");
+        }
+      };
+
       var handleClick = function handleClick(event) {
         console.log("Click fired");
         event.preventDefault();
@@ -790,7 +819,8 @@ var Tile = /*#__PURE__*/function () {
       }; // All tiles listen for dragstart
 
 
-      this.tile.addEventListener("dragstart", handleDragStart); // Only walls and nulls receive other listeners
+      this.tile.addEventListener("dragstart", handleDragStart);
+      this.tile.addEventListener("dragend", handleDragEnd); // Only walls and nulls receive other listeners
 
       if (this.node.value === "wall" || this.node.value === null) {
         this.tile.addEventListener("dragenter", handleDragEnter);

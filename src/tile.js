@@ -41,11 +41,11 @@ export default class Tile {
             let tileId = event.target.id.split("-");
             let currentTile = board.grid[+tileId[0]][+tileId[1]]
 
-            // if (board.lastNodeType === "root") {
-            //     board.rootNode.tileObj.classList.add("hidden");
-            // } else if (board.lastNodeType === "target") {
-            //     board.targetNode.tileObj.classList.add("hidden");
-            // }
+            if (board.lastNodeType === "root") {
+                board.rootNode.tileObj.classList.add("hidden");
+            } else if (board.lastNodeType === "target") {
+                board.targetNode.tileObj.classList.add("hidden");
+            }
 
             if (board.lastNodeType === "wall" || board.lastNodeType === null) {
                 if (currentTile.node.value === "wall") {
@@ -77,6 +77,17 @@ export default class Tile {
             }
         }
 
+        const handleDragEnd = event => {
+            console.log("Drop fired")
+            event.preventDefault();
+
+            if (board.lastNodeType === "root") {
+                board.rootNode.tileObj.classList.remove("hidden")
+            } else if (board.lastNodeType === "target") {
+                board.targetNode.tileObj.classList.remove("hidden")
+            }
+        }
+
         const handleClick = event => {
             console.log("Click fired")
             event.preventDefault()
@@ -93,6 +104,7 @@ export default class Tile {
 
         // All tiles listen for dragstart
         this.tile.addEventListener("dragstart", handleDragStart)
+        this.tile.addEventListener("dragend", handleDragEnd)
 
         // Only walls and nulls receive other listeners
         if (this.node.value === "wall" || this.node.value === null) {

@@ -49,13 +49,11 @@ nav {
 
 .main-title {
     font-size: 50px;
-    /* color: #D69E2E; */
+    color: #D69E2E;
     /* color: #3AC961; */
-    color: white;
     font-weight: 700;
     cursor: pointer;
-    background-color: #222;
-    color: rgba(255, 255, 255, 0.1);}
+}   
 
 .underline {
     text-decoration: underline;
@@ -206,4 +204,14 @@ a {
 
 #reset-button:focus {
     outline: none;
+}
+
+.unselectable {
+    /* Make text unselectable */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
