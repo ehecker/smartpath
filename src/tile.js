@@ -26,6 +26,12 @@ export default class Tile {
             let tileId = event.target.id.split("-");
             let dragStartPos = [+tileId[0], +tileId[1]];
             board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
+
+            if (board.lastNodeType === null) {
+                let img = new Image();
+                img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+                event.dataTransfer.setDragImage(img, 0, 0);
+            }
         }
 
         const handleDragEnter = event => {

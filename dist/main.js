@@ -722,6 +722,12 @@ var Tile = /*#__PURE__*/function () {
         var tileId = event.target.id.split("-");
         var dragStartPos = [+tileId[0], +tileId[1]];
         board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
+
+        if (board.lastNodeType === null) {
+          var img = new Image();
+          img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+          event.dataTransfer.setDragImage(img, 0, 0);
+        }
       };
 
       var handleDragEnter = function handleDragEnter(event) {
