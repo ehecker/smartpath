@@ -606,6 +606,7 @@ document.addEventListener("DOMContentLoaded", function () {
       case "bfs-btn":
         board.algorithmIsRunning = true;
         board.resetTree();
+        rootNode.visitedTiles = [];
         rootNode.visited = new Set();
         rootNode.visited.add(rootNode.position.join("-"));
         rootNode.buildTree();
@@ -617,6 +618,7 @@ document.addEventListener("DOMContentLoaded", function () {
       case "dfs-btn":
         board.algorithmIsRunning = true;
         board.resetTree();
+        rootNode.visitedTiles = [];
         rootNode.visited = new Set();
         rootNode.visited.add(rootNode.position.join("-"));
         rootNode.buildTree();
