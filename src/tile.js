@@ -35,6 +35,12 @@ export default class Tile {
             let tileId = event.target.id.split("-");
             let currentTile = board.grid[+tileId[0]][+tileId[1]]
 
+            // if (board.lastNodeType === "root") {
+            //     board.rootNode.tileObj.classList.add("hidden");
+            // } else if (board.lastNodeType === "target") {
+            //     board.targetNode.tileObj.classList.add("hidden");
+            // }
+
             if (board.lastNodeType === "wall" || board.lastNodeType === null) {
                 if (currentTile.node.value === "wall") {
                     currentTile.removeWall()
@@ -57,8 +63,10 @@ export default class Tile {
             let dragEndPos = [+tileId[0], +tileId[1]];
 
             if (board.lastNodeType === "root") {
+                // board.rootNode.tileObj.classList.remove("hidden");
                 board.setRoot(dragEndPos)
             } else if (board.lastNodeType === "target") {
+                // board.targetNode.tileObj.classList.remove("hidden");
                 board.setTarget(dragEndPos)
             }
         }

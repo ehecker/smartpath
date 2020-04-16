@@ -391,36 +391,36 @@ var Board = /*#__PURE__*/function () {
   }, {
     key: "setRoot",
     value: function setRoot(pos) {
-      var x = pos[0];
-      var y = pos[1];
       var oldX = this.rootNode.position[0];
       var oldY = this.rootNode.position[1];
-      var newRootTile = this.grid[x][y];
+      var x = pos[0];
+      var y = pos[1];
       var newNullTile = this.grid[oldX][oldY];
-      newRootTile.node.value = "root";
+      var newRootTile = this.grid[x][y];
       newNullTile.node.value = null;
-      newRootTile.tile.classList.add("root-node");
-      newRootTile.tile.classList.remove("wall");
+      newRootTile.node.value = "root";
       newNullTile.tile.classList.remove("root-node");
+      newRootTile.tile.classList.remove("wall");
+      newRootTile.tile.classList.add("root-node");
       newRootTile.tile.setAttribute("draggable", "true");
-      newRootTile.setDraggingFunctions();
       newNullTile.setDraggingFunctions();
+      newRootTile.setDraggingFunctions();
       this.rootNode = newRootTile.node;
     }
   }, {
     key: "setTarget",
     value: function setTarget(pos) {
-      var x = pos[0];
-      var y = pos[1];
       var oldX = this.targetNode.position[0];
       var oldY = this.targetNode.position[1];
-      var newTargetTile = this.grid[x][y];
+      var x = pos[0];
+      var y = pos[1];
       var newNullTile = this.grid[oldX][oldY];
-      newTargetTile.node.value = "target";
+      var newTargetTile = this.grid[x][y];
       newNullTile.node.value = null;
-      newTargetTile.tile.classList.add("target-node");
-      newTargetTile.tile.classList.remove("wall");
+      newTargetTile.node.value = "target";
       newNullTile.tile.classList.remove("target-node");
+      newTargetTile.tile.classList.remove("wall");
+      newTargetTile.tile.classList.add("target-node");
       newTargetTile.tile.setAttribute("draggable", "true");
       newTargetTile.setDraggingFunctions();
       newNullTile.setDraggingFunctions();
@@ -553,7 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Board initialized and populated");
   var bfsText = "Breadth-First Search (BFS) is a search algorithm in which nodes prioritize exploration of their immediate neighbors before moving on to nodes at the next level of depth. BFS guarantees discovery of the shortest path.";
   var dfsText = "Depth-First Search (DFS) is a search algorithm in which nodes prioritize exploration of nodes located deeper in the graph structure before backtracing to immediate neighbors. Note that although we include the animation for illustrative purposes, DFS does not guarantee discovery of the shortest path.";
-  var dijkstrasText = "Dijkstra's algorithm is a search algorithm which guarantees discovery of the shortest path between two nodes. Considered one of the most efficient pathfinding algorithms, it has widespread application in many fields, especially those related to navigation.";
+  var dijkstrasText = "Dijkstra's algorithm is a search algorithm capable of accounting for different levels of difficulty in traversing particular nodes. Considered the most efficient search algorithm, it has widespread application in many fields including navigational systems and Artificial Intelligence.";
   var infoTitleEl = document.getElementById("algo-title");
   var infoTextEl = document.getElementById("algo-info"); // Add functionality to radio buttons
 
@@ -597,8 +597,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function runAlgorithm() {
     if (board.algorithmIsRunning === true) return;
-    var rootNode = board.rootNode;
-    board.clearPath();
+    var rootNode = board.rootNode; // board.clearPath();
 
     switch (algorithm) {
       case "bfs-btn":
@@ -724,7 +723,11 @@ var Tile = /*#__PURE__*/function () {
         console.log("Drag enter fired");
         event.preventDefault();
         var tileId = event.target.id.split("-");
-        var currentTile = board.grid[+tileId[0]][+tileId[1]];
+        var currentTile = board.grid[+tileId[0]][+tileId[1]]; // if (board.lastNodeType === "root") {
+        //     board.rootNode.tileObj.classList.add("hidden");
+        // } else if (board.lastNodeType === "target") {
+        //     board.targetNode.tileObj.classList.add("hidden");
+        // }
 
         if (board.lastNodeType === "wall" || board.lastNodeType === null) {
           if (currentTile.node.value === "wall") {
@@ -748,8 +751,10 @@ var Tile = /*#__PURE__*/function () {
         var dragEndPos = [+tileId[0], +tileId[1]];
 
         if (board.lastNodeType === "root") {
+          // board.rootNode.tileObj.classList.remove("hidden");
           board.setRoot(dragEndPos);
         } else if (board.lastNodeType === "target") {
+          // board.targetNode.tileObj.classList.remove("hidden");
           board.setTarget(dragEndPos);
         }
       };

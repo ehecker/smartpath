@@ -71,3 +71,8 @@
 .child {
     background-color: white;
 }
+
+.hidden {
+    /* visibility: hidden; */
+    background-color: black;
+}

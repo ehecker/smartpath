@@ -49,44 +49,42 @@ export default class Board {
     }
 
     setRoot(pos) {
-        const x = pos[0];
-        const y = pos[1];
         const oldX = this.rootNode.position[0];
         const oldY = this.rootNode.position[1];
-
-        let newRootTile = this.grid[x][y];
+        const x = pos[0];
+        const y = pos[1];
         let newNullTile = this.grid[oldX][oldY];
+        let newRootTile = this.grid[x][y];
 
-        newRootTile.node.value = "root";
         newNullTile.node.value = null;
+        newRootTile.node.value = "root";
 
-        newRootTile.tile.classList.add("root-node");
-        newRootTile.tile.classList.remove("wall")
         newNullTile.tile.classList.remove("root-node");
+        newRootTile.tile.classList.remove("wall")
+        newRootTile.tile.classList.add("root-node");
 
         newRootTile.tile.setAttribute("draggable", "true")
 
-        newRootTile.setDraggingFunctions();
         newNullTile.setDraggingFunctions();
+        newRootTile.setDraggingFunctions();
 
         this.rootNode = newRootTile.node;
     }
 
     setTarget(pos) {
-        const x = pos[0];
-        const y = pos[1];
         const oldX = this.targetNode.position[0];
         const oldY = this.targetNode.position[1];
-
-        let newTargetTile = this.grid[x][y];
+        const x = pos[0];
+        const y = pos[1];
         let newNullTile = this.grid[oldX][oldY];
+        let newTargetTile = this.grid[x][y];
 
-        newTargetTile.node.value = "target";
         newNullTile.node.value = null;
+        newTargetTile.node.value = "target";
 
-        newTargetTile.tile.classList.add("target-node");
-        newTargetTile.tile.classList.remove("wall")
         newNullTile.tile.classList.remove("target-node");
+        newTargetTile.tile.classList.remove("wall")
+        newTargetTile.tile.classList.add("target-node");
 
         newTargetTile.tile.setAttribute("draggable", "true")
 
