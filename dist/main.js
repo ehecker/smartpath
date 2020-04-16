@@ -353,6 +353,7 @@ var Board = /*#__PURE__*/function () {
     this.setRoot = this.setRoot.bind(this);
     this.setTarget = this.setTarget.bind(this);
     this.generateScatterMaze = this.generateScatterMaze.bind(this);
+    this.clearPath = this.clearPath.bind(this);
     this.clearWalls = this.clearWalls.bind(this);
     this.reset = this.reset.bind(this);
   }
@@ -513,6 +514,7 @@ var Board = /*#__PURE__*/function () {
   }, {
     key: "clearPath",
     value: function clearPath() {
+      debugger;
       if (this.algorithmIsRunning === true) return;
       var visitedTiles = Array.from(document.getElementsByClassName("visited"));
       var shortestPathTiles = Array.from(document.getElementsByClassName("shortest-path-node"));
@@ -686,9 +688,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var selectButton = document.getElementById("anim-speed");
   selectButton.addEventListener("change", setAnimationSpeed); // Add functionality to Clear Walls and Clear Path buttons
+  // const clearWallsButton = document.getElementById("clear-walls");
+  // clearWallsButton.addEventListener("click", board.clearWalls);
 
-  var clearWallsButton = document.getElementById("clear-walls");
-  clearWallsButton.addEventListener("click", board.clearWalls);
   var clearPathButton = document.getElementById("clear-path");
   clearPathButton.addEventListener("click", board.clearPath); // Add functionality to Generate Maze button
 
@@ -736,7 +738,9 @@ var Tile = /*#__PURE__*/function () {
   _createClass(Tile, [{
     key: "setDraggingFunctions",
     value: function setDraggingFunctions() {
-      var board = this.board;
+      var board = this.board; // if (this.node.value === "root") {
+      //     this.tile.innerHTML = ">"
+      // }
 
       var handleDragStart = function handleDragStart(event) {
         console.log("Drag start fired");

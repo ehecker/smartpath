@@ -15,6 +15,8 @@
 .root-node {
     background-color: white;
     cursor: pointer;
+    background-image: url(../images/arrow-sym-right.png);
+    background-size: cover;
 }
 
 .target-node {
@@ -64,15 +66,14 @@
     background-color: #B50721;
 }
 
+.hidden {
+    background-color: black;
+}
+
 .parent {
     background-color: teal;
 }
 
 .child {
     background-color: white;
-}
-
-.hidden {
-    background-color: black;
-    /* transform: translateX(-9999px); */
 }

@@ -14,11 +14,17 @@ export default class Tile {
 
         this.node = new PolyTreeNode(nodeValue, position, board); // This MUST come after this.tile's id is set
 
+        
+
         this.setDraggingFunctions();
     }
 
     setDraggingFunctions() {
         let board = this.board;
+
+        // if (this.node.value === "root") {
+        //     this.tile.innerHTML = ">"
+        // }
 
         const handleDragStart = event => {
             console.log("Drag start fired")

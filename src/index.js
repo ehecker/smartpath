@@ -125,8 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
     selectButton.addEventListener("change", setAnimationSpeed)
 
     // Add functionality to Clear Walls and Clear Path buttons
-    const clearWallsButton = document.getElementById("clear-walls");
-    clearWallsButton.addEventListener("click", board.clearWalls);
+    // const clearWallsButton = document.getElementById("clear-walls");
+    // clearWallsButton.addEventListener("click", board.clearWalls);
 
     const clearPathButton = document.getElementById("clear-path");
     clearPathButton.addEventListener("click", board.clearPath)

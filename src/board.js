@@ -14,6 +14,7 @@ export default class Board {
         this.setRoot = this.setRoot.bind(this);
         this.setTarget = this.setTarget.bind(this);
         this.generateScatterMaze = this.generateScatterMaze.bind(this);
+        this.clearPath = this.clearPath.bind(this);
         this.clearWalls = this.clearWalls.bind(this);
         this.reset = this.reset.bind(this);
     }
@@ -160,6 +161,7 @@ export default class Board {
     }
 
     clearPath() {
+        debugger
         if (this.algorithmIsRunning === true) return;
 
         const visitedTiles = Array.from(document.getElementsByClassName("visited"))
