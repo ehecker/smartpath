@@ -63,6 +63,8 @@ export default class Board {
 
         newNullTile.tile.classList.remove("root-node");
         newRootTile.tile.classList.remove("wall")
+        newRootTile.tile.classList.remove("visited")
+        newRootTile.tile.classList.remove("shortest-path-node")
         newRootTile.tile.classList.add("root-node");
 
         newRootTile.tile.setAttribute("draggable", "true")
@@ -87,7 +89,10 @@ export default class Board {
         newTargetTile.node.value = "target";
 
         newNullTile.tile.classList.remove("target-node");
+        newNullTile.tile.classList.remove("target-found");
         newTargetTile.tile.classList.remove("wall")
+        newTargetTile.tile.classList.remove("visited")
+        newTargetTile.tile.classList.remove("shortest-path-node")
         newTargetTile.tile.classList.add("target-node");
 
         newTargetTile.tile.setAttribute("draggable", "true")

@@ -402,6 +402,8 @@ var Board = /*#__PURE__*/function () {
       newRootTile.node.value = "root";
       newNullTile.tile.classList.remove("root-node");
       newRootTile.tile.classList.remove("wall");
+      newRootTile.tile.classList.remove("visited");
+      newRootTile.tile.classList.remove("shortest-path-node");
       newRootTile.tile.classList.add("root-node");
       newRootTile.tile.setAttribute("draggable", "true");
       newNullTile.setDraggingFunctions();
@@ -421,7 +423,10 @@ var Board = /*#__PURE__*/function () {
       newNullTile.node.value = null;
       newTargetTile.node.value = "target";
       newNullTile.tile.classList.remove("target-node");
+      newNullTile.tile.classList.remove("target-found");
       newTargetTile.tile.classList.remove("wall");
+      newTargetTile.tile.classList.remove("visited");
+      newTargetTile.tile.classList.remove("shortest-path-node");
       newTargetTile.tile.classList.add("target-node");
       newTargetTile.tile.setAttribute("draggable", "true");
       newTargetTile.setDraggingFunctions();
@@ -555,7 +560,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Board initialized and populated");
   var bfsText = "Breadth-First Search (BFS) is a search algorithm in which nodes prioritize exploration of their immediate neighbors before moving on to nodes at the next level of depth. BFS guarantees discovery of the shortest path.";
   var dfsText = "Depth-First Search (DFS) is a search algorithm in which nodes prioritize exploration of nodes located deeper in the graph structure before backtracing to immediate neighbors. Note that although we include the animation for illustrative purposes, DFS does not guarantee discovery of the shortest path.";
-  var dijkstrasText = "Dijkstra's algorithm is a search algorithm which applies a breadth-first strategy while also accounting for varying levels of difficulty in passing through certain nodes. Considered the most efficient pathfinding algorithm, it has widespread application in many fields including navigational systems and Artificial Intelligence.";
+  var dijkstrasText = "Dijkstra's algorithm is a search algorithm which applies a breadth-first strategy while also accounting for varying levels of difficulty in passing through certain nodes. Considered the most efficient pathfinding algorithm, it has widespread application in many fields including navigational systems and artificial intelligence.";
   var infoTitleEl = document.getElementById("algo-title");
   var infoTextEl = document.getElementById("algo-info"); // Add functionality to radio buttons
 
@@ -723,7 +728,8 @@ var Tile = /*#__PURE__*/function () {
         var dragStartPos = [+tileId[0], +tileId[1]];
         board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
 
-        if (board.lastNodeType === null) {
+        if (board.lastNodeType === null || board.lastNodeType === "wall") {
+          // Hides ghost image from displaying on drag
           var img = new Image();
           img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
           event.dataTransfer.setDragImage(img, 0, 0);

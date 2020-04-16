@@ -27,7 +27,7 @@ export default class Tile {
             let dragStartPos = [+tileId[0], +tileId[1]];
             board.lastNodeType = board.grid[dragStartPos[0]][dragStartPos[1]].node.value;
 
-            if (board.lastNodeType === null) {
+            if (board.lastNodeType === null || board.lastNodeType === "wall") { // Hides ghost image from displaying on drag
                 let img = new Image();
                 img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
                 event.dataTransfer.setDragImage(img, 0, 0);

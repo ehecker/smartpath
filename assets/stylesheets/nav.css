@@ -50,13 +50,24 @@ nav {
 .main-title {
     font-size: 50px;
     /* color: #D69E2E; */
-    color: #3ac961;
+    /* color: #3AC961; */
+    color: white;
     font-weight: 700;
     cursor: pointer;
-}
+    background-color: #222;
+    color: rgba(255, 255, 255, 0.1);}
 
 .underline {
     text-decoration: underline;
+}
+
+.gradient-screen {
+    /* background-color: yellow; */
+    display: flex;
+    justify-content: center;
+
+    background: rgb(58,201,97);
+    background: linear-gradient(90deg, rgba(58,201,97,1) 58%, rgba(135,217,155,1) 100%);
 }
 
 .nav-top-right {
@@ -76,6 +87,24 @@ a {
 }
 
 .fa-github:hover {
+    opacity: 0.8;
+}
+
+.fa-linkedin {
+    margin: 10px;
+    color: white;
+}
+
+.fa-linkedin:hover {
+    opacity: 0.8;
+}
+
+.fa-angellist {
+    margin: 10px;
+    color: white;
+}
+
+.fa-angellist:hover {
     opacity: 0.8;
 }
 

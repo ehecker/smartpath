@@ -74,5 +74,6 @@
 
 .hidden {
     /* visibility: hidden; */
-    background-color: black;
+    /* background-color: black; */
+    transform: translateX(-9999px);
 }
