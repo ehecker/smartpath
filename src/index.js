@@ -109,10 +109,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 newSpeed = 15;
                 break;
             case "medium":
-                newSpeed = 30;
+                newSpeed = 40;
                 break;
             case "slowmotion":
-                newSpeed = 100;
+                newSpeed = 150;
                 break;
             default:
                 break;

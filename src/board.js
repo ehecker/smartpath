@@ -7,7 +7,7 @@ export default class Board {
         this.targetNode;
 
         this.lastNodeType;
-        this.animationSpeed = 5;
+        this.animationSpeed = 15;
         this.algorithmIsRunning = false;
 
         this.validPos = this.validPos.bind(this);
@@ -28,6 +28,12 @@ export default class Board {
                     let rootNode = new Tile("root", [i, j], this, true)
                     rootNode.tile.classList.add("root-node")
                     rootNode.tile.setAttribute("draggable", "true")
+
+                    let arrowIcon = document.createElement("IMG");
+                    arrowIcon.setAttribute("src", "./assets/images/arrow.png")
+                    arrowIcon.classList.add("arrow-icon")
+                    rootNode.tile.appendChild(arrowIcon);
+
                     this.rootNode = rootNode.node;
                     row.push(rootNode)
 
@@ -35,6 +41,12 @@ export default class Board {
                     let targetNode = new Tile("target", [i, j], this, true)
                     targetNode.tile.classList.add("target-node")
                     targetNode.tile.setAttribute("draggable", "true")
+
+                    let targetIcon = document.createElement("IMG");
+                    targetIcon.setAttribute("src", "./assets/images/target.png")
+                    targetIcon.classList.add("target-icon")
+                    targetNode.tile.appendChild(targetIcon);
+
                     this.targetNode = targetNode.node;
                     row.push(targetNode)
 
@@ -59,8 +71,6 @@ export default class Board {
         let newNullTile = this.grid[oldX][oldY];
         let newRootTile = this.grid[x][y];
         
-        // debugger
-
         if (pos[0] === this.targetNode.position[0] && pos[1] === this.targetNode.position[1]) {
             newNullTile.tile.classList.remove("hidden")
             return;
@@ -69,15 +79,20 @@ export default class Board {
         newNullTile.node.value = null;
         newRootTile.node.value = "root";
 
-        newNullTile.tile.classList.remove("root-node");
-        newNullTile.tile.classList.remove("hidden")
+        newNullTile.tile.innerHTML = "";
+        let arrowIcon = document.createElement("IMG");
+        arrowIcon.setAttribute("src", "./assets/images/arrow.png");
+        arrowIcon.classList.add("arrow-icon");
+        newRootTile.tile.appendChild(arrowIcon)
 
-        // newRootTile.tile.classList.remove("hidden")
-        newRootTile.tile.classList.remove("wall")
-        newRootTile.tile.classList.remove("visited")
-        newRootTile.tile.classList.remove("shortest-path-node")
+        newNullTile.tile.classList.remove("root-node");
+        newNullTile.tile.classList.remove("hidden");
+
+        newRootTile.tile.classList.remove("wall");
+        newRootTile.tile.classList.remove("visited");
+        newRootTile.tile.classList.remove("shortest-path-node");
         newRootTile.tile.classList.add("root-node");
-        newRootTile.tile.setAttribute("draggable", "true")
+        newRootTile.tile.setAttribute("draggable", "true");
 
         newNullTile.setDraggingFunctions();
         newRootTile.setDraggingFunctions();
@@ -103,11 +118,16 @@ export default class Board {
         newNullTile.node.value = null;
         newTargetTile.node.value = "target";
 
+        newNullTile.tile.innerHTML = "";
+        let targetIcon = document.createElement("IMG");
+        targetIcon.setAttribute("src", "./assets/images/target.png")
+        targetIcon.classList.add("target-icon")
+        newTargetTile.tile.appendChild(targetIcon);
+
         newNullTile.tile.classList.remove("target-node");
         newNullTile.tile.classList.remove("target-found");
         newNullTile.tile.classList.remove("hidden")
         
-        // newTargetTile.tile.classList.remove("hidden")
         newTargetTile.tile.classList.remove("wall")
         newTargetTile.tile.classList.remove("visited")
         newTargetTile.tile.classList.remove("shortest-path-node")
@@ -161,7 +181,6 @@ export default class Board {
     }
 
     clearPath() {
-        debugger
         if (this.algorithmIsRunning === true) return;
 
         const visitedTiles = Array.from(document.getElementsByClassName("visited"))

@@ -15,34 +15,62 @@
 .root-node {
     background-color: white;
     cursor: pointer;
-    background-image: url(../images/arrow-sym-right.png);
-    background-size: cover;
+}
+
+.arrow-icon {
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
 }
 
 .target-node {
-    background-color: blue;
+    background-color: #3ac961;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.target-icon {
+    height: 80%;
+    width: 80%;
+    pointer-events: none;
 }
 
 /* TILE TYPES =================================================== */
 
 .visited {
-    /* animation: 1s ease both markVisited; */
-    background-color: orange;
+    animation: 1.5s ease both markVisited;
+    /* background-color: orange; */
+
+    border-bottom: 1px;
+    border-bottom-color: #666;
+    border-bottom-style: solid;
+    border-right: 1px;
+    border-right-color: #666;
+    border-right-style: solid;
 }
 
 @keyframes markVisited {
     from {
-        background-color: black;
+        background-color: #3ac961;
+        border-radius: 50%;
     }
 
     to {
         background-color: orange;
+        border-radius: 0;
+        /* border-bottom: 1px;
+        border-bottom-color: #666;
+        border-bottom-style: solid;
+        border-right: 1px;
+        border-right-color: #666;
+        border-right-style: solid; */
     }
 }
 
 .target-found {
-    /* animation: .5s ease both markFound; */
+    animation: 1s ease both markFound;
     border: 1px solid white;
     height: 23px;
     width: 23px;
@@ -50,11 +78,11 @@
 
 @keyframes markFound {
     from {
-        background-color: green;
+        background-color: gold;
     }
 
     to {
-        background-color: blue;
+        background-color: #3ac961;
     }
 }
 
@@ -68,6 +96,10 @@
 
 .hidden {
     background-color: black;
+}
+
+.hidden img {
+    opacity: 0;
 }
 
 .parent {

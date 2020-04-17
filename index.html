@@ -74,6 +74,7 @@
                     <p id="algo-info">
                         <!-- Current algorithm text inserted here -->
                     </p>
+                    <p id="dfs-note"></p>
                 </div>
             </div>
             <div class="controls-container">
@@ -83,7 +84,7 @@
                         <p>Animation Speed:</p>
                         <select id="anim-speed">
                             <option value="lightning">Lightning</option>
-                            <option value="fast">Fast</option>
+                            <option value="fast" selected>Fast</option>
                             <option value="medium">Medium</option>
                             <option value="slowmotion">Slow Motion</option>
                         </select>
@@ -102,11 +103,15 @@
                 <div class="legend-row-container">
                     <div class="legend-row">
                         <div class="legend-item-box">
-                            <div class="legend-tile white"></div>
+                            <div class="legend-tile white">
+                                <img class="arrow-icon" src="./assets/images/arrow.png">
+                            </div>
                             <p class="legend-item">Root Node</p>
                         </div>
                         <div class="legend-item-box">
-                            <div class="legend-tile blue"></div>
+                            <div class="legend-tile blue">
+                                <img class="target-icon" src="./assets/images/target.png">
+                            </div>
                             <p class="legend-item">Target Node</p>
                         </div>
                     </div>
@@ -162,6 +167,7 @@
                 <button class="next-button">Next</button>
             </div>
         </div> -->
+        
         <div class="modal-content">
             <div class="modal-title-row">
                 <div class="modal-counter">2/3</div>
@@ -174,7 +180,6 @@
                     <h3 class="modal-sec-title">Repositioning Root and Target nodes:</h3>
                     <p class="modal-text-p2">The Root (white) and Target (blue) nodes, can be repositioned anywhere on the board by simply clicking and dragging</p>
                 </div>
-
             </div>
 
             <div class="modal-nav">

@@ -67,7 +67,10 @@ export default class PolyTreeNode {
         if (pathPositions.length >= 1) {
             setTimeout(function() {
                 let currentPos = pathPositions.shift();
-                grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
+                let currentTile = grid[currentPos[0]][currentPos[1]].tile
+                currentTile.classList.remove("visited")
+                currentTile.classList.add("shortest-path-node")
+                // grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
 
                 viz(pathPositions, grid)
             }, 25)
@@ -130,10 +133,15 @@ export default class PolyTreeNode {
 
     buildTree() {
         const increments = [
+            // [0, 1],
+            // [1, 0],
+            // [-1, 0],
+            // [0, -1]
+
             [0, 1],
             [1, 0],
-            [-1, 0],
-            [0, -1]
+            [0, -1],
+            [-1, 0]
 
             // Original, up-first tree build
             // [-1, 0], // Up

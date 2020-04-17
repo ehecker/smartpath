@@ -83,6 +83,10 @@
     border: 1px solid #666;
     margin-right: 5px;
     margin-left: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .legend-item {
@@ -94,7 +98,7 @@
 }
 
 .blue { 
-    background-color: blue;
+    background-color: #3ac961;
 }
 
 .deepred {

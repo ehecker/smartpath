@@ -180,7 +180,10 @@ var PolyTreeNode = /*#__PURE__*/function () {
       if (pathPositions.length >= 1) {
         setTimeout(function () {
           var currentPos = pathPositions.shift();
-          grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
+          var currentTile = grid[currentPos[0]][currentPos[1]].tile;
+          currentTile.classList.remove("visited");
+          currentTile.classList.add("shortest-path-node"); // grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
+
           viz(pathPositions, grid);
         }, 25);
       } else if (pathPositions.length === 0) {
@@ -245,7 +248,11 @@ var PolyTreeNode = /*#__PURE__*/function () {
   }, {
     key: "buildTree",
     value: function buildTree() {
-      var increments = [[0, 1], [1, 0], [-1, 0], [0, -1] // Original, up-first tree build
+      var increments = [// [0, 1],
+      // [1, 0],
+      // [-1, 0],
+      // [0, -1]
+      [0, 1], [1, 0], [0, -1], [-1, 0] // Original, up-first tree build
       // [-1, 0], // Up
       // [0, 1], // Right
       // [1, 0], // Down
@@ -347,7 +354,7 @@ var Board = /*#__PURE__*/function () {
     this.rootNode;
     this.targetNode;
     this.lastNodeType;
-    this.animationSpeed = 5;
+    this.animationSpeed = 15;
     this.algorithmIsRunning = false;
     this.validPos = this.validPos.bind(this);
     this.setRoot = this.setRoot.bind(this);
@@ -371,12 +378,20 @@ var Board = /*#__PURE__*/function () {
             var rootNode = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("root", [i, j], this, true);
             rootNode.tile.classList.add("root-node");
             rootNode.tile.setAttribute("draggable", "true");
+            var arrowIcon = document.createElement("IMG");
+            arrowIcon.setAttribute("src", "./assets/images/arrow.png");
+            arrowIcon.classList.add("arrow-icon");
+            rootNode.tile.appendChild(arrowIcon);
             this.rootNode = rootNode.node;
             row.push(rootNode);
           } else if (i === 12 && j === 38) {
             var targetNode = new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]("target", [i, j], this, true);
             targetNode.tile.classList.add("target-node");
             targetNode.tile.setAttribute("draggable", "true");
+            var targetIcon = document.createElement("IMG");
+            targetIcon.setAttribute("src", "./assets/images/target.png");
+            targetIcon.classList.add("target-icon");
+            targetNode.tile.appendChild(targetIcon);
             this.targetNode = targetNode.node;
             row.push(targetNode);
           } else {
@@ -398,7 +413,7 @@ var Board = /*#__PURE__*/function () {
       var x = pos[0];
       var y = pos[1];
       var newNullTile = this.grid[oldX][oldY];
-      var newRootTile = this.grid[x][y]; // debugger
+      var newRootTile = this.grid[x][y];
 
       if (pos[0] === this.targetNode.position[0] && pos[1] === this.targetNode.position[1]) {
         newNullTile.tile.classList.remove("hidden");
@@ -407,9 +422,13 @@ var Board = /*#__PURE__*/function () {
 
       newNullTile.node.value = null;
       newRootTile.node.value = "root";
+      newNullTile.tile.innerHTML = "";
+      var arrowIcon = document.createElement("IMG");
+      arrowIcon.setAttribute("src", "./assets/images/arrow.png");
+      arrowIcon.classList.add("arrow-icon");
+      newRootTile.tile.appendChild(arrowIcon);
       newNullTile.tile.classList.remove("root-node");
-      newNullTile.tile.classList.remove("hidden"); // newRootTile.tile.classList.remove("hidden")
-
+      newNullTile.tile.classList.remove("hidden");
       newRootTile.tile.classList.remove("wall");
       newRootTile.tile.classList.remove("visited");
       newRootTile.tile.classList.remove("shortest-path-node");
@@ -437,10 +456,14 @@ var Board = /*#__PURE__*/function () {
 
       newNullTile.node.value = null;
       newTargetTile.node.value = "target";
+      newNullTile.tile.innerHTML = "";
+      var targetIcon = document.createElement("IMG");
+      targetIcon.setAttribute("src", "./assets/images/target.png");
+      targetIcon.classList.add("target-icon");
+      newTargetTile.tile.appendChild(targetIcon);
       newNullTile.tile.classList.remove("target-node");
       newNullTile.tile.classList.remove("target-found");
-      newNullTile.tile.classList.remove("hidden"); // newTargetTile.tile.classList.remove("hidden")
-
+      newNullTile.tile.classList.remove("hidden");
       newTargetTile.tile.classList.remove("wall");
       newTargetTile.tile.classList.remove("visited");
       newTargetTile.tile.classList.remove("shortest-path-node");
@@ -514,7 +537,6 @@ var Board = /*#__PURE__*/function () {
   }, {
     key: "clearPath",
     value: function clearPath() {
-      debugger;
       if (this.algorithmIsRunning === true) return;
       var visitedTiles = Array.from(document.getElementsByClassName("visited"));
       var shortestPathTiles = Array.from(document.getElementsByClassName("shortest-path-node"));
@@ -672,11 +694,11 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
 
       case "medium":
-        newSpeed = 30;
+        newSpeed = 40;
         break;
 
       case "slowmotion":
-        newSpeed = 100;
+        newSpeed = 150;
         break;
 
       default:
