@@ -104,8 +104,11 @@
     background-color: white;
 }
 
-.blue { 
+.target { 
     background-color: #3ac961;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .deepred {

@@ -176,8 +176,17 @@
 .modal-gif {
     border: 1px solid #666;
     border-radius: 3px;
-    margin: 20px 0 20px 0;
+    margin: 10px 0 20px 0;
     padding: 5px;
     height: 240px;
     width: 480px;
+}
+
+.modal-wall-gif {
+    border: 1px solid #666;
+    border-radius: 3px;
+    height: 120px;
+    width: 240px;
+    margin: 5px 0 5px 0;
+    padding: 5px
 }
