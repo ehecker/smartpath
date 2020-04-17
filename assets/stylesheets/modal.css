@@ -2,7 +2,7 @@
 
 .modal {
     display: block;
-    display: none;
+    /* display: none; */
 }
 
 .modal-screen {
@@ -100,7 +100,6 @@
 }
 
 .italic {
-    /* color: #3AC961; */
     font-style: italic;
 }
 
@@ -111,6 +110,10 @@
 
 .modal-red {
     color: #B50721;
+}
+
+.modal-green {
+    color: #3AC961;
 }
 
 .modal-nav {
@@ -152,8 +155,9 @@
 }
 
 .modal-sec-title {
-    color: white;
-    font-size: 20px;
+    color:#3AC961;
+    font-size: 22px;
+    font-weight: 600;
     padding-bottom: 10px;
 }
 
@@ -161,4 +165,19 @@
     color: white;
     font-size: 14px;
     line-height: 1.5;
+}
+
+.modal-gif-cont {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.modal-gif {
+    border: 1px solid #666;
+    border-radius: 3px;
+    margin: 20px 0 20px 0;
+    padding: 5px;
+    height: 240px;
+    width: 480px;
 }

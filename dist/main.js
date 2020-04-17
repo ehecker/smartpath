@@ -599,10 +599,12 @@ document.addEventListener("DOMContentLoaded", function () {
   board.fillGrid();
   console.log("Board initialized and populated");
   var bfsText = "Breadth-First Search (BFS) is a search algorithm in which nodes prioritize exploration of their immediate neighbors before moving on to nodes at the next level of depth. BFS guarantees discovery of the shortest path.";
-  var dfsText = "Depth-First Search (DFS) is a search algorithm in which nodes prioritize exploration of nodes located deeper in the graph structure before backtracing to immediate neighbors. Note that although the animation is included for illustrative purposes, DFS does not guarantee discovery of the shortest path.";
+  var dfsText = "Depth-First Search (DFS) is a search algorithm in which nodes prioritize exploration of nodes located deeper in the graph structure before backtracing to immediate neighbors. Although it is certain to find the target node, it does not guarantee discovery of the shortest path.";
   var dijkstrasText = "Dijkstra's algorithm is a search algorithm which applies a breadth-first strategy while also accounting for varying levels of difficulty in passing through certain nodes. Considered the most efficient pathfinding algorithm, it has widespread application in many fields including navigational systems and artificial intelligence.";
+  var dfsNote = " Note: The shortest path animation is included in this application only for illustrative purposes.";
   var infoTitleEl = document.getElementById("algo-title");
-  var infoTextEl = document.getElementById("algo-info"); // Add functionality to radio buttons
+  var infoTextEl = document.getElementById("algo-info");
+  var dfsNoteEl = document.getElementById("dfs-note"); // Add functionality to radio buttons
 
   function setAlgo(event) {
     var oldActive = document.getElementById(algorithm);
@@ -615,13 +617,16 @@ document.addEventListener("DOMContentLoaded", function () {
     if (algorithm === "bfs-btn") {
       infoTitleEl.innerHTML = "Breadth-First Search";
       infoTextEl.innerHTML = bfsText;
+      dfsNoteEl.innerHTML = "";
     } else if (algorithm === "dfs-btn") {
       infoTitleEl.innerHTML = "Depth-First Search";
       infoTextEl.innerHTML = dfsText;
+      dfsNoteEl.innerHTML = dfsNote;
     } else if (algorithm === "dijkstras-btn") {
       visButton.classList.add("vis-disabled");
       infoTitleEl.innerHTML = "Dijkstra's Algorithm - Coming Soon";
       infoTextEl.innerHTML = dijkstrasText;
+      dfsNoteEl.innerHTML = "";
     }
   } // Set defaults
 
