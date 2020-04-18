@@ -597,14 +597,89 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create and fill board
   var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
   board.fillGrid();
-  console.log("Board initialized and populated");
+  console.log("Board initialized and populated"); // Add Modal navigation
+
+  var modal = document.getElementsByClassName("modal")[0];
+  var modalPageCounter = document.getElementsByClassName("modal-counter")[0];
+  var modalTitle = document.getElementsByClassName("modal-title")[0];
+  var modalCloseButton = document.getElementsByClassName("modal-close-btn")[0];
+  var modalBackButton = document.getElementsByClassName("back-button")[0];
+  var modalNextButton = document.getElementsByClassName("next-button")[0];
+  var modalPage1 = document.getElementById("modal-p1");
+  var modalPage2 = document.getElementById("modal-p2");
+  var modalPage3 = document.getElementById("modal-p3");
+  var modalPage4 = document.getElementById("modal-p4");
+  var modalPage5 = document.getElementById("modal-p5");
+  var modalPages = {
+    1: modalPage1,
+    2: modalPage2,
+    3: modalPage3,
+    4: modalPage4,
+    5: modalPage5
+  };
+  var modalPageNum = 1;
+  var lastPage;
+
+  function updateModal(event) {
+    lastPage = modalPages[modalPageNum]; // debugger
+
+    if (event.target.innerHTML === "Next" || event.target.innerHTML === "Get Started") {
+      modalPageNum++;
+    } else if (event.target.innerHTML === "Back") {
+      modalPageNum--;
+    }
+
+    if (modalPageNum === 1) {
+      modalPageCounter.innerHTML = "1/5";
+      modalTitle.innerHTML = "Welcome to Smartpath!";
+      modalPage1.classList.remove("hide-modal");
+      lastPage.classList.add("hide-modal");
+      modalTitle.classList.add("modal-title");
+      modalTitle.classList.remove("modal-title-p2");
+      modalBackButton.style.visibility = "hidden";
+    } else if (modalPageNum === 2) {
+      modalPageCounter.innerHTML = "2/5";
+      modalTitle.innerHTML = "Smartpath 101";
+      modalTitle.classList.add("modal-title-p2");
+      modalTitle.classList.remove("modal-title");
+      modalPage2.classList.remove("hide-modal");
+      lastPage.classList.add("hide-modal");
+      modalBackButton.style.visibility = "visible";
+    } else if (modalPageNum === 3) {
+      modalPageCounter.innerHTML = "3/5";
+      modalPage3.classList.remove("hide-modal");
+      lastPage.classList.add("hide-modal");
+    } else if (modalPageNum === 4) {
+      modalPageCounter.innerHTML = "4/5";
+      modalPage4.classList.remove("hide-modal");
+      lastPage.classList.add("hide-modal");
+      modalNextButton.innerHTML = "Next";
+    } else if (modalPageNum === 5) {
+      modalPageCounter.innerHTML = "5/5";
+      modalPage5.classList.remove("hide-modal");
+      lastPage.classList.add("hide-modal");
+      modalNextButton.innerHTML = "Get Started";
+    } else if (modalPageNum === 6) {
+      closeModal();
+    }
+  }
+
+  modalNextButton.addEventListener("click", updateModal);
+  modalBackButton.addEventListener("click", updateModal);
+
+  function closeModal() {
+    modal.style.display = "none";
+  }
+
+  modalCloseButton.addEventListener("click", closeModal); // Add functionality to radio buttons
+
   var bfsText = "Breadth-First Search (BFS) is a search algorithm in which nodes prioritize exploration of their immediate neighbors before moving on to nodes at the next level of depth. BFS guarantees discovery of the shortest path.";
   var dfsText = "Depth-First Search (DFS) is a search algorithm in which nodes prioritize exploration of nodes located deeper in the graph structure before backtracing to immediate neighbors. Although it is certain to find the target node, it does not guarantee discovery of the shortest path.";
   var dijkstrasText = "Dijkstra's algorithm is a search algorithm which applies a breadth-first strategy while also accounting for varying levels of difficulty in passing through certain nodes. Considered the most efficient pathfinding algorithm, it has widespread application in many fields including navigational systems and artificial intelligence.";
   var dfsNote = " Note: The shortest path animation is included in this application only for illustrative purposes.";
   var infoTitleEl = document.getElementById("algo-title");
   var infoTextEl = document.getElementById("algo-info");
-  var dfsNoteEl = document.getElementById("dfs-note"); // Add functionality to radio buttons
+  var dfsNoteEl = document.getElementById("dfs-note");
 
   function setAlgo(event) {
     var oldActive = document.getElementById(algorithm);

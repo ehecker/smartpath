@@ -23,7 +23,7 @@
 
     background-color: #222;
     border-radius: 5px;
-    height: 500px;
+    height: 505px;
     width: 700px;
     z-index: 3;
 
@@ -120,6 +120,12 @@
     /* background-color: yellow; */
     width: 100%;
     display: flex;
+    justify-content: space-around;
+}
+
+.next-cont {
+    width: 80%;
+    display: flex;
     justify-content: flex-end;
 }
 
@@ -133,6 +139,7 @@
     border-style: none;
     text-align: center;
     margin-right: 30px;
+    margin-bottom: 10px;
 }
 
 .next-button:hover {
@@ -141,6 +148,30 @@
 }
 
 .next-button:focus {
+    outline: none;
+}
+
+.back-button {
+    background-color: #666;
+    border-radius: 3px;
+    color: white;
+    font-family: "Raleway", sans-serif;
+    font-size: 20px;
+    padding: 7px 25px 7px 25px;
+    border-style: none;
+    text-align: center;
+    margin-right: 15px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    visibility: hidden;
+}
+
+.back-button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.back-button:focus {
     outline: none;
 }
 
@@ -174,7 +205,7 @@
 }
 
 .modal-gif {
-    border: 1px solid #666;
+    border: 1px solid #444;
     border-radius: 3px;
     margin: 10px 0 20px 0;
     padding: 5px;
@@ -190,3 +221,8 @@
     margin: 5px 0 5px 0;
     padding: 5px
 }
+
+.hide-modal {
+    display: none;
+}
+
