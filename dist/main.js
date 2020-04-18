@@ -621,7 +621,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var lastPage;
 
   function updateModal(event) {
-    lastPage = modalPages[modalPageNum]; // debugger
+    lastPage = modalPages[modalPageNum];
 
     if (event.target.innerHTML === "Next" || event.target.innerHTML === "Get Started") {
       modalPageNum++;
