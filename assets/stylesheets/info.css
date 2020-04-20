@@ -14,8 +14,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* height: 208px; */
-    /* height: 30%; */
     width: 400px;
 }
 
@@ -26,7 +24,7 @@
     align-items: center;
     /* height: 208px; */
     /* height: 30%; */
-    width: 400px;
+    width: 100%;
 }
 
 .controls-container {
@@ -35,16 +33,10 @@
     align-items: center;
     /* height: 208px; */
     /* height: 30%; */
-    width: 400px;
+    width: 100%;
 }
 
 /* ALGO INFO CONTAINER */
-
-#algo-title {
-    color: white;
-    font-size: 20px;
-    padding-top: 15px;
-}
 
 .algo-text-box {
     width: 90%;
@@ -54,7 +46,7 @@
 #algo-info {
     color: white;
     font-size: 14px;
-    padding: 15px 20px 10px 20px;
+    padding: 0px 20px 10px 20px;
     line-height: 1.7;
 }
 
@@ -67,7 +59,7 @@
 
 /* LEGEND CONTAINER */
 
-.legend-title {
+.info-title {
     color: white;
     font-size: 20px;
     padding: 15px 0 10px 0;
