@@ -139,31 +139,6 @@
     #algo-info {
         font-size: 11px;
     }
+
+    
 }
-/* 
-@media (max-width: 1376px) {
-    #info-box {
-        height: 475px;
-        margin-right: 10px;
-        width: 380px;
-    }
-
-    #grid {
-        height: 475px;
-        width: 912px;
-    }
-
-    .tile {
-        height: 18px;
-        width: 18px;
-    }
-
-    .target-found {
-        height: 17px;
-        width: 17px;
-    }
-
-    #algo-info {
-        font-size: 11px;
-    }
-} */
