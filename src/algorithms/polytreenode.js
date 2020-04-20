@@ -6,7 +6,7 @@ export default class PolyTreeNode {
         this.board = board;
         this.grid = board.grid;
 
-        this.tileObj = document.getElementById(`${position[0]}-${position[1]}`);
+        this.tileEl = document.getElementById(`${position[0]}-${position[1]}`);
 
         this.parent = null;
         this.children = [];
@@ -23,42 +23,31 @@ export default class PolyTreeNode {
         // Comment these in to toggle showing children on hover.
         // this.showChildren = this.showChildren.bind(this);
         // this.hideChildren = this.hideChildren.bind(this);
-        // this.tileObj.addEventListener("mouseenter", this.showChildren)
-        // this.tileObj.addEventListener("mouseleave", this.hideChildren)
-    }
-
-    showChildren() {
-        this.tileObj.classList.add("parent")
-        this.children.forEach(child => {
-            child.tileObj.classList.add("child")
-        })
-    }
-
-    hideChildren() {
-        this.tileObj.classList.remove("parent")
-        this.children.forEach(child => {
-            child.tileObj.classList.remove("child")
-        })
+        // this.tileEl.addEventListener("mouseenter", this.showChildren)
+        // this.tileEl.addEventListener("mouseleave", this.hideChildren)
     }
 
     visualize(visitedTiles, grid, speed) {
-        let viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
+         // Save function to a variable so that it can be accessed within setTimeout's callback
+        let visStep = this.visualize;
 
-        if (visitedTiles.length >= 1) {
+        if (visitedTiles.length > 0) {
             setTimeout(function() {
                 let currentPos = visitedTiles.shift()
-                grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
+                let currentTile = grid[currentPos[0]][currentPos[1]].tile
 
-                viz(visitedTiles, grid, speed); // Calls itself recursively to ensure other code has finished before starting next step
+                currentTile.classList.add("visited");
+                
+                 // Recursive call within setTimeout ensures currentTile receives "visited" class before next step begins
+                visStep(visitedTiles, grid, speed);
             }, speed)
 
         } else if (visitedTiles.length === 0) {
             if (this.board.algorithmIsRunning === false) return;
 
-            this.board.targetNode.tileObj.classList.add("target-found");
+            this.board.targetNode.tileEl.classList.add("target-found");
             this.visualizeShortestPath(this.shortestPath, this.grid);
         }
-
     }
 
     visualizeShortestPath(pathPositions, grid) {
@@ -89,7 +78,6 @@ export default class PolyTreeNode {
             }
 
             if (currentNode.value === target) {
-                // this.visitedTiles.push(currentNode.position)
                 this.findShortestPath();
                 this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
                 return currentNode;
@@ -109,7 +97,6 @@ export default class PolyTreeNode {
                 let currentNode = stack.shift();
 
                 if (currentNode.value === target) {
-                    // this.visitedTiles.push(currentNode.position)
                     this.findShortestPath();
                     this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
                     return currentNode;
@@ -183,6 +170,22 @@ export default class PolyTreeNode {
     removeChild(childNode) {
         let i = this.children.indexOf(childNode);
         this.children.splice(i, 1)
+    }
+
+    
+    // Dev-support functions
+    showChildren() {
+        this.tileEl.classList.add("parent")
+        this.children.forEach(child => {
+            child.tileEl.classList.add("child")
+        })
+    }
+
+    hideChildren() {
+        this.tileEl.classList.remove("parent")
+        this.children.forEach(child => {
+            child.tileEl.classList.remove("child")
+        })
     }
 
 }

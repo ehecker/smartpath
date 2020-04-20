@@ -154,7 +154,7 @@ export default class Board {
             let currentNode = this.grid[x][y].node;
             if (currentNode.value === null) {
                 currentNode.value = "wall"
-                currentNode.tileObj.classList.add("wall")
+                currentNode.tileEl.classList.add("wall")
                 wallCount++
             }
         }

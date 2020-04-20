@@ -122,7 +122,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
     this.position = position;
     this.board = board;
     this.grid = board.grid;
-    this.tileObj = document.getElementById("".concat(position[0], "-").concat(position[1]));
+    this.tileEl = document.getElementById("".concat(position[0], "-").concat(position[1]));
     this.parent = null;
     this.children = [];
     this.visitedTiles = []; // Used for computing and animating algorithms
@@ -135,40 +135,27 @@ var PolyTreeNode = /*#__PURE__*/function () {
     this.visualizeShortestPath = this.visualizeShortestPath.bind(this); // Comment these in to toggle showing children on hover.
     // this.showChildren = this.showChildren.bind(this);
     // this.hideChildren = this.hideChildren.bind(this);
-    // this.tileObj.addEventListener("mouseenter", this.showChildren)
-    // this.tileObj.addEventListener("mouseleave", this.hideChildren)
+    // this.tileEl.addEventListener("mouseenter", this.showChildren)
+    // this.tileEl.addEventListener("mouseleave", this.hideChildren)
   }
 
   _createClass(PolyTreeNode, [{
-    key: "showChildren",
-    value: function showChildren() {
-      this.tileObj.classList.add("parent");
-      this.children.forEach(function (child) {
-        child.tileObj.classList.add("child");
-      });
-    }
-  }, {
-    key: "hideChildren",
-    value: function hideChildren() {
-      this.tileObj.classList.remove("parent");
-      this.children.forEach(function (child) {
-        child.tileObj.classList.remove("child");
-      });
-    }
-  }, {
     key: "visualize",
     value: function visualize(visitedTiles, grid, speed) {
-      var viz = this.visualize; // Saves function to a variable so that it can be accessed within setTimeout's callback
+      // Save function to a variable so that it can be accessed within setTimeout's callback
+      var visStep = this.visualize;
 
-      if (visitedTiles.length >= 1) {
+      if (visitedTiles.length > 0) {
         setTimeout(function () {
           var currentPos = visitedTiles.shift();
-          grid[currentPos[0]][currentPos[1]].tile.classList.add("visited");
-          viz(visitedTiles, grid, speed); // Calls itself recursively to ensure other code has finished before starting next step
+          var currentTile = grid[currentPos[0]][currentPos[1]].tile;
+          currentTile.classList.add("visited"); // Recursive call within setTimeout ensures currentTile receives "visited" class before next step begins
+
+          visStep(visitedTiles, grid, speed);
         }, speed);
       } else if (visitedTiles.length === 0) {
         if (this.board.algorithmIsRunning === false) return;
-        this.board.targetNode.tileObj.classList.add("target-found");
+        this.board.targetNode.tileEl.classList.add("target-found");
         this.visualizeShortestPath(this.shortestPath, this.grid);
       }
     }
@@ -182,15 +169,12 @@ var PolyTreeNode = /*#__PURE__*/function () {
           var currentPos = pathPositions.shift();
           var currentTile = grid[currentPos[0]][currentPos[1]].tile;
           currentTile.classList.remove("visited");
-          currentTile.classList.add("shortest-path-node"); // grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
-
+          currentTile.classList.add("shortest-path-node");
           viz(pathPositions, grid);
         }, 25);
       } else if (pathPositions.length === 0) {
         this.board.algorithmIsRunning = false;
       }
-
-      console.log("Shortest path animated");
     }
   }, {
     key: "bfs",
@@ -205,7 +189,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
         }
 
         if (currentNode.value === target) {
-          // this.visitedTiles.push(currentNode.position)
           this.findShortestPath();
           this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
           return currentNode;
@@ -213,8 +196,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
 
         queue.push.apply(queue, _toConsumableArray(currentNode.children));
       }
-
-      console.log("Unsolvable grid detected"); // Logic for handling unsolvable grid goes here
 
       this.board.algorithmIsRunning = false;
       alert("Ha! Nice try. This maze is unsolvable. Please remove some walls to set your algorithms free.");
@@ -229,7 +210,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
           var currentNode = stack.shift();
 
           if (currentNode.value === target) {
-            // this.visitedTiles.push(currentNode.position)
             this.findShortestPath();
             this.visualize(this.visitedTiles, this.grid, this.board.animationSpeed);
             return currentNode;
@@ -241,23 +221,13 @@ var PolyTreeNode = /*#__PURE__*/function () {
         }
       }
 
-      console.log("Unsolvable grid detected");
       this.board.algorithmIsRunning = false;
       alert("Ha! Nice try. This maze is unsolvable. Please remove some walls to set your algorithms free.");
     }
   }, {
     key: "buildTree",
     value: function buildTree() {
-      var increments = [// [0, 1],
-      // [1, 0],
-      // [-1, 0],
-      // [0, -1]
-      [0, 1], [1, 0], [0, -1], [-1, 0] // Original, up-first tree build
-      // [-1, 0], // Up
-      // [0, 1], // Right
-      // [1, 0], // Down
-      // [0, -1] // Left
-      ]; // buildTree function will use the node on which it is called as the root node of the tree
+      var increments = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // buildTree function will use the node on which it is called as the root node of the tree
 
       var neighbors = [this]; // This is a queue
 
@@ -269,7 +239,6 @@ var PolyTreeNode = /*#__PURE__*/function () {
           var newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
 
           if (currentNode.board.validPos(newPos) && this.grid[newPos[0]][newPos[1]].node.value !== "wall") {
-            // debugger
             if (this.visited.has(newPos.join("-"))) {
               // Call join on newPos to convert it to a valid keyname
               continue;
@@ -311,6 +280,23 @@ var PolyTreeNode = /*#__PURE__*/function () {
     value: function removeChild(childNode) {
       var i = this.children.indexOf(childNode);
       this.children.splice(i, 1);
+    } // Dev-support functions
+
+  }, {
+    key: "showChildren",
+    value: function showChildren() {
+      this.tileEl.classList.add("parent");
+      this.children.forEach(function (child) {
+        child.tileEl.classList.add("child");
+      });
+    }
+  }, {
+    key: "hideChildren",
+    value: function hideChildren() {
+      this.tileEl.classList.remove("parent");
+      this.children.forEach(function (child) {
+        child.tileEl.classList.remove("child");
+      });
     }
   }]);
 
@@ -488,7 +474,7 @@ var Board = /*#__PURE__*/function () {
 
         if (currentNode.value === null) {
           currentNode.value = "wall";
-          currentNode.tileObj.classList.add("wall");
+          currentNode.tileEl.classList.add("wall");
           wallCount++;
         }
       }
@@ -596,8 +582,7 @@ __webpack_require__.r(__webpack_exports__);
 document.addEventListener("DOMContentLoaded", function () {
   // Create and fill board
   var board = new _board__WEBPACK_IMPORTED_MODULE_0__["default"]();
-  board.fillGrid();
-  console.log("Board initialized and populated"); // Add Modal navigation
+  board.fillGrid(); // Add Modal navigation
 
   var modal = document.getElementsByClassName("modal")[0];
   var modalPageCounter = document.getElementsByClassName("modal-counter")[0];
@@ -735,9 +720,7 @@ document.addEventListener("DOMContentLoaded", function () {
         rootNode.visited = new Set();
         rootNode.visited.add(rootNode.position.join("-"));
         rootNode.buildTree();
-        console.log("Node tree built");
         rootNode.bfs("target");
-        console.log("BFS executed");
         break;
 
       case "dfs-btn":
@@ -747,9 +730,7 @@ document.addEventListener("DOMContentLoaded", function () {
         rootNode.visited = new Set();
         rootNode.visited.add(rootNode.position.join("-"));
         rootNode.buildTree();
-        console.log("Node tree built");
         rootNode.dfs("target");
-        console.log("DFS executed");
         break;
 
       default:
@@ -789,10 +770,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   var selectButton = document.getElementById("anim-speed");
-  selectButton.addEventListener("change", setAnimationSpeed); // Add functionality to Clear Walls and Clear Path buttons
-  // const clearWallsButton = document.getElementById("clear-walls");
-  // clearWallsButton.addEventListener("click", board.clearWalls);
-
+  selectButton.addEventListener("change", setAnimationSpeed);
   var clearPathButton = document.getElementById("clear-path");
   clearPathButton.addEventListener("click", board.clearPath); // Add functionality to Generate Maze button
 
@@ -840,12 +818,9 @@ var Tile = /*#__PURE__*/function () {
   _createClass(Tile, [{
     key: "setDraggingFunctions",
     value: function setDraggingFunctions() {
-      var board = this.board; // if (this.node.value === "root") {
-      //     this.tile.innerHTML = ">"
-      // }
+      var board = this.board;
 
       var handleDragStart = function handleDragStart(event) {
-        console.log("Drag start fired");
         board.clearPath();
         var tileId = event.target.id.split("-");
         var dragStartPos = [+tileId[0], +tileId[1]];
@@ -860,15 +835,14 @@ var Tile = /*#__PURE__*/function () {
       };
 
       var handleDragEnter = function handleDragEnter(event) {
-        console.log("Drag enter fired");
         event.preventDefault();
         var tileId = event.target.id.split("-");
         var currentTile = board.grid[+tileId[0]][+tileId[1]];
 
         if (board.lastNodeType === "root") {
-          board.rootNode.tileObj.classList.add("hidden");
+          board.rootNode.tileEl.classList.add("hidden");
         } else if (board.lastNodeType === "target") {
-          board.targetNode.tileObj.classList.add("hidden");
+          board.targetNode.tileEl.classList.add("hidden");
         }
 
         if (board.lastNodeType === "wall" || board.lastNodeType === null) {
@@ -882,38 +856,32 @@ var Tile = /*#__PURE__*/function () {
 
       var handleDragOver = function handleDragOver(event) {
         // DO NOT REMOVE. Root/target node repositioning does not work without this.
-        console.log("Drag over fired");
         event.preventDefault();
       };
 
       var handleDrop = function handleDrop(event) {
-        console.log("Drop fired");
         event.preventDefault();
         var tileId = event.target.id.split("-");
         var dragEndPos = [+tileId[0], +tileId[1]];
 
         if (board.lastNodeType === "root") {
-          // board.rootNode.tileObj.classList.remove("hidden");
           board.setRoot(dragEndPos);
         } else if (board.lastNodeType === "target") {
-          // board.targetNode.tileObj.classList.remove("hidden");
           board.setTarget(dragEndPos);
         }
       };
 
       var handleDragEnd = function handleDragEnd(event) {
-        console.log("Drop fired");
         event.preventDefault();
 
         if (board.lastNodeType === "root") {
-          board.rootNode.tileObj.classList.remove("hidden");
+          board.rootNode.tileEl.classList.remove("hidden");
         } else if (board.lastNodeType === "target") {
-          board.targetNode.tileObj.classList.remove("hidden");
+          board.targetNode.tileEl.classList.remove("hidden");
         }
       };
 
       var handleClick = function handleClick(event) {
-        console.log("Click fired");
         event.preventDefault();
         var tileId = event.target.id.split("-");
         var currentTile = board.grid[+tileId[0]][+tileId[1]];
@@ -943,7 +911,6 @@ var Tile = /*#__PURE__*/function () {
       this.board.clearPath();
       this.node.value = "wall";
       this.tile.classList.add("wall");
-      console.log("Wall placed");
     }
   }, {
     key: "removeWall",
@@ -952,7 +919,6 @@ var Tile = /*#__PURE__*/function () {
       this.board.clearPath();
       this.node.value = null;
       this.tile.classList.remove("wall");
-      console.log("Wall removed");
     }
   }]);
 

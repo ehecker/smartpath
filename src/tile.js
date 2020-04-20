@@ -41,9 +41,9 @@ export default class Tile {
             let currentTile = board.grid[+tileId[0]][+tileId[1]]
 
             if (board.lastNodeType === "root") {
-                board.rootNode.tileObj.classList.add("hidden");
+                board.rootNode.tileEl.classList.add("hidden");
             } else if (board.lastNodeType === "target") {
-                board.targetNode.tileObj.classList.add("hidden");
+                board.targetNode.tileEl.classList.add("hidden");
             }
 
             if (board.lastNodeType === "wall" || board.lastNodeType === null) {
@@ -76,9 +76,9 @@ export default class Tile {
             event.preventDefault();
 
             if (board.lastNodeType === "root") {
-                board.rootNode.tileObj.classList.remove("hidden")
+                board.rootNode.tileEl.classList.remove("hidden")
             } else if (board.lastNodeType === "target") {
-                board.targetNode.tileObj.classList.remove("hidden")
+                board.targetNode.tileEl.classList.remove("hidden")
             }
         }
 
