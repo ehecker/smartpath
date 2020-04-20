@@ -14,20 +14,13 @@ export default class Tile {
 
         this.node = new PolyTreeNode(nodeValue, position, board); // This MUST come after this.tile's id is set
 
-        
-
         this.setDraggingFunctions();
     }
 
     setDraggingFunctions() {
         let board = this.board;
 
-        // if (this.node.value === "root") {
-        //     this.tile.innerHTML = ">"
-        // }
-
         const handleDragStart = event => {
-            console.log("Drag start fired")
             board.clearPath();
 
             let tileId = event.target.id.split("-");
@@ -42,7 +35,6 @@ export default class Tile {
         }
 
         const handleDragEnter = event => {
-            console.log("Drag enter fired")
             event.preventDefault()
 
             let tileId = event.target.id.split("-");
@@ -64,28 +56,23 @@ export default class Tile {
         }
 
         const handleDragOver = event => { // DO NOT REMOVE. Root/target node repositioning does not work without this.
-            console.log("Drag over fired")
             event.preventDefault()
         }
 
         const handleDrop = event => {
-            console.log("Drop fired")
             event.preventDefault();
 
             let tileId = event.target.id.split("-");
             let dragEndPos = [+tileId[0], +tileId[1]];
 
             if (board.lastNodeType === "root") {
-                // board.rootNode.tileObj.classList.remove("hidden");
                 board.setRoot(dragEndPos)
             } else if (board.lastNodeType === "target") {
-                // board.targetNode.tileObj.classList.remove("hidden");
                 board.setTarget(dragEndPos)
             }
         }
 
         const handleDragEnd = event => {
-            console.log("Drop fired")
             event.preventDefault();
 
             if (board.lastNodeType === "root") {
@@ -96,7 +83,6 @@ export default class Tile {
         }
 
         const handleClick = event => {
-            console.log("Click fired")
             event.preventDefault()
 
             let tileId = event.target.id.split("-");
@@ -128,7 +114,6 @@ export default class Tile {
 
         this.node.value = "wall";
         this.tile.classList.add("wall")
-        console.log("Wall placed")
     }
 
     removeWall() {
@@ -137,7 +122,6 @@ export default class Tile {
 
         this.node.value = null;
         this.tile.classList.remove("wall")
-        console.log("Wall removed")
     }
 
 }

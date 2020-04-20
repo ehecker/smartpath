@@ -70,14 +70,12 @@ export default class PolyTreeNode {
                 let currentTile = grid[currentPos[0]][currentPos[1]].tile
                 currentTile.classList.remove("visited")
                 currentTile.classList.add("shortest-path-node")
-                // grid[currentPos[0]][currentPos[1]].tile.classList.add("shortest-path-node");
 
                 viz(pathPositions, grid)
             }, 25)
         } else if (pathPositions.length === 0) {
             this.board.algorithmIsRunning = false;
         } 
-        console.log("Shortest path animated")
     }
 
     bfs(target) {
@@ -99,8 +97,6 @@ export default class PolyTreeNode {
             
             queue.push(...currentNode.children);
         }
-        console.log("Unsolvable grid detected")
-        // Logic for handling unsolvable grid goes here
         this.board.algorithmIsRunning = false;
         alert("Ha! Nice try. This maze is unsolvable. Please remove some walls to set your algorithms free.")
     }
@@ -126,28 +122,16 @@ export default class PolyTreeNode {
             }
 
         }
-        console.log("Unsolvable grid detected")
         this.board.algorithmIsRunning = false;
         alert("Ha! Nice try. This maze is unsolvable. Please remove some walls to set your algorithms free.")
     }
 
     buildTree() {
         const increments = [
-            // [0, 1],
-            // [1, 0],
-            // [-1, 0],
-            // [0, -1]
-
             [0, 1],
             [1, 0],
             [0, -1],
             [-1, 0]
-
-            // Original, up-first tree build
-            // [-1, 0], // Up
-            // [0, 1], // Right
-            // [1, 0], // Down
-            // [0, -1] // Left
         ];
 
         // buildTree function will use the node on which it is called as the root node of the tree
@@ -161,7 +145,6 @@ export default class PolyTreeNode {
                 let newPos = [currentNode.position[0] + inc[0], currentNode.position[1] + inc[1]];
 
                 if (currentNode.board.validPos(newPos) && this.grid[newPos[0]][newPos[1]].node.value !== "wall") {
-                    // debugger
                     if (this.visited.has(newPos.join("-"))) { // Call join on newPos to convert it to a valid keyname
                         continue;
                     }

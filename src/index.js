@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Create and fill board
     let board = new Board();
     board.fillGrid();
-    console.log("Board initialized and populated")
 
     // Add Modal navigation
     const modal = document.getElementsByClassName("modal")[0];
@@ -165,9 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 rootNode.visited.add(rootNode.position.join("-"));
 
                 rootNode.buildTree();
-                console.log("Node tree built")
                 rootNode.bfs("target");
-                console.log("BFS executed");
                 break;
             case "dfs-btn":
                 board.algorithmIsRunning = true;
@@ -178,9 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 rootNode.visited.add(rootNode.position.join("-"));
 
                 rootNode.buildTree();
-                console.log("Node tree built")
                 rootNode.dfs("target");
-                console.log("DFS executed");
                 break;
             default:
                 break;
@@ -217,10 +212,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const selectButton = document.getElementById("anim-speed");
     selectButton.addEventListener("change", setAnimationSpeed)
-
-    // Add functionality to Clear Walls and Clear Path buttons
-    // const clearWallsButton = document.getElementById("clear-walls");
-    // clearWallsButton.addEventListener("click", board.clearWalls);
 
     const clearPathButton = document.getElementById("clear-path");
     clearPathButton.addEventListener("click", board.clearPath)
