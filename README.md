@@ -1,5 +1,6 @@
-# smartpath
+# Smartpath
+<a href="https://ehecker.github.io/smartpath/">Visit Live Site here</a>
 
-Smartpath is a pathfinding algorithm visualizer.
+<img src="https://i.imgur.com/nfdUohJ.png">
 
-<a href="https://ehecker.github.io/smartpath/">Live Site</a>
+Smartpath is a <strong>Pathfinding Algorithm Visualizer</strong>.
