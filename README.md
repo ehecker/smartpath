@@ -3,23 +3,20 @@
 
 <img src="https://i.imgur.com/nfdUohJ.png">
 
-Smartpath is a <strong>Pathfinding Algorithm Visualizer</strong>. A pathfinding algorithm is a program which finds the shortest path between two points, known as the Root and the Target. Smartpath currently generates animations for two of these algorithms: Breadth-First Search and Depth-First Search. In the future, it will also feature Dijkstra's Algorithm and the A-Star Algorithm.
+Smartpath is a <strong>Pathfinding Algorithm Visualizer</strong>. A pathfinding algorithm is a computer program which finds the shortest path between two points, known as the Root and the Target. Smartpath currently generates animations for two of these algorithms: Breadth-First Search and Depth-First Search. In the future, it will also feature Dijkstra's Algorithm and the A-Star Algorithm.
 
-Smartpath also currently allows users to generate Scatter mazes with the "Generate Maze" button. A future update will allow users to also generate the more familiar "Recursive" maze pattern.
+Smartpath is an interactive application which allows users to place and destroy walls manually, or to generate Scatter mazes (and soon Recursive mazes) using the "Generate Maze" feature. Users can run different algorithms on the same maze setup to observe the differences in each algorithm's approach.
 
 ## Technologies
 Smartpath is built in pure Object-Oriented Javascript, CSS3 and HTML5. It does not rely on any existing libraries or frameworks.
 
 ## Technical Challenges
 ### Adding delay between steps in animation
-One of the most challenging aspects of creating Smartpath was in determining how to cause a delay between each step of the animation, so that visited nodes would change colors one at a time rather than all at once.
+One of the most challenging aspects of creating Smartpath was in determining how to implement a delay between each step of the animation, so that visited nodes would change colors one at a time rather than all at once.
 
 The resulting function, PolyTreeNode.visualize, overcomes three of the most challenging concepts in Javascript: Recursion, Asynchronicity, and Context. 
 
 <img src="https://i.imgur.com/3wFlkMT.png">
-
-### Building Tree structure from PolyTreeNode class
-An additional challenge 
 
 ## Upcoming Features
 <ul>
