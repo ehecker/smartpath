@@ -16,6 +16,8 @@ One of the most challenging aspects of building Smartpath was in determining how
 
 The resulting function, PolyTreeNode.visualize, overcomes three of the most challenging concepts in Javascript: Recursion, Asynchronicity, and Context. 
 
+<img src="https://i.imgur.com/ZPXKivM.png">
+
 <img src="https://i.imgur.com/3wFlkMT.png">
 
 ### Building a Tree from 1200 PolyTreeNodes
