@@ -19,7 +19,11 @@ The resulting function, PolyTreeNode.visualize, overcomes three of the most chal
 <img src="https://i.imgur.com/3wFlkMT.png">
 
 ### Building a Tree from 1200 PolyTreeNodes
-The underlying data structure upon which both Breadth-First Search and Depth-First Search operate is known as a Tree. While the logic for assigning parent/child relationships between two nodes is simple enough, the process becomes more complex when it involves 1200 PolyTreeNodes arranged in a graph structure. 
+The underlying data structure upon which both Breadth-First Search and Depth-First Search operate is known as a Tree. While the logic for assigning parent/child relationships between two nodes is simple enough, the process becomes more complex when it involves 1200 PolyTreeNodes arranged in a graph structure.
+
+In order to accomplish this, PolyTreeNode.buildTree uses a Queue data structure to ensure that it adds every node to the tree, and a Set (this.visited) to ensure that there are no duplicate relationships.
+
+<img src="https://i.imgur.com/CHs1u8x.png">
 
 ## Upcoming Features
 <ul>
