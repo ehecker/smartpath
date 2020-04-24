@@ -12,7 +12,7 @@ Smartpath is built in pure Object-Oriented Javascript, CSS3 and HTML5. It does n
 
 ## Technical Challenges
 ### Adding delay between steps in animation
-One of the most challenging aspects of building Smartpath was in determining how to implement a delay between each step of the animation, so that visited nodes would change colors one at a time rather than all at once.
+One of the most challenging aspects of building Smartpath was in determining how to implement a delay between each step of the animation so that visited nodes would change colors one at a time rather than all at once.
 
 The resulting function, PolyTreeNode.visualize, overcomes three of the most challenging concepts in Javascript: Recursion, Asynchronicity, and Context. 
 
