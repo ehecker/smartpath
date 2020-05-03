@@ -1,5 +1,5 @@
 # Smartpath
-<a href="https://ehecker.github.io/smartpath/">Live Site</a>
+<a href="https://ehecker.github.io/smartpath/" target="_blank">Live Site</a>
 
 <img src="https://i.imgur.com/nfdUohJ.png">
 
