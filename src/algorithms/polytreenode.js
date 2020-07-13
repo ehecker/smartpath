@@ -28,7 +28,7 @@ export default class PolyTreeNode {
     }
 
     visualize(visitedTiles, grid, speed) {
-         // Save function to a variable so that it can be accessed within setTimeout's callback
+
         let visStep = this.visualize;
 
         if (visitedTiles.length > 0) {
@@ -38,7 +38,6 @@ export default class PolyTreeNode {
 
                 currentTile.classList.add("visited");
                 
-                 // Recursive call within setTimeout ensures currentTile receives "visited" class before next step begins
                 visStep(visitedTiles, grid, speed);
             }, speed)
 
@@ -51,7 +50,7 @@ export default class PolyTreeNode {
     }
 
     visualizeShortestPath(pathPositions, grid) {
-        let viz = this.visualizeShortestPath;
+        let visStep = this.visualizeShortestPath;
 
         if (pathPositions.length >= 1) {
             setTimeout(function() {
@@ -60,7 +59,7 @@ export default class PolyTreeNode {
                 currentTile.classList.remove("visited")
                 currentTile.classList.add("shortest-path-node")
 
-                viz(pathPositions, grid)
+                visStep(pathPositions, grid)
             }, 25)
         } else if (pathPositions.length === 0) {
             this.board.algorithmIsRunning = false;
@@ -144,7 +143,6 @@ export default class PolyTreeNode {
                 }
             }
         }
-
     }
 
     findShortestPath() {

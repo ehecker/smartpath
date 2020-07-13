@@ -24,7 +24,8 @@
 }
 
 .target-node {
-    background-color: #3ac961;
+    /* background-color: #3ac961; */
+    background-color: blue;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -82,7 +83,8 @@
     }
 
     to {
-        background-color: #3ac961;
+        /* background-color: #3ac961; */
+        background-color: blue;
     }
 }
 

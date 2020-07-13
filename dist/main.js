@@ -162,7 +162,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
   }, {
     key: "visualizeShortestPath",
     value: function visualizeShortestPath(pathPositions, grid) {
-      var viz = this.visualizeShortestPath;
+      var visStep = this.visualizeShortestPath;
 
       if (pathPositions.length >= 1) {
         setTimeout(function () {
@@ -170,7 +170,7 @@ var PolyTreeNode = /*#__PURE__*/function () {
           var currentTile = grid[currentPos[0]][currentPos[1]].tile;
           currentTile.classList.remove("visited");
           currentTile.classList.add("shortest-path-node");
-          viz(pathPositions, grid);
+          visStep(pathPositions, grid);
         }, 25);
       } else if (pathPositions.length === 0) {
         this.board.algorithmIsRunning = false;
