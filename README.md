@@ -1,7 +1,6 @@
 # Smartpath
-<a href="https://ehecker.github.io/smartpath/" target="_blank" rel="noreferrer">Live Site</a>
-
 <img src="https://i.imgur.com/nfdUohJ.png">
+<a href="https://ehecker.github.io/smartpath/" target="_blank" rel="noreferrer">Live Site</a>
 
 Smartpath is a <strong>Pathfinding Algorithm Visualizer</strong>. A pathfinding algorithm is a computer program which finds the shortest path between two points, known as the Root and the Target. Smartpath currently generates animations for two of these algorithms: Breadth-First Search and Depth-First Search. In the future, it will also feature Dijkstra's Algorithm and the A-Star Algorithm.
 
