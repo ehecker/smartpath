@@ -2,6 +2,7 @@
 <img src="https://i.imgur.com/nfdUohJ.png">
 <a href="https://ehecker.github.io/smartpath/" target="_blank" rel="noreferrer">Live Site</a>
 
+
 Smartpath is a <strong>Pathfinding Algorithm Visualizer</strong>. A pathfinding algorithm is a computer program which finds the shortest path between two points, known as the Root and the Target. Smartpath currently generates animations for two of these algorithms: Breadth-First Search and Depth-First Search. In the future, it will also feature Dijkstra's Algorithm and the A-Star Algorithm.
 
 Smartpath is an interactive application which allows users to place and destroy walls manually, or to generate Scatter mazes (and soon Recursive mazes) using the "Generate Maze" feature. Users can run different algorithms on the same maze setup to observe the differences in each algorithm's approach.
