@@ -7,7 +7,7 @@ export default class Board {
         this.targetNode;
 
         this.lastNodeType;
-        this.animationSpeed = 15;
+        this.animationSpeed = 5;
         this.algorithmIsRunning = false;
 
         this.validPos = this.validPos.bind(this);

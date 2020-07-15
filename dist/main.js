@@ -142,15 +142,13 @@ var PolyTreeNode = /*#__PURE__*/function () {
   _createClass(PolyTreeNode, [{
     key: "visualize",
     value: function visualize(visitedTiles, grid, speed) {
-      // Save function to a variable so that it can be accessed within setTimeout's callback
       var visStep = this.visualize;
 
       if (visitedTiles.length > 0) {
         setTimeout(function () {
           var currentPos = visitedTiles.shift();
           var currentTile = grid[currentPos[0]][currentPos[1]].tile;
-          currentTile.classList.add("visited"); // Recursive call within setTimeout ensures currentTile receives "visited" class before next step begins
-
+          currentTile.classList.add("visited");
           visStep(visitedTiles, grid, speed);
         }, speed);
       } else if (visitedTiles.length === 0) {
@@ -340,7 +338,7 @@ var Board = /*#__PURE__*/function () {
     this.rootNode;
     this.targetNode;
     this.lastNodeType;
-    this.animationSpeed = 15;
+    this.animationSpeed = 5;
     this.algorithmIsRunning = false;
     this.validPos = this.validPos.bind(this);
     this.setRoot = this.setRoot.bind(this);
